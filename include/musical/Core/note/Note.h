@@ -1,52 +1,74 @@
 #pragma once
 
-/**
-* @brief Représente une note musicale dans le système anglo-saxon,
-* incluant son nom (a–g), son altération (dièse, bémol...), son octave,
-* et sa durée (Figure).
-*/
-
 #include <musical/Core/Figure.h> 
-#include <musical/Core/MusicalCoreConstants.h>
-#include <musical/Core/MusicalCoreEnums.h>
-
 #include <cstdint> 
-#include <ostream>
 
-namespace musical {
+namespace musical::core::note {
+    
+    class Factory;
+}
 
-class Note { //plutot SaxonNote
+namespace musical::core {
 
-	friend class NoteFactory;
+class Note {
+
+public:
+    enum class Name : uint8_t {
+
+        C,D,E,F,G,A,B
+    };
+
+    enum class Accidental { 
+        
+        NONE, SHARP, FLAT, DOUBLE_SHARP, DOUBLE_FLAT 
+    };    
+
+    friend class note::Factory;
+
 private:
 
     struct Pitch
     {
-        char         _name;    
+        Name         _name;    
         Accidental   _accid;    
         uint8_t      _octave;   
     };
 
     struct Pitch _pitch;
     Figure       _figure; 
-         
-    Note(char name, Accidental accid, uint8_t octave = 4, Figure f = FigureType::QUARTER);
+
+    //using X = std::pair<struct Pitch, Figure>;
+   
+    Note(Name n, Accidental a, uint8_t o, Figure f)
+        :
+        _pitch{n, a, o}, _figure(f)
+        {}
 
 public:
-    Note(const Note& other)
-        : _pitch(other._pitch)
-        , _figure(other._figure)
-    {}
+    Note(const Note&) = default;    
 
-	bool operator==(const Note& other) const;
+	bool operator==(const Note& other) const noexcept;
 
     /* --- Accesseurs --- */
-    const Pitch& GetPitch() const { return _pitch;}
+
+    //const Pitch& pitch() const { return _pitch;}
+
+    Name name() const noexcept { return _pitch._name; }
+    Accidental accidental() const noexcept { return _pitch._accid; }
+    uint8_t octave() const noexcept { return _pitch._octave; }
+
+
     const Figure& figure() const { return _figure; }
+    Figure& figure() { return _figure; }
+
 
     /* --- Mutateurs --- */    
-    void set_figure(const Figure& f) { _figure = f; }    
+
+    void set_figure(const Figure& f) { _figure = f; }   
+    
+    /*--- Others ---*/
+    std::size_t chromatic_index() const noexcept;     
 };
 
-std::ostream& operator<<(std::ostream&, const Note&);
+    //std::ostream& operator<<(std::ostream&, const Note&);
 }

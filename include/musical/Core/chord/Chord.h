@@ -1,22 +1,15 @@
 #pragma once
 
 #include <vector>
-#include <cstddef>
-#include <cstdint>
-
-#include <musical/Core/MusicalCoreEnums.h>
 #include <musical/Core/note/Note.h>
+#include <musical/Core/MusicalCoreEnums.h>
 
-namespace musical {
-    class Figure;
-}
-
-namespace musical {
+namespace musical::core {
 
 class Chord
 {
 private:
-    Note _tonic;
+    core::Note _tonic;
     
     /* 
         Intervalles relatifs à la tonique, en demi-tons absolus :

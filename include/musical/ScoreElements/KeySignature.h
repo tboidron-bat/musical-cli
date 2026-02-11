@@ -11,8 +11,8 @@
 
 namespace musical {
 
-    constexpr std::size_t SHARP_KEY_COUNT = musical::NOTE_COUNT;    
-    constexpr std::size_t FLAT_KEY_COUNT = musical::NOTE_COUNT;        
+    constexpr std::size_t SHARP_KEY_COUNT = musical::DIATONIC_NOTE_COUNT;    
+    constexpr std::size_t FLAT_KEY_COUNT = musical::DIATONIC_NOTE_COUNT;        
 
 enum class KeyModeType { 
     IONIAN, 

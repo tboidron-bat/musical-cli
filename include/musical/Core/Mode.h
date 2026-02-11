@@ -3,7 +3,7 @@
 #include <string>
 #include <algorithm>
 
-#include <musical/Core/ScalePattern.h>
+#include <musical/Core/scale/ScalePattern.h>
 #include <musical/Core/MusicalCoreEnums.h>
 
 namespace musical {

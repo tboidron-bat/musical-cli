@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 
-using namespace musical;
+namespace musical::core {
 
 const Figure& Chord::figure() const
 {
@@ -17,4 +17,5 @@ void Chord::set_figure(const Figure& f)
 std::size_t Chord::size() const 
 { 
     return 1 + _intervals.size(); 
+}
 }

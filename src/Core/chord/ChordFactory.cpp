@@ -2,14 +2,13 @@
 
 #include <musical/Core/chord/Chord.h>
 #include <musical/Core/note/Note.h>
-#include <musical/Core/ScaleKeyed.h>
-#include <musical/Core/note/NoteService.h>
-#include <musical/IO/chord/chord_parser.h>
+#include <musical/Core/scale/ScaleKeyed.h>
+#include <musical/io/chord/chord_parser.h>
 
 #include <stdexcept>
 #include <map>
 
-namespace musical {
+namespace musical::core::chord {
 
 namespace {
 
@@ -81,7 +80,8 @@ static const std::map<CommonChordType, std::vector<IT>> COMMON_CHORD_INTERVALS =
 // -----------------------------------------------------------------------------
 // Création depuis un type d'accord standard
 // -----------------------------------------------------------------------------
-Chord ChordFactory::create(const Note& root, CommonChordType type)
+Chord 
+Factory::create(const Note& root, CommonChordType type)
 {
     auto it = COMMON_CHORD_INTERVALS.find(type);
 
@@ -95,20 +95,21 @@ Chord ChordFactory::create(const Note& root, CommonChordType type)
 // -----------------------------------------------------------------------------
 // Création depuis une gamme (empilement de tierces)
 // -----------------------------------------------------------------------------
-Chord ChordFactory::create(const Note& root,
+Chord
+Factory::create(const Note& root,
                            const ScaleKeyed& scale,
                            ChordClassType nb_notes)
 {
     std::vector<IntervalType> intervals;
 
-    int root_pc = NoteService::chromatic_index(root);
+    int root_pc = root.chromatic_index();
 
     for (int i = 1; i < static_cast<int>(nb_notes); ++i)
     {
         int degree = i * 2;
         const Note& n = scale[degree % scale.size()];
 
-        int pc = NoteService::chromatic_index(n);
+        int pc = n.chromatic_index();
         int semitones = pc - root_pc;
 
         if (semitones < 0)
@@ -124,7 +125,8 @@ Chord ChordFactory::create(const Note& root,
 // -----------------------------------------------------------------------------
 // Création depuis un nom anglo-saxon (parser)
 // -----------------------------------------------------------------------------
-Chord ChordFactory::create(const std::string& name_en)
+Chord 
+Factory::create(const std::string& name_en)
 {
     return musical::chord_parsing::from_saxon_name(name_en);
 }

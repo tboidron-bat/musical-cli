@@ -4,8 +4,6 @@
 
 namespace musical {
 
-    enum class Accidental { NONE, SHARP, FLAT, DOUBLE_SHARP, DOUBLE_FLAT };
-
     enum class IntervalType : uint8_t {
 
         TONIQUE = 0,
@@ -122,24 +120,5 @@ namespace musical {
 
     // Ajoute ici d’autres enums métier nécessaires...    
 }
-
-enum class GuitarTuning : uint8_t
-{
-    STANDARD,
-    DROP_D,
-    OPEN_G,
-    OPEN_D,
-    OPEN_E,
-    DADGAD,
-    __COUNT
-};
-
-
-        // enum class STANDARD {E_low,A,D,G,B,E_high};
-        // enum class DROP_D  { E_low,D,A,D,G,B,E_high};
-        // enum class OPEN_G  { D,G,D,G,B,E_high};
-        // enum class OPEN_D  { D,A,D,F#,A,D};
-        // enum class OPEN_E  { E,B,E,G#,B,E_high};
-        // enum class DADGAD  { D,A,D,G,A,D};
 
 

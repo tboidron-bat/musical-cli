@@ -3,15 +3,15 @@
 #include <string>
 #include <musical/Core/MusicalCoreEnums.h>
 
-namespace musical{
+namespace musical::core{
     class Chord;
     class Note;
     class ScaleKeyed;
 }
 
-namespace musical {
+namespace musical::core::chord {
 
-class ChordFactory {
+class Factory {
 
 public:
     static Chord create(const Note& root, CommonChordType type);

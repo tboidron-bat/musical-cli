@@ -1,7 +1,7 @@
 #include <musical/ScoreElements/KeySignature.h>
 #include <musical/Core/note/Note.h>
-#include <musical/Core/note/NoteService.h>
-#include <musical/Core/ScaleKeyedFactory.h>
+//#include <musical/Core/note/NoteService.h>
+#include <musical/Core/scale/ScaleKeyedFactory.h>
 
 #include <algorithm>
 #include <iostream>
@@ -83,7 +83,7 @@ std::array<std::string,SHARP_KEY_COUNT> KeySignature::circle_fifths(const Note& 
     gamme.truncate(SHARP_KEY_COUNT); 
 
     for (std::size_t i = 0; i < SHARP_KEY_COUNT; ++i) {
-        result[i] = musical::NoteService::to_string(gamme[i+1]);  //gamme[i+1] i+1 pour de pas renvoyer la première tonalité.
+        result[i] = musical::musical::io::note::formatter::to_string(gamme[i+1]);  //gamme[i+1] i+1 pour de pas renvoyer la première tonalité.
     }
     return result;
 }
@@ -96,7 +96,7 @@ std::array<std::string,FLAT_KEY_COUNT> KeySignature::circle_fourths(const Note&n
     gamme.truncate(FLAT_KEY_COUNT); 
 
     for (std::size_t i = 0; i < FLAT_KEY_COUNT; ++i) {
-        result[i] = musical::NoteService::to_string(gamme[i]);  
+        result[i] = musical::musical::io::note::formatter::to_string(gamme[i]);  
     }
     return result;
 }
@@ -239,7 +239,7 @@ std::string KeySignature::to_mei_string(
         << "\n  >>Var: tonality: " << tonality.to_string()        
         << std::endl;*/
 
-    std::string n = musical::NoteService::to_string(tonality);//= NoteService::normalize(note_input); 
+    std::string n = musical::musical::io::note::formatter::to_string(tonality);//= NoteService::normalize(note_input); 
 
     switch(mode)
     {

@@ -1,6 +1,9 @@
 #include <musical/io/note/mei_adapter.h>
 
 #include <map>
+#include <stdexcept>
+#include <iostream>
+
 
 namespace musical::io::note {
 

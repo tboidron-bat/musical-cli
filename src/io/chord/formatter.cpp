@@ -1,7 +1,10 @@
-#include <musical/io/chord/chord_formatter.h>
+#include <musical/io/chord/formatter.h>
+
+//#include <musical/io/note/note_formatter.h>
+
+#include <musical/io/note/stream.h>
 
 #include <musical/Core/chord/Chord.h>
-//#include <musical/Core/note/NoteService.h>
 #include <musical/Core/note/Factory.h>
 #include <musical/analysis/chord_name.h>
 
@@ -9,13 +12,13 @@
 #include <map>
 #include <algorithm>
 
-namespace musical::chord_formatter
+namespace musical::io::chord::formatter
 {
 
 // ============================================================
 // Représentation textuelle linéaire
 // ============================================================
-std::string to_string(const Chord& chord)
+std::string to_string(const core::Chord& chord)
 {
     std::ostringstream oss;
 
@@ -24,7 +27,9 @@ std::string to_string(const Chord& chord)
     // ─────────────────────────────
     // Tonique + intervalles (numériques)
     // ─────────────────────────────
+    //oss << chord.tonic();
     oss << chord.tonic();
+
     oss << '(';
 
     for (std::size_t idx = 0; idx < intervals.size(); ++idx)
@@ -46,11 +51,11 @@ std::string to_string(const Chord& chord)
     int root_pc  = chord.tonic().chromatic_index();
     int root_oct = chord.tonic().octave();
 
-    for (IntervalType iv : intervals)
+    for (core::IntervalType iv : intervals)
     {
         int semitones = static_cast<int>(iv);
 
-        Note n = note::Factory::create(root_pc + semitones, root_oct);
+        core::Note n = musical::core::note::Factory::create(root_pc + semitones, root_oct);
         oss << ", " << n;
     }
 
@@ -154,4 +159,4 @@ std::string to_fr(const std::string& name_en)
     return name_fr;
 }
 
-} // namespace musical::chord_formatter
+} 

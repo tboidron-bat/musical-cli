@@ -2,11 +2,14 @@
 
 #include <cassert>
 
-using namespace musical;
+namespace musical::io::scale::scalepattern_formatter {
 
-std::string scalepattern_formatter::to_string(ScalePatternType N) {
+std::string 
+to_string(musical::core::scale::ScalePatternType N) {
 
     switch(N) {
+
+        using musical::core::scale::ScalePatternType;
 
         case ScalePatternType::CHROMATIC: return "CHROMATIC";
         case ScalePatternType::MAJOR: return "MAJOR";
@@ -53,8 +56,11 @@ std::string scalepattern_formatter::to_string(ScalePatternType N) {
     return "UNKNOWN"; // sécurité si aucun match (ex: enum corrompu)
 }
 
-std::string scalepattern_formatter::to_french(ScalePatternType type) {
+std::string to_french(musical::core::scale::ScalePatternType type) {
     switch(type) {
+
+        using musical::core::scale::ScalePatternType;
+
         case ScalePatternType::CHROMATIC: return "Chromatique";        
         case ScalePatternType::MAJOR: return "Majeure";
         case ScalePatternType::IONIAN: return "Ionien";            
@@ -83,3 +89,4 @@ std::string scalepattern_formatter::to_french(ScalePatternType type) {
     }
 }
 
+}

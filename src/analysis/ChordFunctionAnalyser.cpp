@@ -1,14 +1,13 @@
 #include <musical/analysis/ChordFunctionAnalyser.h>
 #include <musical/analysis/ChordAnalysis.h>
-//#include <musical/Core/note/NoteFactory.h>
 
 #include <algorithm>
 
 using namespace musical::analysis;
 
 std::string ChordFunctionAnalyser::to_string(
-	const musical::Chord& chord,
-	const musical::ScaleKeyed& gamme)
+	const core::Chord& chord,
+	const core::scale::ScaleKeyed& gamme)
 {
     static const std::string romans_major[] = {"I", "II", "III", "IV", "V", "VI", "VII"};
     static const std::string romans_minor[] = {"i", "ii", "iii", "iv", "v", "vi", "vii"};    

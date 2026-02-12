@@ -42,11 +42,11 @@ au dossier `analysis`).
 
 ### Parsing et formatage
 
-- `chord_parser`  
+- `io::chord::parser`  
   Conversion d’une représentation textuelle (ex : `Cm7`, `G7(b9)`) en
   structure `Chord`.
 
-- `chord_formatter`  
+- `io::chord::formatter`  
   Génération de représentations textuelles lisibles à partir d’un `Chord`.
 
 - `chord_name`  

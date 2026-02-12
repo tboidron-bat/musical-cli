@@ -4,7 +4,7 @@
 #include <algorithm>
 
 #include <musical/Core/scale/ScalePattern.h>
-#include <musical/Core/MusicalCoreEnums.h>
+#include <musical/Core/scale/scale_defs.h>
 
 namespace musical {
 

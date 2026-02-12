@@ -23,8 +23,8 @@ public:
      * @return Chaîne représentant la fonction harmonique (ex : "I", "ii", "V7", "vi°", etc.).
      */
     static std::string to_string(
-        const musical::Chord& chord, 
-        const musical::ScaleKeyed& gamme);
+        const core::Chord& chord, 
+        const core::scale::ScaleKeyed& gamme);
 };
 
 } // namespace musical::analysis

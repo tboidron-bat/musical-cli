@@ -1,29 +1,30 @@
 
-#include <musical/io/chord/chord_parser.h>
-#include <musical/Core/chord/Chord.h>
-#include <musical/Core/note/Factory.h>
-#include <musical/Core/MusicalCoreEnums.h>
+#include <musical/io/chord/parser.h>
+//#include <musical/Core/note/Factory.h>
+#include <musical/io/note/note_parser.h>
+
 
 #include <stdexcept>
 #include <cctype>
 #include <string>
 #include <vector>
 
-namespace musical::chord_parsing {
+namespace musical::io::chord {
 
-using IT = IntervalType;
+using IT = core::IntervalType;
 
 // Conversion sécurisée
-static IntervalType iv(int semitones)
+static core::IntervalType iv(int semitones)
 {
     if (semitones < 0 ||
-        semitones > static_cast<int>(IntervalType::DOUBLE_OCTAVE))
+        semitones > static_cast<int>(core::IntervalType::DOUBLE_OCTAVE))
         throw std::invalid_argument("Invalid semitone value");
 
-    return static_cast<IntervalType>(semitones);
+    return static_cast<core::IntervalType>(semitones);
 }
 
-musical::Chord from_saxon_name(const std::string& name)
+std::optional<core::Chord> 
+parse_from_saxon_name(const std::string& name)
 {
     if (name.empty())
         throw std::invalid_argument("empty chord name");
@@ -45,12 +46,16 @@ musical::Chord from_saxon_name(const std::string& name)
         ++pos;
     }
 
-    Note tonic = NoteFactory::create(root_name);
+    //core::Note tonic = musical::core::note::Factory::create(root_name);
+
+core::Note tonic =
+    musical::io::note::parse_from_saxon(root_name);
+
 
     // ─────────────────────────────
     // 2) Triade majeure par défaut
     // ─────────────────────────────
-    std::vector<IntervalType> intervals {
+    std::vector<core::IntervalType> intervals {
         IT::TIERCE_MAJEURE,
         IT::QUINTE_JUSTE
     };
@@ -120,7 +125,7 @@ musical::Chord from_saxon_name(const std::string& name)
         intervals.push_back(IT::TREIZIEME_MAJEURE);
     }
 
-    return Chord(tonic, intervals);
+    return core::Chord(tonic, intervals);
 }
 
 } // namespace musical::chord_parsing

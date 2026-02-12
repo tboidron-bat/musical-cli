@@ -1,7 +1,7 @@
 #include <musical/ScoreElements/KeySignature.h>
 #include <musical/Core/note/Note.h>
-//#include <musical/Core/note/NoteService.h>
 #include <musical/Core/scale/ScaleKeyedFactory.h>
+#include <musical/io/note/note_formatter.h>
 
 #include <algorithm>
 #include <iostream>
@@ -9,11 +9,7 @@
 #include <sstream>
 
 
-using namespace musical;
-
-#include <musical/ScoreElements/KeySignature.h>
-
-using namespace musical;
+namespace musical::score {
 
 KeyModeType KeySignature::mode_from_string(const std::string& name_input)
 {
@@ -74,29 +70,29 @@ std::string KeySignature::to_string(KeyModeType m)
             throw std::invalid_argument("KeySignature::to_string(..)\nunknown mode");
     }
 }
-std::array<std::string,SHARP_KEY_COUNT> KeySignature::circle_fifths(const Note& note)
+std::array<std::string,SHARP_KEY_COUNT> KeySignature::circle_fifths(const core::Note& note)
 {
     std::array<std::string,SHARP_KEY_COUNT> result{};
 
-    ScaleKeyed gamme = ScaleKeyedFactory::create(IntervalType::QUINTE_JUSTE,note);
+    core::scale::ScaleKeyed gamme = core::scale::ScaleKeyedFactory::create(core::IntervalType::QUINTE_JUSTE,note);
 
     gamme.truncate(SHARP_KEY_COUNT); 
 
     for (std::size_t i = 0; i < SHARP_KEY_COUNT; ++i) {
-        result[i] = musical::musical::io::note::formatter::to_string(gamme[i+1]);  //gamme[i+1] i+1 pour de pas renvoyer la première tonalité.
+        result[i] = musical::io::note::formatter::to_string(gamme[i+1]);  //gamme[i+1] i+1 pour de pas renvoyer la première tonalité.
     }
     return result;
 }
-std::array<std::string,FLAT_KEY_COUNT> KeySignature::circle_fourths(const Note&note)    
+std::array<std::string,FLAT_KEY_COUNT> KeySignature::circle_fourths(const core::Note&note)    
 {
     std::array<std::string,FLAT_KEY_COUNT> result{};
 
-    ScaleKeyed gamme = ScaleKeyedFactory::create(IntervalType::QUARTE_JUSTE,note,false);
+    core::scale::ScaleKeyed gamme = core::scale::ScaleKeyedFactory::create(core::IntervalType::QUARTE_JUSTE,note,false);
 
     gamme.truncate(FLAT_KEY_COUNT); 
 
     for (std::size_t i = 0; i < FLAT_KEY_COUNT; ++i) {
-        result[i] = musical::musical::io::note::formatter::to_string(gamme[i]);  
+        result[i] = musical::io::note::formatter::to_string(gamme[i]);  
     }
     return result;
 }
@@ -232,14 +228,14 @@ std::string KeySignature::from_mei(
 
 std::string KeySignature::to_mei_string(
     KeyModeType mode, 
-    const Note& tonality)
+    const core::Note& tonality)
 {
     /*std::cout << "[KeySignature::"<<__func__ <<"]"
         << "\n  >>Var: mode: " << KeySignature::to_string(mode)
         << "\n  >>Var: tonality: " << tonality.to_string()        
         << std::endl;*/
 
-    std::string n = musical::musical::io::note::formatter::to_string(tonality);//= NoteService::normalize(note_input); 
+    std::string n = musical::io::note::formatter::to_string(tonality);//= NoteService::normalize(note_input); 
 
     switch(mode)
     {
@@ -354,4 +350,5 @@ std::string KeySignature::to_mei_string(
 
     throw std::runtime_error(oss.str());
 
+}
 }

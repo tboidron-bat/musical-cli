@@ -2,7 +2,7 @@
 
 #include <musical/Core/chord/Chord.h>
 #include <musical/Core/scale/ScaleKeyed.h>
-#include <musical/Core/chord/ChordFactory.h>
+#include <musical/Core/chord/Factory.h>
 
 #include <vector>
 #include <cstdint>
@@ -20,12 +20,12 @@ enum class HarmoIntervalType : uint8_t {
 class Harmonizer {
 
     HarmoIntervalType _harm_intvl;
-    ChordClassType _chord_class;
+    core::ChordClassType _chord_class;
 
 public:
     Harmonizer(
         HarmoIntervalType h = HarmoIntervalType::TIERCE,
-        ChordClassType c = ChordClassType::TETRAD);
+        core::ChordClassType c = core::ChordClassType::TETRAD);
 
     // Setter pour l'intervalle d'harmonisation
     void set_harm(HarmoIntervalType harm_intvl) {
@@ -33,7 +33,7 @@ public:
     }
 
     // Setter pour la classe d'accord
-    void set_chord(ChordClassType chord_class) {
+    void set_chord(core::ChordClassType chord_class) {
         _chord_class = chord_class;
     }
 
@@ -46,7 +46,8 @@ public:
      * @param interval : harmonisation en tierce en quarte ??...
      * @return : vecteur de d'accords.
      */
-    std::vector<musical::Chord> harmonize(const musical::ScaleKeyed&);
+    std::vector<core::Chord> 
+    harmonize(const musical::core::scale::ScaleKeyed&);
 
 
 

@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <musical/Core/Mode.h>
-#include <musical/Core/ChordFactory.h>
+#include <musical/Core/chord/Factory.h>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -20,7 +20,7 @@ public:
 
         Value _value;
         Accid _accid;
-        Chord _chord;
+        core::Chord _chord;
         Mode _mode;
 
         Degree()

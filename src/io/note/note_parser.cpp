@@ -11,16 +11,23 @@ namespace musical::io::note {
 core::Note parse_from_saxon(
     const std::string& name,
     uint8_t default_octave,
-    Figure default_figure)
+    core::Figure default_figure)
 {
     if (name.empty())
         throw std::invalid_argument("[parse_from_saxon] Empty note string");
 
-    // Normalisation en minuscules
-    std::transform(name.begin(), name.end(), name.begin(),
-                   [](unsigned char c){ return static_cast<char>(std::tolower(c)); });
+    std::string normalized = name;
 
-    char letter = name[0];
+    // Normalisation en minuscules
+    std::transform(
+        normalized.begin(),
+        normalized.end(),
+        normalized.begin(),
+        [](unsigned char c){
+            return static_cast<char>(std::tolower(c));
+        });
+
+    char letter = normalized[0];
 
     // --- Conversion char -> enum Name ---
     using Name = core::Note::Name;
@@ -44,29 +51,29 @@ core::Note parse_from_saxon(
     // --- Détection altération ---
     Acc accid = Acc::NONE;
 
-    if (name.size() == 2)
+    if (normalized.size() == 2)
     {
-        if (name[1] == musical::notation::SHARP_ASCII)
+        if (normalized[1] == musical::notation::SHARP_ASCII)
             accid = Acc::SHARP;
-        else if (name[1] == musical::notation::FLAT_ASCII)
+        else if (normalized[1] == musical::notation::FLAT_ASCII)
             accid = Acc::FLAT;
         else
-            throw std::invalid_argument("[parse_from_saxon] Invalid accidental: " + name);
+            throw std::invalid_argument("[parse_from_saxon] Invalid accidental: " + normalized);
     }
-    else if (name.size() == 3)
+    else if (normalized.size() == 3)
     {
-        if (name[1] == musical::notation::FLAT_ASCII &&
-            name[2] == musical::notation::FLAT_ASCII)
+        if (normalized[1] == musical::notation::FLAT_ASCII &&
+            normalized[2] == musical::notation::FLAT_ASCII)
             accid = Acc::DOUBLE_FLAT;
-        else if (name[1] == musical::notation::SHARP_ASCII &&
-                 name[2] == musical::notation::SHARP_ASCII)
+        else if (normalized[1] == musical::notation::SHARP_ASCII &&
+                 normalized[2] == musical::notation::SHARP_ASCII)
             accid = Acc::DOUBLE_SHARP;
         else
-            throw std::invalid_argument("[parse_from_saxon] Invalid double accidental: " + name);
+            throw std::invalid_argument("[parse_from_saxon] Invalid double accidental: " + normalized);
     }
-    else if (name.size() > 3)
+    else if (normalized.size() > 3)
     {
-        throw std::invalid_argument("[parse_from_saxon] Note string too long: " + name);
+        throw std::invalid_argument("[parse_from_saxon] Note string too long: " + normalized);
     }
 
     // --- Création via la factory Core ---

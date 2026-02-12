@@ -26,11 +26,11 @@ target_sources(musical-core
 
         src/Core/note/Note.cpp
         src/Core/note/Factory.cpp
-        #src/Core/note/NoteService.cpp
+
         src/Core/note/Rest.cpp        
 
         src/Core/chord/Chord.cpp
-        src/Core/chord/ChordFactory.cpp
+        src/Core/chord/Factory.cpp
         src/Core/chord/Arpeggio.cpp        
 
         src/Core/scale/ScaleKeyed.cpp
@@ -44,15 +44,15 @@ target_sources(musical-core
         src/instruments/guitar/chord_guitar_diagram_db_6.cpp        
         src/instruments/guitar/chord_guitar_diagram_ascii_6.cpp
 
+        src/io/note/stream.cpp        
         src/io/note/note_parser.cpp        
         src/io/note/note_lexer.cpp        
         src/io/note/note_formatter.cpp
         src/io/note/mei_adapter.cpp        
 
-        src/io/chord/chord_lexer.cpp                
-        src/io/chord/chord_grammar.cpp
-        src/io/chord/chord_formatter.cpp
-        src/io/chord/chord_parser.cpp
+        src/io/chord/lexer.cpp          
+        src/io/chord/parser.cpp              
+        src/io/chord/formatter.cpp        
         src/io/scale/scalepattern_formatter.cpp
 
         # analysis

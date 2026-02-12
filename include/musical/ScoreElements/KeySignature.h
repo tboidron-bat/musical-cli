@@ -1,18 +1,19 @@
-#ifndef __KEYSIGNATURE_H__
-#define __KEYSIGNATURE_H__
+#pragma once
 
 #include <string>
 #include <vector>
+#include <array>
 #include <cstdint> 
 #include <map> 
 #include <algorithm> 
 
 #include <musical/Core/note/Note.h>
+#include <musical/common/musical_constants.h>
 
-namespace musical {
+namespace musical::score {
 
-    constexpr std::size_t SHARP_KEY_COUNT = musical::DIATONIC_NOTE_COUNT;    
-    constexpr std::size_t FLAT_KEY_COUNT = musical::DIATONIC_NOTE_COUNT;        
+    constexpr std::size_t SHARP_KEY_COUNT = musical::core::DIATONIC_NOTE_COUNT;    
+    constexpr std::size_t FLAT_KEY_COUNT = musical::core::DIATONIC_NOTE_COUNT;        
 
 enum class KeyModeType { 
     IONIAN, 
@@ -44,7 +45,7 @@ public:
     Renvoie la chaine de caratère 
     pour le fichier MEI.
     */
-    static std::string to_mei_string(KeyModeType,const Note&);    
+    static std::string to_mei_string(KeyModeType,const core::Note&);    
 
     static std::string from_mei(const std::string&,const std::string&);        
     /* 
@@ -53,14 +54,12 @@ public:
     static std::string to_string(KeyModeType); 
     static std::string to_french(KeyModeType);    
 
-    static std::array<std::string,SHARP_KEY_COUNT> circle_fifths(const Note&);
+    static std::array<std::string,SHARP_KEY_COUNT> circle_fifths(const core::Note&);
 
-    static std::array<std::string,FLAT_KEY_COUNT> circle_fourths(const Note&);    
+    static std::array<std::string,FLAT_KEY_COUNT> circle_fourths(const core::Note&);    
 };
 
 }
-
-#endif
 
 
 

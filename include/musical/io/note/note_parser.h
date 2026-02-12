@@ -19,5 +19,5 @@ namespace musical::io::note
 	core::Note parse_from_saxon(
         const std::string&,
         uint8_t default_octave = 4,
-        Figure default_figure = FigureType::QUARTER);
+        core::Figure default_figure = core::Figure::Type::QUARTER);
 }

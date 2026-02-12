@@ -1,6 +1,7 @@
 #include <musical/Core/chord/Chord.h>
-#include <musical/Core/chord/ChordFactory.h>
-#include <musical/io/chord/chord_formatter.h>
+#include <musical/Core/chord/Factory.h>
+#include <musical/io/chord/parser.h>
+#include <musical/io/chord/formatter.h>
 #include <musical/instruments/guitar/chord_guitar_diagram_ascii_6.h>
 #include <musical/instruments/guitar/chord_guitar_diagram_db_6.h>
 #include <musical/Core/note/Factory.h>
@@ -18,7 +19,7 @@ enum class OutputFormat
     AllDiagrams
 };
 
-static std::string chord_name_or_fallback(const musical::Chord& chord)
+static std::string chord_name_or_fallback(const musical::core::Chord& chord)
 {
     using musical::analysis::chord_name::find;
 
@@ -26,7 +27,7 @@ static std::string chord_name_or_fallback(const musical::Chord& chord)
     if (!candidates.empty())
         return candidates.front().name;
 
-    return musical::chord_formatter::to_string(chord);
+    return musical::io::chord::formatter::to_string(chord);
 }
 static std::string strip_tonic(const std::string& name)
 {
@@ -110,9 +111,9 @@ int main(int argc, char** argv)
             for (const auto& [intervals, diagrams] : tuning_db)
             {
                 // Tonique fictive pour analyse harmonique (C4)
-                musical::core::Note tonic = musical::NoteFactory::create(0);
+                musical::core::Note tonic = musical::core::note::Factory::create(0);
 
-                musical::Chord abstract_chord(tonic, intervals);
+                musical::core::Chord abstract_chord(tonic, intervals);
 
                 std::string full_name = chord_name_or_fallback(abstract_chord);
 
@@ -148,8 +149,17 @@ int main(int argc, char** argv)
 
     try
     {
-        musical::Chord chord = musical::ChordFactory::create(symbol);
+        auto chord_opt =
+            musical::io::chord::parse_from_saxon_name(symbol);
 
+        if (!chord_opt)
+        {
+            std::cerr << "error: invalid chord '" << symbol << "'\n";
+            return 2;
+        }
+
+        musical::core::Chord chord = *chord_opt;        
+        
         if (chord.size() == 0)
         {
             std::cerr << "error: empty chord\n";
@@ -160,7 +170,7 @@ int main(int argc, char** argv)
         {
             case OutputFormat::Text:
                 std::cout
-                    << musical::chord_formatter::to_string(chord)
+                    << musical::io::chord::formatter::to_string(chord)
                     << "\n";
                 break;
 
@@ -172,7 +182,7 @@ int main(int argc, char** argv)
 
             case OutputFormat::All:
                 std::cout
-                    << musical::chord_formatter::to_string(chord)
+                    << musical::io::chord::formatter::to_string(chord)
                     << "\n";
                 std::cout
                     << musical::chord::guitar::diagram_ascii_6::to_ascii(chord)

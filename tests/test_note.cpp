@@ -4,7 +4,7 @@
 
 int main()
 {
-    auto c4 = musical::core::note::Factory::create("C", 4);
+    auto c4 = musical::core::note::Factory::create('C', 4);
 
     // chromatic index doit être stable
     if (c4.chromatic_index() != 0)

@@ -1,4 +1,4 @@
-#pragma once
+    #pragma once
 
 #include <musical/Core/Figure.h>
 #include <musical/Core/note/Note.h>
@@ -12,6 +12,14 @@ using musical::core::Figure;
 class Factory
 {
 public:
+
+    static Note create(
+        Note::Name name,
+        Note::Accidental accid,
+        uint8_t octave,
+        Figure figure
+    );
+
 
     enum class AlterationPreference
     {

@@ -7,7 +7,7 @@
 
 #include <musical/Core/scale/ScalePattern.h>
 
-namespace musical{
+namespace musical::core::scale {
 
 class ScalePatternFactory 
 {

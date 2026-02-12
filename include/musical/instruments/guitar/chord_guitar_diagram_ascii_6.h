@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace musical {
+namespace musical::core {
     class Chord;
 }
 
@@ -17,7 +17,7 @@ namespace musical::chord::guitar::diagram_ascii_6 {
  * Génère une représentation ASCII d’un accord
  * pour guitare 6 cordes en accordage standard.
  */
-std::string to_ascii(const musical::Chord& chord);
+std::string to_ascii(const musical::core::Chord& chord);
 
 /**
  * Génère une représentation ASCII directe

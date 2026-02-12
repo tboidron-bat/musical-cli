@@ -1,5 +1,5 @@
-#include <musical/Core/ScalePatternFactory.h>
-#include <musical/Core/scalepattern_formatter.h>
+#include <musical/Core/scale/ScalePatternFactory.h>
+#include <musical/io/scale/scalepattern_formatter.h>
 
 #include <iostream>
 #include <string>
@@ -19,12 +19,12 @@ int main(int argc, char** argv)
 
     try
     {
-        auto types = musical::ScalePatternFactory::list_types();
+        auto types = musical::core::scale::ScalePatternFactory::list_types();
 
         for (auto type : types)
         {
             std::cout
-                << musical::scalepattern_formatter::to_string(type)
+                << musical::io::scale::scalepattern_formatter::to_string(type)
                 << "\n";
         }
     }

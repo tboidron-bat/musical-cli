@@ -1,13 +1,23 @@
 #include <musical/io/note/note_formatter.h>
+#include <musical/io/note/note_lexer.h>
 
 #include <map>
+#include <stdexcept>
+#include <array>
+#include <cctype>
 
 namespace musical::io::note::formatter
 {    
 
 std::string to_string(const core::Note& note) 
 {
-    std::string s(1, note.name());
+    static constexpr std::array<char,7> letters =
+        { 'c','d','e','f','g','a','b' };
+
+    char letter = letters[static_cast<int>(note.name())];
+
+    std::string s(1, letter);
+
 
     switch(note.accidental()) {
         case musical::core::Note::Accidental::SHARP:
@@ -83,65 +93,7 @@ std::string to_latin(const std::string&name_en)
         throw std::invalid_argument(
             "[musical::NoteService]\\to_latin(..) note not found");    
     }
-
-
-
-std::array<std::string,12> all_with_flat()
-{
-    //constexpr char musical::notation::FLAT_ASCII = 'b';   
-
-    static const std::array<char, 7> SAXON_NAMES =  
-        { 'c', 'd', 'e', 'f', 'g', 'a', 'b' };
-
-
-    static std::array<std::string,12> array = {};
-
-    if(array[0].empty())
-    {
-        auto it = array.begin();
-
-        for(char n : SAXON_NAMES)
-        {
-            *it = std::string(1,n);         // note naturelle
-            ++it;
-
-            if(n == 'f' || n == 'c')
-                continue;
-
-            *it = std::string(1,n) + musical::notation::FLAT_ASCII;   // note bémol       
-            ++it;
-        }
-    }
-    return array;
+    return s;    
 }
-std::array<std::string,12> all_with_sharp()
-{
-    //constexpr char musical::notation::SHARP_ASCII = '#';      
-
-    static const std::array<char, 7> SAXON_NAMES =  
-        { 'c', 'd', 'e', 'f', 'g', 'a', 'b' };
-
-
-    static std::array<std::string,12> array = {};
-
-    if(array[0].empty())
-    {
-        auto it = array.begin();
-
-        for(char n : SAXON_NAMES)
-        {
-            *it = std::string(1,n);         // note naturelle
-            ++it;
-
-            if(n == 'b' || n == 'e')
-                continue;
-
-            *it = std::string(1,n) + musical::notation::SHARP_ASCII;   // note dièse       
-            ++it;
-        }
-    }
-    return array;
-}
-
 
 }

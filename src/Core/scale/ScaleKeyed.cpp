@@ -1,6 +1,4 @@
 #include <musical/Core/scale/ScaleKeyed.h>
-//#include <musical/Core/note/NoteService.h>
-
 #include <musical/Core/scale/ScalePattern.h>
 
 #include <algorithm>
@@ -9,7 +7,7 @@
 
 using namespace std;
 
-namespace musical::core {
+namespace musical::core::scale {
 
 ScaleKeyed& ScaleKeyed::operator+=(Note& note)
 {
@@ -22,14 +20,14 @@ ScaleKeyed& ScaleKeyed::operator+=(const Note& note)
     return *this;
 }
 
-std::string ScaleKeyed::to_string () const
-{
-    std::ostringstream oss;
-    for (const auto& n : _notes) {
-        oss << musical::io::note::formatter::to_string(n) << " ";
-    }
-    return oss.str();
-}
+// std::string ScaleKeyed::to_string () const
+// {
+//     std::ostringstream oss;
+//     for (const auto& n : _notes) {
+//         oss << musical::io::note::formatter::to_string(n) << " ";
+//     }
+//     return oss.str();
+// }
 
 // ScaleKeyed ScaleKeyed::rotate(IntervalType interval) const
 // {

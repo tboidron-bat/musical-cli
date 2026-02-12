@@ -10,6 +10,17 @@ namespace musical::core::note
 
 Note 
 Factory::create(
+    Note::Name name,
+    Note::Accidental accid,
+    uint8_t octave,
+    Figure figure)
+{
+    return Note(name, accid, octave, figure);
+}
+
+
+Note 
+Factory::create(
     int chromatic_value, 
     uint8_t octave, 
     Figure figure,

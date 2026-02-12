@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <musical/Core/note/Note.h>
 
-namespace musical::core {
+namespace musical::core::scale {
 
 class ScaleKeyed {
 
@@ -77,7 +77,7 @@ public:
      * @brief Représentation textuelle de la gamme.
      * @return Chaîne contenant la liste des notes de la gamme
      */
-	std::string to_string() const;
+	//std::string to_string() const;
 
     std::size_t size() const { return _notes.size(); }
     void truncate(std::size_t n) {

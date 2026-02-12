@@ -15,7 +15,7 @@ database<6>()
 {
     using D  = Diagram<6>;
     using S  = D::string_state;
-    using IT = musical::IntervalType;
+    using IT = musical::core::IntervalType;
 
     static const std::unordered_map<
         musical::instrument::guitar::TuningType,

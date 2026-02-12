@@ -3,7 +3,8 @@
 #include <musical/Core/chord/Chord.h>
 #include <musical/instruments/guitar/chord_guitar_diagram.h>
 #include <musical/instruments/guitar/chord_guitar_diagram_db_6.h>
-#include <musical/io/chord/chord_formatter.h>
+
+#include <musical/io/chord/formatter.h>
 
 
 #include <array>
@@ -135,7 +136,7 @@ std::string to_ascii(const Diagram<6>& diagram)
 // API publique : accord -> diagramme ASCII guitare
 // ------------------------------------------------------------------
 
-std::string to_ascii(const musical::Chord& chord)
+std::string to_ascii(const core::Chord& chord)
 {
     using Diagram6 = Diagram<6>;
 
@@ -146,7 +147,7 @@ std::string to_ascii(const musical::Chord& chord)
     if (it == tuning_db.end() || it->second.empty())
     {
         return "[no guitar diagram for chord: "
-             + musical::chord_formatter::to_string(chord) + "]";
+             + musical::io::chord::formatter::to_string(chord) + "]";
     }
 
     const Diagram6& diagram = it->second.front();

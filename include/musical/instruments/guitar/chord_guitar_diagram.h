@@ -8,7 +8,7 @@
 #include <functional>
 
 #include <musical/instruments/guitar/Tuning.h>
-#include <musical/Core/MusicalCoreEnums.h>
+#include <musical/Core/intervals_defs.h>
 
 namespace musical::chord {
 
@@ -16,7 +16,7 @@ namespace musical::chord {
 // - 0 est implicite (fondamentale)
 // - ordre croissant
 // ex : {4,7} = majeur, {3,7} = mineur
-using chord_intervals = std::vector<IntervalType>;    
+using chord_intervals = std::vector<core::IntervalType>;    
 
 
 struct IntervalVectorHash
@@ -25,7 +25,7 @@ struct IntervalVectorHash
     {
         size_t h = 0;
 
-        for (IntervalType iv : v)
+        for (core::IntervalType iv : v)
         {
             h ^= std::hash<int>{}(static_cast<int>(iv))
                + 0x9e3779b9

@@ -2,9 +2,22 @@
 
 #include <vector>
 #include <musical/Core/note/Note.h>
-#include <musical/Core/MusicalCoreEnums.h>
+#include <musical/Core/intervals_defs.h>
 
 namespace musical::core {
+
+    enum class ChordClassType {
+
+        DYAD=2,     
+        TRIAD,    
+        TETRAD,   
+        PENTAD,   
+        HEXAD,    
+        UNKNOWN
+    };    
+
+
+
 
 class Chord
 {

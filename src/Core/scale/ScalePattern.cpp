@@ -1,6 +1,6 @@
 #include <musical/Core/scale/ScalePattern.h>
 
-namespace musical {
+namespace musical::core::scale {
 
 ScalePattern::ScalePattern(ScalePatternType type, std::vector<int8_t> intervals)
     : _type(type), _intervals(std::move(intervals))

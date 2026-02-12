@@ -1,5 +1,3 @@
-
-
 #include <string>
 #include <musical/Core/note/Note.h>
 
@@ -54,12 +52,21 @@ namespace musical::io::note::formatter
 
 
 
-    std::array<std::string,12> all_with_flat();
+    inline std::array<std::string,12> all_with_flat()
+    {
+        return {
+            "c", "db", "d", "eb", "e", "f",
+            "gb", "g", "ab", "a", "bb", "b"
+        };
+    }
 
-    /**
-     * @brief Retourne la liste des 12 notes chromatiques avec altérations en dièse (ex: "c", "c#", "d", ...)
-     */
-    
-    std::array<std::string,12> all_with_sharp();
+    inline std::array<std::string,12> all_with_sharp()
+    {
+        return {
+            "c", "c#", "d", "d#", "e", "f",
+            "f#", "g", "g#", "a", "a#", "b"
+        };
+    }
+
 
 }

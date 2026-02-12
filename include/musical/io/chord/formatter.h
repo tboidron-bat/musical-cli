@@ -2,12 +2,12 @@
 
 #include <string>
 
-namespace musical
+namespace musical::core
 {
     class Chord;
 }
 
-namespace musical::chord_formatter 
+namespace musical::io::chord::formatter 
 {
     /**
      * @brief
@@ -16,7 +16,7 @@ namespace musical::chord_formatter
      *  Exemple :
      *  (E, G#, B) = E
      */    
-	std::string to_string(const Chord&chord); 
+	std::string to_string(const core::Chord&chord); 
 
 
     

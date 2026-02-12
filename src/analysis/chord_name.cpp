@@ -1,20 +1,20 @@
 #include <musical/analysis/chord_name.h>
 #include <musical/Core/chord/Chord.h>
 #include <musical/io/note/note_formatter.h>
-#include <musical/Core/MusicalCoreEnums.h>
+#include <musical/Core/intervals_defs.h>
 
 #include <algorithm>
 #include <stdexcept>
 
 namespace musical::analysis::chord_name {
 
-using IT = musical::IntervalType;
+using IT = musical::core::IntervalType;
 
 // ============================================================
 // Dispatcher
 // ============================================================
 std::vector<candidate>
-find(const Chord& chord)
+find(const core::Chord& chord)
 {
     if (chord.size() < 2)
         return {};
@@ -49,7 +49,7 @@ find(const Chord& chord)
 // DYAD
 // ============================================================
 std::vector<candidate>
-analyse_dyad(const Chord& chord)
+analyse_dyad(const core::Chord& chord)
 {
     if (chord.size() != 2)
         throw std::logic_error("analyse_dyad: chord.size() != 2");
@@ -85,7 +85,7 @@ analyse_dyad(const Chord& chord)
 // TRIAD
 // ============================================================
 std::vector<candidate>
-analyse_triad(const Chord& chord)
+analyse_triad(const core::Chord& chord)
 {
     if (chord.size() != 3)
         throw std::logic_error("analyse_triad: chord.size() != 3");
@@ -118,7 +118,7 @@ analyse_triad(const Chord& chord)
 // TETRADE
 // ============================================================
 std::vector<candidate>
-analyse_tetrade(const Chord& chord)
+analyse_tetrade(const core::Chord& chord)
 {
     if (chord.size() != 4)
         throw std::logic_error("analyse_tetrade: chord.size() != 4");

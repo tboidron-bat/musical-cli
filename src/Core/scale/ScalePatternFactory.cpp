@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cctype>
 
-namespace musical {
+namespace musical::core::scale {
 
 namespace {
 

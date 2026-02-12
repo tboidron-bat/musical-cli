@@ -1,28 +1,28 @@
 #include <musical/analysis/ChordAnalysis.h>
 #include <musical/Core/chord/Chord.h>
-#include <musical/Core/MusicalCoreEnums.h>
+#include <musical/Core/intervals_defs.h>
 
 #include <algorithm>
 
 namespace musical::analysis::Chord {
 
-using IT = musical::IntervalType;
+using IT = musical::core::IntervalType;
 
-bool is_minor(const musical::Chord& chord)
+bool is_minor(const core::Chord& chord)
 {
     const auto& iv = chord.intervals();
 
     return std::find(iv.begin(), iv.end(), IT::TIERCE_MINEURE) != iv.end();
 }
 
-bool is_major(const musical::Chord& chord)
+bool is_major(const core::Chord& chord)
 {
     const auto& iv = chord.intervals();
 
     return std::find(iv.begin(), iv.end(), IT::TIERCE_MAJEURE) != iv.end();
 }
 
-bool has_seventh(const musical::Chord& chord)
+bool has_seventh(const core::Chord& chord)
 {
     const auto& iv = chord.intervals();
 

@@ -4,8 +4,9 @@
 #include <musical/Core/scale/ScalePattern.h>
 #include <musical/Core/scale/ScaleKeyed.h>
 #include <musical/Core/note/Note.h>
+#include <musical/Core/intervals_defs.h>
 
-namespace musical::core {
+namespace musical::core::scale {
 
 class ScaleKeyedFactory {
 
@@ -34,7 +35,7 @@ public:
      */
     static ScaleKeyed create(IntervalType interval, const Note& tonique, bool with_sharp = true);
 
-    static std::array<std::string,musical::core::CHROMATIC_NOTE_COUNT> get_chromatique_set(
+    static std::array<std::string,12> get_chromatique_set(
         bool bsharp,
         const Note& note_begin);    
 };

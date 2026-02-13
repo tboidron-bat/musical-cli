@@ -69,6 +69,4 @@ public:
     /*--- Others ---*/
     std::size_t chromatic_index() const noexcept;     
 };
-
-    //std::ostream& operator<<(std::ostream&, const Note&);
 }

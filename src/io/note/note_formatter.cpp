@@ -1,10 +1,15 @@
 #include <musical/io/note/note_formatter.h>
-#include <musical/io/note/note_lexer.h>
+#include <musical/io/note/input/Lexer.h>
 
 #include <map>
 #include <stdexcept>
 #include <array>
 #include <cctype>
+
+namespace musical::notation {
+    constexpr char SHARP_ASCII = '#';
+    constexpr char FLAT_ASCII  = 'b';
+}
 
 namespace musical::io::note::formatter
 {    
@@ -39,6 +44,31 @@ std::string to_string(const core::Note& note)
     return s;
 }
 
+// ------------------------------------------------------------
+// NORMALISATION SIMPLE ASCII
+// ------------------------------------------------------------
+    // /**
+    //  * @brief Normalise une chaîne représentant une note, en appliquant des règles de formatage ou de conversion.
+    //  * 
+    //  * Par exemple, convertir des majuscules en minuscules, ou uniformiser les altérations.
+    //  * 
+    //  * @return Chaîne normalisée
+    //  */
+
+std::string normalize_name(const std::string& input)
+{
+    std::string result;
+    result.reserve(input.size());
+
+    for (unsigned char c : input)
+    {
+        result += static_cast<char>(std::tolower(c));
+    }
+
+    return result;
+}
+
+
 std::string to_saxon(const std::string& latin_name)
 {
     static const std::map<std::string,char> fr_to_en = {
@@ -51,8 +81,7 @@ std::string to_saxon(const std::string& latin_name)
         { "si", 'b' }
     };
 
-    std::string cleaned = 
-        musical::io::note::normalize_name(latin_name);
+    std::string cleaned = normalize_name(latin_name);
 
     //std::cout << "[NoteService]\\(to_saxon)"    << "cleaned=" << cleaned      << std::endl;
 

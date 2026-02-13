@@ -1,7 +1,8 @@
 
 #include <musical/io/chord/parser.h>
-//#include <musical/Core/note/Factory.h>
-#include <musical/io/note/note_parser.h>
+#include <musical/Core/note/Factory.h>
+#include <musical/io/note/input/Parser.h>
+#include <musical/io/note/input/Lexer.h>
 
 
 #include <stdexcept>
@@ -48,8 +49,31 @@ parse_from_saxon_name(const std::string& name)
 
     //core::Note tonic = musical::core::note::Factory::create(root_name);
 
-core::Note tonic =
-    musical::io::note::parse_from_saxon(root_name);
+    auto tokens_opt =
+        musical::io::note::Lexer::tokenize(root_name);
+
+    if (!tokens_opt)
+        return std::nullopt;
+
+    musical::io::note::Parser parser;
+
+    auto note_opt = parser.parse(*tokens_opt);
+
+    if (!note_opt)
+        return std::nullopt;
+
+    
+    auto pitch = *note_opt;
+
+    core::Note root_note =
+        musical::core::note::Factory::create(
+            pitch.name,
+            pitch.accidental,
+            4,                     // octave par défaut
+            core::Figure{}         // figure par défaut
+        );
+
+
 
 
     // ─────────────────────────────
@@ -125,7 +149,7 @@ core::Note tonic =
         intervals.push_back(IT::TREIZIEME_MAJEURE);
     }
 
-    return core::Chord(tonic, intervals);
+    return core::Chord(root_note, intervals);
 }
 
 } // namespace musical::chord_parsing

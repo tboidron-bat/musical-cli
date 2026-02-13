@@ -1,8 +1,9 @@
+#pragma once
+
 #include <string>
 #include <musical/Core/note/Note.h>
-
-
-#include <musical/io/common/const_notations.h>
+#include <array>
+#include <string_view>
 
 namespace musical::io::note::formatter 
 {
@@ -50,9 +51,7 @@ namespace musical::io::note::formatter
 
     std::string to_latin(const std::string&); 
 
-
-
-    inline std::array<std::string,12> all_with_flat()
+    inline constexpr std::array<std::string_view,12> all_with_flat()
     {
         return {
             "c", "db", "d", "eb", "e", "f",
@@ -60,7 +59,7 @@ namespace musical::io::note::formatter
         };
     }
 
-    inline std::array<std::string,12> all_with_sharp()
+    inline constexpr std::array<std::string_view,12> all_with_sharp()
     {
         return {
             "c", "c#", "d", "d#", "e", "f",

@@ -45,8 +45,8 @@ target_sources(musical-core
         src/instruments/guitar/chord_guitar_diagram_ascii_6.cpp
 
         src/io/note/stream.cpp        
-        src/io/note/note_parser.cpp        
-        src/io/note/note_lexer.cpp        
+        src/io/note/input/Lexer.cpp                
+        src/io/note/input/Parser.cpp        
         src/io/note/note_formatter.cpp
         src/io/note/mei_adapter.cpp        
 

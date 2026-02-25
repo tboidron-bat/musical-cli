@@ -20,15 +20,16 @@ target_sources(musical-core
 
         src/Core/Cadence.cpp
         src/Core/Figure.cpp
+        src/Core/pitch_t.cpp        
         # src/Core/Mode.cpp   # désactivé pour l'instant        
-
-
 
         src/Core/note/Note.cpp
         src/Core/note/Factory.cpp
 
         src/Core/note/Rest.cpp        
 
+        src/Core/chord/ChordType.cpp        
+        src/Core/chord/ChordTypeCatalog.cpp                
         src/Core/chord/Chord.cpp
         src/Core/chord/Factory.cpp
         src/Core/chord/Arpeggio.cpp        
@@ -40,9 +41,15 @@ target_sources(musical-core
 
         src/instruments/guitar/Tuning.cpp
         
-        src/instruments/guitar/chord_guitar_diagram.cpp
-        src/instruments/guitar/chord_guitar_diagram_db_6.cpp        
-        src/instruments/guitar/chord_guitar_diagram_ascii_6.cpp
+        src/instruments/guitar/six_strings/ChordDiagram.cpp
+
+        src/instruments/guitar/six_strings/database_shape_a.cpp 
+        src/instruments/guitar/six_strings/database_shape_c.cpp
+        src/instruments/guitar/six_strings/database_shape_d.cpp
+        src/instruments/guitar/six_strings/database_shape_e.cpp
+        src/instruments/guitar/six_strings/database_shape_g.cpp
+        src/instruments/guitar/six_strings/database_by_shape.cpp
+        src/instruments/guitar/six_strings/database_queries.cpp
 
         src/io/note/stream.cpp        
         src/io/note/input/Lexer.cpp                
@@ -50,10 +57,13 @@ target_sources(musical-core
         src/io/note/note_formatter.cpp
         src/io/note/mei_adapter.cpp        
 
-        src/io/chord/lexer.cpp          
-        src/io/chord/parser.cpp              
+        src/io/chord/output/stream.cpp                
+        src/io/chord/Lexer.cpp          
+        src/io/chord/Parser.cpp              
         src/io/chord/formatter.cpp        
         src/io/scale/scalepattern_formatter.cpp
+
+        src/io/instruments/guitar/six_strings/chord_diagram/to_ascii.cpp        
 
         # analysis
         src/analysis/ChordAnalysis.cpp

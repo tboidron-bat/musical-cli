@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-namespace musical::core {
+namespace musical::core::chord {
     class Chord;
 }
 
@@ -36,19 +36,19 @@ namespace musical::analysis::chord_name {
      *  - possède déjà des intervalles relatifs
      *  - est indépendant de toute réalisation (voicing, octave, etc.)
      */
-    std::vector<candidate> find(const musical::core::Chord& chord);
+    std::vector<candidate> find(const musical::core::chord::Chord& chord);
 
     // ─────────────────────────────
     // Analyses spécialisées
     // ─────────────────────────────
 
     std::vector<candidate>
-    analyse_dyad(const musical::core::Chord& chord);
+    analyse_dyad(const musical::core::chord::Chord& chord);
 
     std::vector<candidate>
-    analyse_triad(const musical::core::Chord& chord);
+    analyse_triad(const musical::core::chord::Chord& chord);
 
     std::vector<candidate>
-    analyse_tetrade(const musical::core::Chord& chord);
+    analyse_tetrade(const musical::core::chord::Chord& chord);
 
 } // namespace musical::analysis::chord_name

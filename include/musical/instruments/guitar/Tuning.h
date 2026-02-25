@@ -9,7 +9,7 @@
 // enum class OPEN_E  { E,B,E,G#,B,E_high};
 // enum class DADGAD  { D,A,D,G,A,D};
 
-namespace musical::instrument::guitar {
+namespace musical::instruments::guitar {
 
     enum class TuningType : uint8_t {
         STANDARD,

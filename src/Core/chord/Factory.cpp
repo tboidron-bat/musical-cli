@@ -1,12 +1,10 @@
 #include <musical/Core/chord/Factory.h>
 
 #include <musical/Core/chord/Chord.h>
-#include <musical/Core/chord/common.h>
-#include <musical/Core/note/Note.h>
-#include <musical/io/chord/parser.h>
+#include <musical/Core/chord/ChordTypeCatalog.h>
+#include <musical/Core/pitch_t.h>
 
 #include <stdexcept>
-#include <map>
 
 namespace musical::core::chord {
 
@@ -14,14 +12,14 @@ namespace musical::core::chord {
 // Création depuis un type d'accord standard
 // -----------------------------------------------------------------------------
 Chord 
-Factory::create(const Note& root, CommonType type)
+Factory::create(
+    const pitch_t& root,
+    ChordTypeCatalog::StandardChord type)
 {
-    auto it = common_chord().find(type);
+    const ChordType& chordType =
+        ChordTypeCatalog::get(type);
 
-    if (it == common_chord().end())
-        throw std::invalid_argument("Unknown CommonType");
-
-    return Chord(root, it->second);
+    return Chord(root, chordType);
 }
 
 
@@ -30,28 +28,31 @@ Factory::create(const Note& root, CommonType type)
 // -----------------------------------------------------------------------------
 Chord
 Factory::create(
-    const Note& root,
+    const pitch_t& root,
     const musical::core::scale::ScaleKeyed& scale,
     ChordClassType nb_notes)
 {
     std::vector<IntervalType> intervals;
 
-    int root_pc = root.chromatic_index();
+    int root_pc = static_cast<int>(chromatic_index(root));
 
     for (int i = 1; i < static_cast<int>(nb_notes); ++i)
     {
         int degree = i * 2;
-        const Note& n = scale[degree % scale.size()];
+        const pitch_t& n = scale[degree % scale.size()];
 
-        int pc = n.chromatic_index();
+        int pc = static_cast<int>(chromatic_index(n));
         int semitones = pc - root_pc;
 
         if (semitones < 0)
             semitones += 12;
 
-        intervals.push_back(interval_from_semitones(semitones));
+        intervals.push_back(
+            static_cast<IntervalType>(semitones)
+        );
     }
 
-    return Chord(root, intervals);
+    return Chord(root, ChordType(intervals));
 }
-} // namespace musical
+
+} // namespace musical::core::chord

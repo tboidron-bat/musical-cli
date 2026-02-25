@@ -4,30 +4,36 @@
 
 #include <algorithm>
 
-namespace musical::analysis::Chord {
-
-using IT = musical::core::IntervalType;
-
-bool is_minor(const core::Chord& chord)
+namespace musical::analysis::chord
 {
-    const auto& iv = chord.intervals();
 
-    return std::find(iv.begin(), iv.end(), IT::TIERCE_MINEURE) != iv.end();
+using musical::core::IntervalType;
+using musical::core::chord::Chord;
+
+bool is_minor(const Chord& chord)
+{
+    const auto& iv = chord.type().intervals();
+
+    return std::find(iv.begin(), iv.end(),
+                     IntervalType::TIERCE_MINEURE) != iv.end();
 }
 
-bool is_major(const core::Chord& chord)
+bool is_major(const Chord& chord)
 {
-    const auto& iv = chord.intervals();
+    const auto& iv = chord.type().intervals();
 
-    return std::find(iv.begin(), iv.end(), IT::TIERCE_MAJEURE) != iv.end();
+    return std::find(iv.begin(), iv.end(),
+                     IntervalType::TIERCE_MAJEURE) != iv.end();
 }
 
-bool has_seventh(const core::Chord& chord)
+bool has_seventh(const Chord& chord)
 {
-    const auto& iv = chord.intervals();
+    const auto& iv = chord.type().intervals();
 
-    return std::find(iv.begin(), iv.end(), IT::SEPTIEME_MINEURE) != iv.end()
-        || std::find(iv.begin(), iv.end(), IT::SEPTIEME_MAJEURE) != iv.end();
+    return std::find(iv.begin(), iv.end(),
+                     IntervalType::SEPTIEME_MINEURE) != iv.end()
+        || std::find(iv.begin(), iv.end(),
+                     IntervalType::SEPTIEME_MAJEURE) != iv.end();
 }
 
-} // namespace musical::analysis::Chord
+} // namespace musical::analysis::chord

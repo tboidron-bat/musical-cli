@@ -20,7 +20,7 @@ public:
 
         Value _value;
         Accid _accid;
-        core::Chord _chord;
+        core::chord::Chord _chord;
         Mode _mode;
 
         Degree()

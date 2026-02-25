@@ -1,29 +1,35 @@
 #pragma once
 
 #include <string>
-#include <musical/Core/chord/Chord.h>
-#include <musical/Core/chord/common.h>
-#include <musical/Core/scale/ScaleKeyed.h>
 
-namespace musical::core{
-    class Chord;
-    class Note;
-}
+#include <musical/Core/pitch_t.h>
+#include <musical/Core/chord/Chord.h>
+#include <musical/Core/chord/ChordTypeCatalog.h>
+#include <musical/Core/scale/ScaleKeyed.h>
 
 namespace musical::core::chord {
 
 class Factory {
 
 public:
-    static Chord create(const Note& root, CommonType type);
 
-    /* ---Crée un accord diatonique (dyade, triade, etc..) 
-          à partir d'une note dans une gamme
-    */
+    // ------------------------------------------------------------
+    // Création depuis un type d'accord standard
+    // ------------------------------------------------------------
     static Chord create(
-        const Note& root, 
-        const musical::core::scale::ScaleKeyed& gamme, 
-        ChordClassType nb_note=ChordClassType::TRIAD);
-};
-}
+        const pitch_t& root,
+        ChordTypeCatalog::StandardChord type
+    );
 
+    // ------------------------------------------------------------
+    // Crée un accord diatonique (dyade, triade, etc.)
+    // à partir d’une gamme
+    // ------------------------------------------------------------
+    static Chord create(
+        const pitch_t& root,
+        const musical::core::scale::ScaleKeyed& gamme,
+        ChordClassType nb_note = ChordClassType::TRIAD
+    );
+};
+
+} // namespace musical::core::chord

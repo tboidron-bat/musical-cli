@@ -28,10 +28,10 @@ musical-cli scale A harmonic_minor --modes
 
 ### Parse a chord
 
-musical-cli chord "<chord_symbol>"
+chord "<chord_symbol>"
 
 Example:
-musical-cli chord "Cm7"
+chord Cm7
 
 ---
 

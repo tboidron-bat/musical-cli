@@ -1,11 +1,8 @@
 #include <musical/io/chord/formatter.h>
-
-//#include <musical/io/note/note_formatter.h>
-
 #include <musical/io/note/stream.h>
 
 #include <musical/Core/chord/Chord.h>
-#include <musical/Core/note/Factory.h>
+#include <musical/Core/pitch_t.h>
 #include <musical/analysis/chord_name.h>
 
 #include <sstream>
@@ -15,48 +12,48 @@
 namespace musical::io::chord::formatter
 {
 
-// ============================================================
-// Représentation textuelle linéaire
-// ============================================================
-std::string to_string(const core::Chord& chord)
+std::string to_string(const core::chord::Chord& chord)
 {
     std::ostringstream oss;
 
-    const auto& intervals = chord.intervals();
+    const auto& intervals = chord.type().intervals();
 
     // ─────────────────────────────
-    // Tonique + intervalles (numériques)
+    // Tonique + intervalles numériques
     // ─────────────────────────────
-    //oss << chord.tonic();
-    oss << chord.tonic();
+    oss << chord.root();
 
     oss << '(';
 
-    for (std::size_t idx = 0; idx < intervals.size(); ++idx)
+    for (std::size_t i = 0; i < intervals.size(); ++i)
     {
-        oss << static_cast<int>(intervals[idx]);
+        oss << static_cast<int>(intervals[i]);
 
-        if (idx + 1 < intervals.size())
+        if (i + 1 < intervals.size())
             oss << ", ";
     }
 
     oss << ") ";
 
     // ─────────────────────────────
-    // Reconstruction des notes
+    // Reconstruction harmonique
     // ─────────────────────────────
     oss << "(";
-    oss << chord.tonic();
+    oss << chord.root();
 
-    int root_pc  = chord.tonic().chromatic_index();
-    int root_oct = chord.tonic().octave();
+    int root_pc = static_cast<int>(
+        musical::core::chromatic_index(chord.root())
+    );
 
     for (core::IntervalType iv : intervals)
     {
         int semitones = static_cast<int>(iv);
+        int new_index = (root_pc + semitones) % 12;
 
-        core::Note n = musical::core::note::Factory::create(root_pc + semitones, root_oct);
-        oss << ", " << n;
+        // ⚠️ nécessite pitch_from_chromatic_index
+        auto p = musical::core::pitch_from_chromatic_index(new_index, true);
+
+        oss << ", " << p;
     }
 
     oss << ") ";
@@ -64,7 +61,8 @@ std::string to_string(const core::Chord& chord)
     // ─────────────────────────────
     // Analyse harmonique
     // ─────────────────────────────
-    const auto candidates = musical::analysis::chord_name::find(chord);
+    const auto candidates =
+        musical::analysis::chord_name::find(chord);
 
     if (!candidates.empty())
         oss << "= " << candidates.front().name;
@@ -73,90 +71,4 @@ std::string to_string(const core::Chord& chord)
 
     return oss.str();
 }
-
-
-// ============================================================
-// Traduction FR → EN
-// ============================================================
-std::string to_en(const std::string& name_fr)
-{
-    static const std::map<std::string, char> fr_to_en = {
-        { "do",  'c' },
-        { "ré",  'd' },
-        { "mi",  'e' },
-        { "fa",  'f' },
-        { "sol", 'g' },
-        { "la",  'a' },
-        { "si",  'b' }
-    };
-
-    if (name_fr.empty())
-        return name_fr;
-
-    std::string name_en = name_fr;
-    char first = static_cast<char>(std::tolower(static_cast<unsigned char>(name_fr[0])));
-
-    if (first == 's' && name_fr.size() >= 2)
-    {
-        char second = static_cast<char>(std::tolower(static_cast<unsigned char>(name_fr[1])));
-        if (second == 'o') return name_en.replace(0, 3, "g"); // sol
-        if (second == 'i') return name_en.replace(0, 2, "b"); // si
-    }
-    else if (first == 'r')
-    {
-        return name_en.replace(0, 3, "d"); // ré
-    }
-    else if (name_fr.size() >= 2)
-    {
-        std::string root = name_fr.substr(0, 2);
-        std::transform(root.begin(), root.end(), root.begin(),
-                       [](unsigned char c) { return std::tolower(c); });
-
-        auto it = fr_to_en.find(root);
-        if (it != fr_to_en.end())
-            name_en.replace(0, 2, std::string(1, it->second));
-    }
-
-    return name_en;
 }
-
-
-// ============================================================
-// Traduction EN → FR
-// ============================================================
-std::string to_fr(const std::string& name_en)
-{
-    static const std::map<char, std::string> en_to_fr = {
-        { 'c', "Do" },
-        { 'd', "Ré" },
-        { 'e', "Mi" },
-        { 'f', "Fa" },
-        { 'g', "Sol" },
-        { 'a', "La" },
-        { 'b', "Si" }
-    };
-
-    if (name_en.empty())
-        return name_en;
-
-    std::string name_fr = name_en;
-    char first = static_cast<char>(std::tolower(static_cast<unsigned char>(name_en[0])));
-
-    auto it = en_to_fr.find(first);
-    if (it != en_to_fr.end())
-        name_fr.replace(0, 1, it->second);
-
-    // Symboles jazz
-    if (auto pos = name_fr.find("7M"); pos != std::string::npos)
-        name_fr.replace(pos, 2, "△");
-
-    if (auto pos = name_fr.find("M7"); pos != std::string::npos)
-        name_fr.replace(pos, 2, "△");
-
-    if (auto pos = name_fr.find("m7b5"); pos != std::string::npos)
-        name_fr.replace(pos, 4, "ø");
-
-    return name_fr;
-}
-
-} 

@@ -68,7 +68,7 @@ Sous-dossier `Guitar/` :
   Accès à une base de positions d’accords prédéfinies.
 
 Ces composants dépendent de la configuration de l’instrument
-(`musical::instrument::guitar::TuningType`) mais restent indépendants de l’analyse musicale.
+(`musical::instruments::guitarr::TuningType`) mais restent indépendants de l’analyse musicale.
 
 ---
 

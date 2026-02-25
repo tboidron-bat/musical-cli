@@ -23,7 +23,7 @@ namespace musical::core {
         // Au-delà de l'octave (douzième, treizième, etc.)
         NEUVIEME_MINEURE = 13,  // octave + seconde mineure
         NEUVIEME_MAJEURE = 14,  // octave + seconde majeure
-        DIXIEME_MINEURE = 15,   // octave + tierce mineure
+        QUINZIEME = 15,   // octave + tierce mineure
         DIXIEME_MAJEURE = 16,   // octave + tierce majeure
         ONZIEME = 17,           // octave + quarte juste
         ONZIEME_AUGMENTEE = 18, // octave + triton

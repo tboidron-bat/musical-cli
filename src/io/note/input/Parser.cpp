@@ -1,9 +1,6 @@
 #include <musical/io/note/input/Parser.h>
 
-#include <musical/Core/note/Factory.h>
-
 #include <algorithm>
-#include <stdexcept>
 #include <cctype>
 
 namespace musical::io::note {
@@ -13,10 +10,10 @@ namespace musical::io::note {
 // Conversion NAME
 // ============================
 
-std::optional<musical::core::Note::Name>
+std::optional<musical::core::NoteName>
 Parser::to_name(std::string_view text)
 {
-    using Name = musical::core::Note::Name;
+    using Name = musical::core::NoteName;
 
     // Saxon
     if (text == "c")  return Name::C;
@@ -28,13 +25,13 @@ Parser::to_name(std::string_view text)
     if (text == "b")  return Name::B;
 
     // Latin
-    if (text == "do") return Name::C;
-    if (text == "re") return Name::D;
-    if (text == "mi") return Name::E;
-    if (text == "fa") return Name::F;
+    if (text == "do")  return Name::C;
+    if (text == "re")  return Name::D;
+    if (text == "mi")  return Name::E;
+    if (text == "fa")  return Name::F;
     if (text == "sol") return Name::G;
-    if (text == "la") return Name::A;
-    if (text == "si") return Name::B;
+    if (text == "la")  return Name::A;
+    if (text == "si")  return Name::B;
 
     return std::nullopt;
 }
@@ -44,10 +41,10 @@ Parser::to_name(std::string_view text)
 // Conversion ACCIDENTAL
 // ============================
 
-std::optional<musical::core::Note::Accidental>
+std::optional<musical::core::Accidental>
 Parser::to_accidental(std::string_view text)
 {
-    using Acc = musical::core::Note::Accidental;
+    using Acc = musical::core::Accidental;
 
     if (text == "#"  || text == "♯")
         return Acc::SHARP;
@@ -72,10 +69,11 @@ Parser::to_accidental(std::string_view text)
 // Parse principal
 // ============================
 
-std::optional<pitch_t>
+std::optional<musical::core::pitch_t>
 Parser::parse(const std::vector<token_t>& tokens)
 {
-    using Acc = musical::core::Note::Accidental;
+    using musical::core::pitch_t;
+    using musical::core::Accidental;
 
     if (tokens.empty())
         return std::nullopt;
@@ -88,9 +86,10 @@ Parser::parse(const std::vector<token_t>& tokens)
     if (!name)
         return std::nullopt;
 
-    pitch_t result;
-    result.name = *name;
-    result.accidental = Acc::NONE;
+    pitch_t result{};
+    result._name = *name;
+    result._accidental = Accidental::NONE;
+    result._octave = 4; // octave par défaut
 
     // 2️⃣ Si un second token existe → ACCIDENTAL
     if (tokens.size() == 2)
@@ -102,7 +101,7 @@ Parser::parse(const std::vector<token_t>& tokens)
         if (!acc)
             return std::nullopt;
 
-        result.accidental = *acc;
+        result._accidental = *acc;
     }
     else if (tokens.size() > 2)
     {
@@ -112,4 +111,4 @@ Parser::parse(const std::vector<token_t>& tokens)
     return result;
 }
 
-}
+} // namespace musical::io::note

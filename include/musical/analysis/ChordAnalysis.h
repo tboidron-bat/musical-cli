@@ -1,20 +1,12 @@
 #pragma once
 
-namespace musical::core {
+namespace musical::core::chord {
     class Chord;
-}   
-
-namespace musical::analysis::Chord {
-
-
-    bool is_minor(const core::Chord& chord);
-    bool is_major(const core::Chord& chord);
-
-    bool has_seventh(const core::Chord& chord);
-
 }
 
-
-
-
-
+namespace musical::analysis::chord
+{
+    bool is_minor(const musical::core::chord::Chord& chord);
+    bool is_major(const musical::core::chord::Chord& chord);
+    bool has_seventh(const musical::core::chord::Chord& chord);
+}

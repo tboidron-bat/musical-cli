@@ -3,35 +3,38 @@
 #include <string>
 #include <vector>
 #include <array>
-#include <cstdint> 
-#include <map> 
-#include <algorithm> 
+#include <cstdint>
 
-#include <musical/Core/note/Note.h>
+#include <musical/Core/pitch_t.h>
 #include <musical/common/musical_constants.h>
 
 namespace musical::score {
 
-    constexpr std::size_t SHARP_KEY_COUNT = musical::core::DIATONIC_NOTE_COUNT;    
-    constexpr std::size_t FLAT_KEY_COUNT = musical::core::DIATONIC_NOTE_COUNT;        
+constexpr std::size_t SHARP_KEY_COUNT =
+    musical::core::DIATONIC_NOTE_COUNT;
 
-enum class KeyModeType { 
-    IONIAN, 
-    AEOLIAN,    
+constexpr std::size_t FLAT_KEY_COUNT =
+    musical::core::DIATONIC_NOTE_COUNT;
+
+enum class KeyModeType {
+    IONIAN,
+    AEOLIAN,
     DORIAN,
     PHRYGIAN,
     LYDIAN,
     MIXOLYDIAN,
-    LOCRIAN 
-};   
+    LOCRIAN
+};
+
 class KeySignature
 {
-public:  
+public:
 
-    static std::vector<KeyModeType> all_modes() {
+    static std::vector<KeyModeType> all_modes()
+    {
         return {
             KeyModeType::IONIAN,
-            KeyModeType::AEOLIAN,            
+            KeyModeType::AEOLIAN,
             KeyModeType::DORIAN,
             KeyModeType::PHRYGIAN,
             KeyModeType::LYDIAN,
@@ -40,26 +43,26 @@ public:
         };
     }
 
-    static KeyModeType mode_from_string(const std::string&name);
-    /*
-    Renvoie la chaine de caratère 
-    pour le fichier MEI.
-    */
-    static std::string to_mei_string(KeyModeType,const core::Note&);    
+    static KeyModeType mode_from_string(const std::string& name);
 
-    static std::string from_mei(const std::string&,const std::string&);        
-    /* 
-        Renvoie une chaine de caratère à partir du Mode.
-    */
-    static std::string to_string(KeyModeType); 
-    static std::string to_french(KeyModeType);    
+    static std::string to_mei_string(
+        KeyModeType,
+        const musical::core::pitch_t&
+    );
 
-    static std::array<std::string,SHARP_KEY_COUNT> circle_fifths(const core::Note&);
+    static std::string from_mei(
+        const std::string&,
+        const std::string&
+    );
 
-    static std::array<std::string,FLAT_KEY_COUNT> circle_fourths(const core::Note&);    
+    static std::string to_string(KeyModeType);
+    static std::string to_french(KeyModeType);
+
+    static std::array<std::string, SHARP_KEY_COUNT>
+    circle_fifths(const musical::core::pitch_t&);
+
+    static std::array<std::string, FLAT_KEY_COUNT>
+    circle_fourths(const musical::core::pitch_t&);
 };
 
-}
-
-
-
+} // namespace musical::score

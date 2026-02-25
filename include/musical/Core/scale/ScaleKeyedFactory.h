@@ -1,8 +1,11 @@
 #pragma once
 
 #include <string>
+#include <array>
+
 #include <musical/Core/scale/ScalePattern.h>
 #include <musical/Core/scale/ScaleKeyed.h>
+#include <musical/Core/pitch_t.h>
 #include <musical/Core/note/Note.h>
 #include <musical/Core/intervals_defs.h>
 
@@ -12,32 +15,32 @@ class ScaleKeyedFactory {
 
 public:
 
-    /*
-     * Construire une gamme 
-     * à partir d'une échelle et d'une note tonique.
-     * @param ScalePattern  : l'échelle utilisée.     
-     * @param Note   : la note tonique.
-     * @param bsharp : écrit la gamme avec des dièses ou des bémols.
-     */	
-	static ScaleKeyed create(const ScalePattern&, const Note&, bool with_sharp=true);
+    // ------------------------------------------------------------
+    // From ScalePattern + pitch_t (NEW - cleaner)
+    // ------------------------------------------------------------
+    static ScaleKeyed create(
+        const ScalePattern&,
+        const pitch_t&,
+        bool with_sharp = true
+    );
 
-    /**
-     * Construit une gamme en répétant un intervalle fixe à partir d'une note tonique.
-     *
-     * @param interval   L'intervalle utilisé pour passer d'une note à la suivante.
-     * @param Note       La note tonique (point de départ de la gamme).
-     * @param with_sharp Si vrai, les notes sont nommées avec des dièses (ex : do#),
-     *                   sinon avec des bémols (ex : réb).
-     *
-     * La génération s'arrête dès que l'on retombe sur la même note (même hauteur, modulo 12).
-     *
-     * @return Une ScaleKeyed construite à partir des sauts d'intervalle successifs.
-     */
-    static ScaleKeyed create(IntervalType interval, const Note& tonique, bool with_sharp = true);
+    // ------------------------------------------------------------
+    // Repeated interval generation (pitch_t version - NEW)
+    // ------------------------------------------------------------
+    static ScaleKeyed create(
+        IntervalType interval,
+        const pitch_t& tonique,
+        bool with_sharp = true
+    );
 
+    // ------------------------------------------------------------
+    // Chromatic set generator
+    // ------------------------------------------------------------
     static std::array<std::string,12> get_chromatique_set(
-        bool bsharp,
-        const Note& note_begin);    
-};
-}
+        bool with_sharp,
+        const pitch_t& note_begin
+    );
 
+};
+
+} // namespace musical::core::scale

@@ -14,7 +14,7 @@ using IT = musical::core::IntervalType;
 // Dispatcher
 // ============================================================
 std::vector<candidate>
-find(const core::Chord& chord)
+find(const core::chord::Chord& chord)
 {
     if (chord.size() < 2)
         return {};
@@ -49,18 +49,18 @@ find(const core::Chord& chord)
 // DYAD
 // ============================================================
 std::vector<candidate>
-analyse_dyad(const core::Chord& chord)
+analyse_dyad(const core::chord::Chord& chord)
 {
     if (chord.size() != 2)
         throw std::logic_error("analyse_dyad: chord.size() != 2");
 
     std::vector<candidate> results;
 
-    const auto& ivs = chord.intervals();
+    const auto& ivs = chord.type().intervals();
     IT iv = ivs.front();
 
     std::string root = 
-        musical::io::note::formatter::to_string(chord.tonic());
+        musical::io::note::formatter::to_string(chord.root());
 
     switch (iv)
     {
@@ -85,16 +85,16 @@ analyse_dyad(const core::Chord& chord)
 // TRIAD
 // ============================================================
 std::vector<candidate>
-analyse_triad(const core::Chord& chord)
+analyse_triad(const core::chord::Chord& chord)
 {
     if (chord.size() != 3)
         throw std::logic_error("analyse_triad: chord.size() != 3");
 
     std::vector<candidate> results;
-    const auto& iv = chord.intervals();
+    const auto& iv = chord.type().intervals();
 
     std::string root =
-        musical::io::note::formatter::to_string(chord.tonic());
+        musical::io::note::formatter::to_string(chord.root());
 
     if (iv == std::vector<IT>{ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE })
         results.push_back({ root, 10 });
@@ -118,16 +118,16 @@ analyse_triad(const core::Chord& chord)
 // TETRADE
 // ============================================================
 std::vector<candidate>
-analyse_tetrade(const core::Chord& chord)
+analyse_tetrade(const core::chord::Chord& chord)
 {
     if (chord.size() != 4)
         throw std::logic_error("analyse_tetrade: chord.size() != 4");
 
     std::vector<candidate> results;
-    const auto& iv = chord.intervals();
+    const auto& iv = chord.type().intervals();
 
     std::string root =
-        musical::io::note::formatter::to_string(chord.tonic());
+        musical::io::note::formatter::to_string(chord.root());
 
     if (iv == std::vector<IT>{ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MINEURE })
         results.push_back({ root + "7", 10 });

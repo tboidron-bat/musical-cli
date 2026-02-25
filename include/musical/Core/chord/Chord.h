@@ -1,53 +1,35 @@
 #pragma once
 
 #include <vector>
-#include <musical/Core/note/Note.h>
-#include <musical/Core/intervals_defs.h>
 
-namespace musical::core {
+#include <musical/Core/pitch_t.h>
+#include <musical/Core/chord/ChordType.h>
 
-    enum class ChordClassType {
-
-        DYAD=2,     
-        TRIAD,    
-        TETRAD,   
-        PENTAD,   
-        HEXAD,    
-        UNKNOWN
-    };    
-
-
-
+namespace musical::core::chord {
 
 class Chord
 {
 private:
-    core::Note _tonic;
-    
-    /* 
-        Intervalles relatifs à la tonique, en demi-tons absolus :
-        Exemple :
-            Em7  -> {3, 7, 10}
-            E13  -> {4, 7, 10, 14, 17, 21}
-    */
-    std::vector<IntervalType> _intervals;
-    
+    pitch_t _tonic;
+    ChordType _type;
+
 public:
-    Chord(Note tonic, std::vector<IntervalType> intervals)
+
+    Chord(pitch_t tonic, ChordType type)
         : _tonic(std::move(tonic))
-        , _intervals(std::move(intervals))
+        , _type(std::move(type))
     {}
 
-    // --- Accesseurs ---
-    const Note& tonic() const { return _tonic; }
-    const std::vector<IntervalType>& intervals() const { return _intervals; }    
-    const Figure& figure() const;
-    std::size_t size() const;    
+    // ------------------------------------------------------------
+    // Accesseurs
+    // ------------------------------------------------------------
+    const pitch_t& root() const noexcept { return _tonic; }
 
-    // --- Mutateurs ---
-    void set_figure(const Figure& f);
+    const ChordType& type() const noexcept { return _type; }
 
+    std::size_t size() const;
 
+    std::vector<pitch_t> notes(bool with_sharp = true) const;
 };
 
-} 
+} // namespace musical::core::chord

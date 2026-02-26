@@ -26,7 +26,7 @@ std::vector<pitch_t> Chord::notes(bool with_sharp) const
     for (IntervalType interval : _type.intervals())
     {
         int semitone = root_pc + static_cast<int>(interval);
-        pitch_t p = pitch_from_chromatic(semitone, with_sharp);
+        pitch_t p = pitch_from_chromatic_index(semitone, with_sharp);
         p._octave = octave;
 
         result.push_back(p);

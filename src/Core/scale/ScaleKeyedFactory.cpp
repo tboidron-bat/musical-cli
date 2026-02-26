@@ -31,7 +31,7 @@ ScaleKeyed ScaleKeyedFactory::create(
 
     for (int interval : scale.get_intervals())
     {
-        pitch_t p = pitch_from_chromatic(current, with_sharp);
+        pitch_t p = pitch_from_chromatic_index(current, with_sharp);
         p._octave = octave;
 
         gamme += p;
@@ -66,7 +66,7 @@ ScaleKeyed ScaleKeyedFactory::create(
         if (current == start)
             break;
 
-        pitch_t p = pitch_from_chromatic(current, with_sharp);
+        pitch_t p = pitch_from_chromatic_index(current, with_sharp);
         p._octave = octave;
 
         gamme += p;

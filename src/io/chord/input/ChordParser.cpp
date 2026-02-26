@@ -1,9 +1,9 @@
-#include <musical/io/chord/input/Parser.h>
+#include <musical/io/chord/input/ChordParser.h>
 
 #include <musical/Core/chord/ChordType.h>
 #include <musical/Core/pitch_t.h>
-#include <musical/io/note/input/Lexer.h>
-#include <musical/io/note/input/Parser.h>
+#include <musical/io/note/input/NoteLexer.h>
+#include <musical/io/note/input/NoteParser.h>
 
 #include <algorithm>
 
@@ -37,11 +37,11 @@ static void make_aug(std::vector<IT>& iv)
 }
 
 // ------------------------------------------------------------
-// Parser
+// ChordParser
 // ------------------------------------------------------------
 
 std::optional<core::chord::Chord>
-Parser::parse(const std::vector<Token>& tokens)
+ChordParser::parse(const std::vector<Token>& tokens)
 {
     if (tokens.empty())
         return std::nullopt;
@@ -57,10 +57,10 @@ Parser::parse(const std::vector<Token>& tokens)
         std::get<RootToken>(tokens[0].value).text;
 
     auto note_tokens =
-        musical::io::note::Lexer::tokenize(root_text);
+        musical::io::note::NoteLexer::tokenize(root_text);
 
     auto pitch_opt =
-        musical::io::note::Parser::parse(note_tokens);
+        musical::io::note::NoteParser::parse(note_tokens);
 
     if (!pitch_opt)
         return std::nullopt;

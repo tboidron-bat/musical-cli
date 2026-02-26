@@ -1,10 +1,11 @@
-#include <musical/io/chord/input/Lexer.h>
+#include <musical/io/chord/input/ChordLexer.h>
 #include <musical/io/chord/input/tokens.h>
-#include <musical/io/note/input/Lexer.h>
+#include <musical/io/note/input/NoteLexer.h>
 
 #include <vector>
 #include <optional>
 #include <cctype>
+#include <algorithm>
 
 namespace musical::io::chord
 {
@@ -63,7 +64,7 @@ match_lexeme(std::string_view input)
 // Tokenize
 // -------------------------------------------------------------
 std::vector<Token>
-Lexer::tokenize(std::string_view input)
+ChordLexer::tokenize(std::string_view input)
 {
     std::vector<Token> tokens;
 
@@ -93,14 +94,24 @@ Lexer::tokenize(std::string_view input)
         if (expect_root)
         {
             size_t consumed =
-                musical::io::note::Lexer::parse_note_length(input);
+                musical::io::note::NoteLexer::parse_note_length(input);
 
             if (consumed > 0)
             {
+                std::string root = std::string(input.substr(0, consumed));
+
+                std::transform(root.begin(),
+                            root.end(),
+                            root.begin(),
+                            [](unsigned char c)
+                            {
+                                return std::tolower(c);
+                            });                
+
                 tokens.push_back({
                     TokenType::ROOT,
                     RootToken{
-                        std::string(input.substr(0, consumed))
+                        root
                     }
                 });
 

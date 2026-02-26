@@ -1,4 +1,4 @@
-#include <musical/io/note/input/Parser.h>
+#include <musical/io/note/input/NoteParser.h>
 
 #include <algorithm>
 #include <cctype>
@@ -11,7 +11,7 @@ namespace musical::io::note {
 // ============================
 
 std::optional<musical::core::NoteName>
-Parser::to_name(std::string_view text)
+NoteParser::to_name(std::string_view text)
 {
     using Name = musical::core::NoteName;
 
@@ -42,7 +42,7 @@ Parser::to_name(std::string_view text)
 // ============================
 
 std::optional<musical::core::Accidental>
-Parser::to_accidental(std::string_view text)
+NoteParser::to_accidental(std::string_view text)
 {
     using Acc = musical::core::Accidental;
 
@@ -70,7 +70,7 @@ Parser::to_accidental(std::string_view text)
 // ============================
 
 std::optional<musical::core::pitch_t>
-Parser::parse(const std::vector<token_t>& tokens)
+NoteParser::parse(const std::vector<token_t>& tokens)
 {
     using musical::core::pitch_t;
     using musical::core::Accidental;

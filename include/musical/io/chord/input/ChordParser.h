@@ -8,7 +8,7 @@
 
 namespace musical::io::chord {
 
-class Parser
+class ChordParser
 {
 public:
     static std::optional<core::chord::Chord>

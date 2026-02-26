@@ -1,4 +1,4 @@
-#include <musical/io/note/input/Lexer.h>
+#include <musical/io/note/input/NoteLexer.h>
 #include <cctype>
 
 namespace musical::io::note
@@ -131,7 +131,7 @@ static bool starts_with_exact(std::string_view input,
 // ------------------------------------------------------------
 // Parse longueur NOTE (NAME + ACCIDENTAL optionnel)
 // ------------------------------------------------------------
-size_t Lexer::parse_note_length(std::string_view input)
+size_t NoteLexer::parse_note_length(std::string_view input)
 {
     size_t consumed = 0;
 
@@ -201,7 +201,7 @@ size_t Lexer::parse_note_length(std::string_view input)
 // Tokenize
 // ------------------------------------------------------------
 std::vector<token_t>
-Lexer::tokenize(std::string_view input)
+NoteLexer::tokenize(std::string_view input)
 {
     std::vector<token_t> tokens;
 

@@ -1,4 +1,4 @@
-#include <musical/io/note/mei_adapter.h>
+#include <musical/io/note/output/mei_adapter.h>
 
 #include <map>
 #include <stdexcept>

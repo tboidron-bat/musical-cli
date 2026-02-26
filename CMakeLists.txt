@@ -51,16 +51,18 @@ target_sources(musical-core
         src/instruments/guitar/six_strings/database_by_shape.cpp
         src/instruments/guitar/six_strings/database_queries.cpp
 
-        src/io/note/stream.cpp        
-        src/io/note/input/Lexer.cpp                
-        src/io/note/input/Parser.cpp        
-        src/io/note/note_formatter.cpp
-        src/io/note/mei_adapter.cpp        
+
+        src/io/note/input/NoteLexer.cpp                
+        src/io/note/input/NoteParser.cpp        
+        src/io/note/output/note_formatter.cpp
+        src/io/note/output/stream.cpp                
+        src/io/note/output/mei_adapter.cpp        
 
         src/io/chord/output/stream.cpp                
-        src/io/chord/Lexer.cpp          
-        src/io/chord/Parser.cpp              
-        src/io/chord/formatter.cpp        
+        src/io/chord/input/ChordLexer.cpp          
+        src/io/chord/input/ChordParser.cpp              
+        src/io/chord/output/formatter.cpp
+                
         src/io/scale/scalepattern_formatter.cpp
 
         src/io/instruments/guitar/six_strings/chord_diagram/to_ascii.cpp        
@@ -77,6 +79,9 @@ target_sources(musical-core
         src/ScoreElements/KeySignature.cpp
         src/ScoreElements/Measure.cpp
         src/ScoreElements/TimeSignature.cpp
+
+        src/audio/wave/chord_player.cpp
+        src/audio/karplus_strong/chord_player.cpp        
 )
 
 target_include_directories(musical-core

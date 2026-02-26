@@ -7,52 +7,52 @@ static int normalize(int v)
 {
     return ((v % 12) + 12) % 12;
 }
-pitch_t pitch_from_chromatic(int index, bool with_sharp) noexcept
-{
-    index = normalize(index);
+// pitch_t pitch_from_chromatic(int index, bool with_sharp) noexcept
+// {
+//     index = normalize(index);
 
-    using N = NoteName;
-    using A = Accidental;
+//     using N = NoteName;
+//     using A = Accidental;
 
-    if (with_sharp)
-    {
-        switch (index)
-        {
-            case 0:  return {N::C, A::NONE, 0};
-            case 1:  return {N::C, A::SHARP, 0};
-            case 2:  return {N::D, A::NONE, 0};
-            case 3:  return {N::D, A::SHARP, 0};
-            case 4:  return {N::E, A::NONE, 0};
-            case 5:  return {N::F, A::NONE, 0};
-            case 6:  return {N::F, A::SHARP, 0};
-            case 7:  return {N::G, A::NONE, 0};
-            case 8:  return {N::G, A::SHARP, 0};
-            case 9:  return {N::A, A::NONE, 0};
-            case 10: return {N::A, A::SHARP, 0};
-            case 11: return {N::B, A::NONE, 0};
-        }
-    }
-    else
-    {
-        switch (index)
-        {
-            case 0:  return {N::C, A::NONE, 0};
-            case 1:  return {N::D, A::FLAT, 0};
-            case 2:  return {N::D, A::NONE, 0};
-            case 3:  return {N::E, A::FLAT, 0};
-            case 4:  return {N::E, A::NONE, 0};
-            case 5:  return {N::F, A::NONE, 0};
-            case 6:  return {N::G, A::FLAT, 0};
-            case 7:  return {N::G, A::NONE, 0};
-            case 8:  return {N::A, A::FLAT, 0};
-            case 9:  return {N::A, A::NONE, 0};
-            case 10: return {N::B, A::FLAT, 0};
-            case 11: return {N::B, A::NONE, 0};
-        }
-    }
+//     if (with_sharp)
+//     {
+//         switch (index)
+//         {
+//             case 0:  return {N::C, A::NONE, 0};
+//             case 1:  return {N::C, A::SHARP, 0};
+//             case 2:  return {N::D, A::NONE, 0};
+//             case 3:  return {N::D, A::SHARP, 0};
+//             case 4:  return {N::E, A::NONE, 0};
+//             case 5:  return {N::F, A::NONE, 0};
+//             case 6:  return {N::F, A::SHARP, 0};
+//             case 7:  return {N::G, A::NONE, 0};
+//             case 8:  return {N::G, A::SHARP, 0};
+//             case 9:  return {N::A, A::NONE, 0};
+//             case 10: return {N::A, A::SHARP, 0};
+//             case 11: return {N::B, A::NONE, 0};
+//         }
+//     }
+//     else
+//     {
+//         switch (index)
+//         {
+//             case 0:  return {N::C, A::NONE, 0};
+//             case 1:  return {N::D, A::FLAT, 0};
+//             case 2:  return {N::D, A::NONE, 0};
+//             case 3:  return {N::E, A::FLAT, 0};
+//             case 4:  return {N::E, A::NONE, 0};
+//             case 5:  return {N::F, A::NONE, 0};
+//             case 6:  return {N::G, A::FLAT, 0};
+//             case 7:  return {N::G, A::NONE, 0};
+//             case 8:  return {N::A, A::FLAT, 0};
+//             case 9:  return {N::A, A::NONE, 0};
+//             case 10: return {N::B, A::FLAT, 0};
+//             case 11: return {N::B, A::NONE, 0};
+//         }
+//     }
 
-    return {N::C, A::NONE, 0}; // fallback safe
-}
+//     return {N::C, A::NONE, 0}; // fallback safe
+//}
 
 static int base_index(NoteName n)
 {
@@ -89,7 +89,34 @@ std::size_t chromatic_index(const pitch_t& p) noexcept
 
 bool pitch_t::operator<(const pitch_t& other) const noexcept
 {
+    if (_octave != other._octave)
+        return _octave < other._octave;
+
     return chromatic_index(*this) < chromatic_index(other);
+}
+bool pitch_t::operator==(const pitch_t& other) const noexcept
+{
+    return _octave == other._octave
+        && chromatic_index(*this) == chromatic_index(other);
+}
+
+pitch_t& pitch_t::operator+=(uint8_t semitones)
+{
+    int chroma = static_cast<int>(chromatic_index(*this));
+
+    // index absolu incluant octave
+    int absolute = _octave * 12 + chroma + semitones;
+
+    int new_octave = absolute / 12;
+    int mod = absolute % 12;
+
+    pitch_t rebuilt = pitch_from_chromatic_index(mod, true);
+
+    _name = rebuilt._name;
+    _accidental = rebuilt._accidental;
+    _octave = new_octave;
+
+    return *this;
 }
 
 // ------------------------------------------------------------

@@ -7,8 +7,9 @@
 
 #include <musical/instruments/guitar/six_strings/ChordDiagram.h>
 
-namespace musical::instruments::guitar::six_strings
+namespace guitar::six_strings::chord_diagram::database_queries
 {
+    using namespace musical::instruments::guitar::six_strings;
 
 // ------------------------------------------------------------
 // Position kind

@@ -7,6 +7,7 @@
 #include <bitset>
 #include <stdexcept>
 
+#include <musical/Core/pitch_t.h>
 
 namespace musical::instruments::guitar::six_strings {
 
@@ -111,6 +112,8 @@ public:
         return _strings;
     }    
     GuitarString root_string() const { return _root_string; }    
+
+    musical::core::pitch_t root_pitch() const; // calculé à partir de la corde de la tonique et du fret éventuel
 
     bool needs_fret_label() const
     {

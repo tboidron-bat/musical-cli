@@ -1,6 +1,6 @@
 #include <musical/analysis/chord_name.h>
 #include <musical/Core/chord/Chord.h>
-#include <musical/io/note/note_formatter.h>
+#include <musical/io/note/output/note_formatter.h>
 #include <musical/Core/intervals_defs.h>
 
 #include <algorithm>

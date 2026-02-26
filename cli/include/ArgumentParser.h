@@ -18,7 +18,7 @@ struct globalconfig_t
 
     std::vector<std::string> positional_args;  
     
-    std::unordered_map<std::string, std::optional<std::string>> options;    
+    std::unordered_map<std::string, std::vector<std::string>> options;       
 };
 
 class ArgumentParser

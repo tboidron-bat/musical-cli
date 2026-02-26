@@ -73,7 +73,7 @@ namespace musical::io::note
         std::string_view text;   // UTF-8 slice of input
     };
 
-    class Lexer
+    class NoteLexer
     {
     public:
         // Tokenize note (UTF-8 aware, byte-level deterministic scan)

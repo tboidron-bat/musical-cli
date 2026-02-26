@@ -1,7 +1,7 @@
 #include <musical/ScoreElements/KeySignature.h>
 #include <musical/Core/pitch_t.h>
 #include <musical/Core/scale/ScaleKeyedFactory.h>
-#include <musical/io/note/note_formatter.h>
+#include <musical/io/note/output/note_formatter.h>
 
 #include <algorithm>
 #include <unordered_map>

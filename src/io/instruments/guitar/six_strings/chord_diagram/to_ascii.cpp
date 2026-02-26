@@ -4,7 +4,7 @@
 #include <musical/Core/chord/ChordType.h>
 #include <musical/instruments/guitar/six_strings/ChordDiagram.h>
 
-#include <musical/io/chord/formatter.h>
+#include <musical/io/chord/output/formatter.h>
 
 #include <array>
 #include <sstream>
@@ -77,12 +77,23 @@ std::string to_ascii(const sst::ChordDiagram& diagram)
 
     const auto& strings = diagram.strings();
 
-    uint8_t first = diagram.first_fret();
+    uint8_t first_real = diagram.first_fret();
     uint8_t height = diagram.nb_frets();
 
     if (height == 0)
         height = 1;
 
+    // 🔥 logique d’affichage
+    uint8_t start =
+        (first_real <= 4) ? 1 : first_real;
+
+    // si on affiche depuis 1, on doit ajuster la hauteur
+    if (start == 1)
+    {
+        uint8_t last_real = first_real + diagram.nb_frets() - 1;
+        height = std::max<uint8_t>(4, last_real);
+    }
+        
     std::ostringstream oss;
 
     // En-tête
@@ -102,12 +113,15 @@ std::string to_ascii(const sst::ChordDiagram& diagram)
     }
     oss << '\n';
 
-    oss << std::string(D::STRING_COUNT * 2 - 1, '=') << '\n';    
+    if (!diagram.needs_fret_label())
+        oss << std::string(D::STRING_COUNT * 2 - 1, '=') << '\n';
+    else
+        oss << std::string(D::STRING_COUNT * 2 - 1, '-') << '\n';
 
     // Corps : une ligne par frette réelle
     for (uint8_t row = 0; row < height; ++row)
     {
-        uint8_t current_fret = first + row;
+        uint8_t current_fret = start + row;
 
         for (const auto& sp : strings)
         {

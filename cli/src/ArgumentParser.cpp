@@ -1,5 +1,6 @@
 #include <ArgumentParser.h>
 #include <stdexcept>
+#include <cctype>
 
 namespace cli
 {
@@ -14,7 +15,7 @@ ArgumentParser::parse(int argc, char** argv)
         std::string arg = argv[i];
 
         // ----------------------------
-        // Flags globaux simples
+        // Flags globaux
         // ----------------------------
         if (arg == "-h" || arg == "--help")
         {
@@ -41,27 +42,32 @@ ArgumentParser::parse(int argc, char** argv)
         }
 
         // ----------------------------
-        // Options avec valeur possible
+        // Options multi-valeurs
         // ----------------------------
         if (!arg.empty() && arg[0] == '-')
         {
-            std::optional<std::string> value;
+            std::vector<std::string> values;
 
-            // regarde si prochain argument existe
-            if (i + 1 < argc)
+            // Lire tous les arguments suivants
+            // jusqu'à tomber sur une nouvelle option
+            while (i + 1 < argc)
             {
                 std::string next = argv[i + 1];
 
-                // si le prochain n'est pas une option,
-                // on le considère comme valeur
-                if (!next.empty() && next[0] != '-')
-                {
-                    value = next;
-                    ++i; // on consomme la valeur
-                }
+                bool next_is_option =
+                    next.size() > 1 && next[0] == '-' && next[1] == '-';
+
+                bool next_is_negative_number =
+                    next.size() > 1 && next[0] == '-' && std::isdigit(next[1]);
+
+                if (next_is_option && !next_is_negative_number)
+                    break;
+
+                values.push_back(next);
+                ++i;
             }
 
-            cfg.options[arg] = value;
+            cfg.options[arg] = values;
             continue;
         }
 

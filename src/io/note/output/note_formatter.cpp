@@ -1,4 +1,4 @@
-#include <musical/io/note/note_formatter.h>
+#include <musical/io/note/output/note_formatter.h>
 
 #include <musical/Core/pitch_t.h>
 

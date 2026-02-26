@@ -1,4 +1,4 @@
-#include <musical/io/chord/input/Lexer.h>
+#include <musical/io/chord/input/ChordLexer.h>
 #include <cassert>
 #include <iostream>
 #include <vector>
@@ -9,7 +9,7 @@ using namespace musical::io::chord;
 static void expect_types(const std::string& input,
                          const std::vector<TokenType>& expected)
 {
-    auto tokens = Lexer::tokenize(input);
+    auto tokens = ChordLexer::tokenize(input);
 
     if (tokens.size() != expected.size())
     {
@@ -109,7 +109,7 @@ int main()
     // ---------------------------------------------------------
     // INVALID / UNKNOWN
     // ---------------------------------------------------------
-    auto invalid = Lexer::tokenize("Cmaj7M");
+    auto invalid = ChordLexer::tokenize("Cmaj7M");
     assert(!invalid.empty());
     assert(invalid.back().type == TokenType::UNKNOWN);
 

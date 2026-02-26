@@ -1,5 +1,7 @@
-#include <musical/io/chord/formatter.h>
-#include <musical/io/note/stream.h>
+#include <musical/io/chord/output/formatter.h>
+
+
+#include <musical/io/note/output/stream.h>
 
 #include <musical/Core/chord/Chord.h>
 #include <musical/Core/pitch_t.h>

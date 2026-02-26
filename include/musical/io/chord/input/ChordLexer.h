@@ -30,7 +30,7 @@ namespace musical::io::chord
  *
  * Il se contente de découper la chaîne.
  */
-class Lexer
+class ChordLexer
 {
 public:
 

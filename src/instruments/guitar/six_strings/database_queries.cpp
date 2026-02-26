@@ -3,9 +3,13 @@
 
 #include <random>
 #include <stdexcept>
+#include <iostream> //4 DEBUG
+#include <musical/io/note/output/stream.h> //4 DEBUG
 
-namespace musical::instruments::guitar::six_strings
+namespace guitar::six_strings::chord_diagram::database_queries
 {
+
+using namespace musical::instruments::guitar::six_strings;    
 
 // ------------------------------------------------------------
 // Internal helper
@@ -35,7 +39,7 @@ static bool matches_position_kind(
 // Generic finder
 // ------------------------------------------------------------
 std::vector<ChordDiagram> find_positions(
-    const musical::core::pitch_t /*pitch*/,
+    const musical::core::pitch_t pitch,
     const musical::core::chord::ChordType& chord_type,
     ChordDiagram::CAGEDShape shape,
     PositionKind kind
@@ -45,28 +49,44 @@ std::vector<ChordDiagram> find_positions(
 
     const auto& db = database_for_shape(shape);
 
+
+    //std::cout << "  DB size   : " << db.size() << " chord types\n";    
+
     auto it = db.find(chord_type);
 
     if (it == db.end())
+    {
+        std::cout << "  → No entry for this chord type\n";
         return results;
+    }
+
+    // std::cout << "  → Chord type found. "
+    //         << it->second.size()
+    //         << " diagram(s) stored\n";
 
     const auto& diagrams = it->second;
 
     for (const auto& diagram : diagrams)
     {
+        //std::cout << "    Checking diagram... " << std::endl; //4 DEBUG
+
         if (!matches_position_kind(diagram, kind))
+        {
+            //std::cout << "rejected (position kind)\n";
             continue;
+        }
 
-        // ⚠️ TODO:
-        // Ici il faudra vérifier que la tonique réelle du diagramme
-        // correspond au pitch demandé.
-        //
-        // Pour l’instant ta base ne contient que les formes ouvertes
-        // correspondant au pitch naturel de la forme.
-
+        if (chromatic_index(diagram.root_pitch()) !=
+            chromatic_index(pitch))
+        {
+            // std::cout << "rejected (root mismatch: "
+            //         << diagram.root_pitch()
+            //         << ")\n";
+            continue;
+        }
+        //std::cout << "accepted\n";
         results.push_back(diagram);
     }
-
     return results;
 }
 

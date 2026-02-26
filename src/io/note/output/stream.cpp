@@ -1,6 +1,6 @@
-#include <musical/io/note/stream.h>
+#include <musical/io/note/output/stream.h>
+#include <musical/io/note/output/note_formatter.h>
 
-#include <musical/io/note/note_formatter.h>
 #include <musical/Core/pitch_t.h>
 #include <musical/Core/note/Note.h>
 

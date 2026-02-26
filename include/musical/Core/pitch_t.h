@@ -25,16 +25,23 @@ struct pitch_t
     Accidental _accidental;
     uint8_t    _octave;   
 
-    bool operator==(const pitch_t&) const noexcept = default;
-    bool operator!=(const pitch_t&) const noexcept = default;
+    NoteName name() const noexcept { return _name; }
+    Accidental accidental() const noexcept { return _accidental; }
+    uint8_t octave() const noexcept { return _octave; }
+
+    bool operator==(const pitch_t& other) const noexcept;
+
+    bool operator!=(const pitch_t& other) const noexcept
+    {
+        return !(*this == other);
+    }
 
     // utile pour map / set
     bool operator<(const pitch_t& other) const noexcept;
+    pitch_t& operator+=( uint8_t semitones);
 };
 
 std::size_t chromatic_index(const pitch_t&) noexcept;
-
-pitch_t pitch_from_chromatic(int chromatic_index, bool with_sharp) noexcept;
 
 pitch_t pitch_from_chromatic_index(
     int index,

@@ -1,72 +1,126 @@
-
 #include <chord/Usage.h>
 #include <chord/ChordCommand.h>
+
 #include <iostream>
+#include <sstream>
 
 namespace cli::chord
 {
 
+// ------------------------------------------------------------
+// Usage
+// ------------------------------------------------------------
 void print_usage()
 {
     std::cout <<
-    "Usage:\n"
-    "  chord [options] <symbol>\n\n"
+        "Usage:\n"
+        "  chord [options] <symbol>\n\n"
 
-    "Description:\n"
-    "  Analyse et affiche des informations sur un accord musical.\n\n"
+        "Description:\n"
+        "  Analyse et affiche des informations sur un accord musical.\n\n"
 
-    "Arguments:\n"
-    "  <symbol>    Symbole de l'accord (ex: Cmaj7, F#m7b5, Ré, Bb7, C/G)\n\n"
+        "Arguments:\n"
+        "  <symbol>    Symbole de l'accord (ex: Cmaj7, F#m7b5, Ré, Bb7, C/G)\n\n"
 
-    "Examples:\n"
-    "  chord Cmaj7\n"
-    "  chord F#m7b5\n"
-    "  chord Ré\n"
-    "  chord Bb7b9\n"
-    "  chord Cmaj7/G\n\n"
-
-    "Try:\n"
-    "  chord --help   for detailed options\n";
+        "Example:\n"
+        "  chord Bb7b9\n";
 }
-void print_help()
+
+
+// ------------------------------------------------------------
+// Help
+// ------------------------------------------------------------
+void print_help(const ChordCommand& cmd)
 {
     print_usage();
 
-    std::cout <<
-    "\nOptions:\n"
+    std::cout << "\nOptions:\n\n";
 
-    "  -d, --diagram [position]\n"
-    "      Show guitar chord diagram.\n"
-    "      If <position> (1–5) is provided, show only that CAGED position.\n\n"
+    const auto& options = cmd.options();
 
-    "      --difficulty <n>\n"
-    "      Filter diagrams by difficulty level (1–3).\n"
-    "      Requires --diagram.\n\n"
+    // ------------------------------------------------------------
+    // 1️⃣ Construire les labels d’options
+    // ------------------------------------------------------------
+    std::vector<std::string> labels;
+    labels.reserve(options.size());
 
-    "      --tuning <name>\n"
-    "      Guitar tuning to use for diagram rendering.\n"
-    "      Supported tunings:\n"
-    "          standard   (E A D G B E)\n"
-    "          dropd      (D A D G B E)\n"
-    "          dadgad     (D A D G A D)\n"
-    "          openG      (D G D G B D)\n"
-    "          openD      (D A D F# A D)\n"
-    "      Default: standard.\n"
-    "      Requires --diagram.\n\n"
+    std::size_t max_width = 0;
 
-    "  -h, --help\n"
-    "      Show this help message.\n\n"
+    for (const auto& opt : options)
+    {
+        std::ostringstream label;
 
-    "Examples:\n"
-    "  chord Cmaj7\n"
-    "  chord F#m7b5\n"
-    "  chord Ré\n"
-    "  chord Cmaj7/G\n\n"
+        if (!opt._short_name.empty())
+            label << opt._short_name << ", ";
 
-    "  chord Cmaj7 --diagram\n"
-    "  chord Cmaj7 --diagram 3\n"
-    "  chord Cmaj7 --diagram 3 --difficulty 2\n"
-    "  chord Cmaj7 --diagram --tuning dropd\n"
-    "  chord Cmaj7 --diagram 2 --tuning dadgad\n\n";
+        label << opt._long_name;
+
+        if (opt.takes_value)
+        {
+            if (opt.value_optional)
+                label << " [value]";
+            else
+                label << " <value>";
+        }
+
+        labels.push_back(label.str());
+        max_width = std::max(max_width, labels.back().size());
+    }
+
+    const std::size_t left_padding = 2;
+    const std::size_t description_indent = left_padding + max_width + 4;
+
+    // ------------------------------------------------------------
+    // 2️⃣ Affichage aligné
+    // ------------------------------------------------------------
+    for (std::size_t i = 0; i < options.size(); ++i)
+    {
+        const auto& opt = options[i];
+        const auto& label = labels[i];
+
+        // Affiche label aligné
+        std::cout << std::string(left_padding, ' ')
+                  << label
+                  << std::string(max_width - label.size() + 4, ' ');
+
+        // Description multi-ligne
+        std::istringstream iss(opt._description);
+        std::string line;
+        bool first_line = true;
+        bool in_sub_block = false;
+
+        while (std::getline(iss, line))
+        {
+            if (!first_line)
+                std::cout << std::string(description_indent, ' ');
+
+            // gestion des sous-blocs
+            if (!line.empty() && line.back() == ':')
+            {
+                std::cout << line << "\n";
+                in_sub_block = true;
+            }
+            else if (in_sub_block)
+            {
+                if (line.find(':') != std::string::npos)
+                {
+                    in_sub_block = false;
+                    std::cout << line << "\n";
+                }
+                else
+                {
+                    std::cout << "    " << line << "\n";
+                }
+            }
+            else
+            {
+                std::cout << line << "\n";
+            }
+
+            first_line = false;
+        }
+
+        std::cout << "\n";
+    }
 }
-}
+} // namespace cli::chord

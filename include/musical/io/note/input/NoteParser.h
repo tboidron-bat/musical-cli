@@ -4,11 +4,11 @@
 #include <vector>
 
 #include <musical/Core/pitch_t.h>
-#include <musical/io/note/input/Lexer.h>
+#include <musical/io/note/input/NoteLexer.h>
 
 namespace musical::io::note
 {
-    class Parser
+    class NoteParser
     {
     public:
         /**

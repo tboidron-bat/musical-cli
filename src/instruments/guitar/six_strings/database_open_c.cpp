@@ -1,12 +1,12 @@
-#include <musical/instruments/guitar/six_strings/database_shape_g.h>
+#include <musical/instruments/guitar/six_strings/database_open_c.h>
 #include <musical/Core/intervals_defs.h>
 
 namespace musical::instruments::guitar::six_strings
 {
 
-const DiagramMap& database_shape_g()
+const DiagramMap& database_open_c()
 {
-    using D  = ChordDiagram;
+    using D  = OpenChordDiagram;
     using S  = D::string_state;
     using SHAPE = D::CAGEDShape;
     using ROOT  = D::GuitarString;
@@ -16,83 +16,83 @@ const DiagramMap& database_shape_g()
     static const DiagramMap db =
     {
         // =================================================
-        // MAJEUR (forme G)
+        // MAJEUR (forme C)
         // =================================================
         { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE }), {
 
-            // G
+            // C
             D{{ 
-                S::fretted(3,2),
-                S::fretted(2,1),
+                S::muted(),
+                S::fretted(3,3),
+                S::fretted(2,2),
                 S::open_string(),
-                S::open_string(),
-                S::open_string(),
-                S::fretted(3,3)
-            }, ROOT::LOW_E, SHAPE::G}
+                S::fretted(1,1),
+                S::open_string()
+            }, ROOT::A, SHAPE::C}
         }},
 
         // =================================================
-        // MINEUR (forme G partielle)
+        // MINEUR (forme C partielle)
         // =================================================
         { CT({ IT::TIERCE_MINEURE, IT::QUINTE_JUSTE }), {
 
-            // Gm (version partielle)
+            // Cm (version partielle typique)
             D{{ 
-                S::fretted(3,3),
-                S::fretted(5,4),
-                S::fretted(5,4),
-                S::fretted(3,1),
                 S::muted(),
+                S::fretted(3,3),
+                S::fretted(1,1),
+                S::open_string(),
+                S::fretted(1,1),
                 S::muted()
-            }, ROOT::LOW_E, SHAPE::G}
+            }, ROOT::A, SHAPE::C}
         }},
 
         // =================================================
-        // DOMINANTE 7 (forme G)
+        // DOMINANTE 7 (forme C)
         // =================================================
         { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MINEURE }), {
 
-            // G7
+            // C7
             D{{ 
-                S::fretted(3,2),
-                S::fretted(2,1),
-                S::open_string(),
-                S::open_string(),
-                S::open_string(),
-                S::fretted(1,1)
-            }, ROOT::LOW_E, SHAPE::G}
+                S::muted(),
+                S::fretted(3,3),
+                S::fretted(2,2),
+                S::fretted(3,4),
+                S::fretted(1,1),
+                S::open_string()
+            }, ROOT::A, SHAPE::C}
         }},
 
         // =================================================
-        // MAJ7 (forme G)
+        // MAJ7 (forme C)
         // =================================================
         { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MAJEURE }), {
 
-            // Gmaj7
+            // Cmaj7
             D{{ 
-                S::fretted(3,2),
-                S::fretted(2,1),
+                S::muted(),
+                S::fretted(3,3),
+                S::fretted(2,2),
                 S::open_string(),
                 S::open_string(),
-                S::open_string(),
-                S::fretted(2,3)
-            }, ROOT::LOW_E, SHAPE::G}
+                S::open_string()
+            }, ROOT::A, SHAPE::C}
         }},
 
         // =================================================
-        // m7 (forme G)
+        // m7 (forme C)
         // =================================================
         { CT({ IT::TIERCE_MINEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MINEURE }), {
 
-            // Gm7 (version partielle)
+            // Cm7 (version partielle typique)
             D{{ 
-                S::fretted(3,3),
-                S::fretted(5,4),
-                S::fretted(3,1),
-                S::fretted(3,1),
                 S::muted(),
+                S::fretted(3,3),
+                S::fretted(1,1),
+                S::fretted(3,4),
+                S::fretted(1,1),
                 S::muted()
-            }, ROOT::LOW_E, SHAPE::G}
+            }, ROOT::A, SHAPE::C}
         }}
     };
 

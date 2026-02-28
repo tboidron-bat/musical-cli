@@ -14,9 +14,9 @@ namespace musical::core::chord
 
 namespace musical::io::chord
 {
-    std::ostream& operator<<(std::ostream& os, LexemeCategory cat)
+    std::ostream& operator<<(std::ostream& os, lexeme_t::Category cat)
     {
-        using C = LexemeCategory;
+        using C = lexeme_t::Category;
 
         switch (cat)
         {

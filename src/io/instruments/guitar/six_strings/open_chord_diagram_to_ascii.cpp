@@ -1,8 +1,9 @@
-#include <musical/io/instruments/guitar/six_strings/chord_diagram/to_ascii.h>
+#include <musical/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.h>
+
 
 #include <musical/Core/chord/Chord.h>
 #include <musical/Core/chord/ChordType.h>
-#include <musical/instruments/guitar/six_strings/ChordDiagram.h>
+#include <musical/instruments/guitar/six_strings/OpenChordDiagram.h>
 
 #include <musical/io/chord/output/formatter.h>
 
@@ -10,7 +11,7 @@
 #include <sstream>
 #include <iostream>
 
-namespace io::instruments::guitar::six_strings::chord_diagram {
+namespace io::guitar::six_strings {
 
     namespace sst = musical::instruments::guitar::six_strings;
 
@@ -50,11 +51,11 @@ static std::string draw_ascii_grid(uint8_t base_fret, uint8_t nb_frets)
     oss << '\n';
 
     namespace sst = musical::instruments::guitar::six_strings;
-    oss << std::string(sst::ChordDiagram::STRING_COUNT * 2 + 1, '-') << '\n';
+    oss << std::string(sst::OpenChordDiagram::STRING_COUNT * 2 + 1, '-') << '\n';
 
     for (uint8_t f = 0; f < nb_frets; ++f)
     {
-        for (uint8_t c = 0; c < sst::ChordDiagram::STRING_COUNT; ++c)
+        for (uint8_t c = 0; c < sst::OpenChordDiagram::STRING_COUNT; ++c)
             oss << "| ";
 
         if (f == 0 && base_fret > 0)
@@ -67,13 +68,13 @@ static std::string draw_ascii_grid(uint8_t base_fret, uint8_t nb_frets)
 }
 
 // ------------------------------------------------------------------
-// Rendu ASCII depuis un ChordDiagram
+// Rendu ASCII depuis un OpenChordDiagram
 // ------------------------------------------------------------------
 
-std::string to_ascii(const sst::ChordDiagram& diagram)
+std::string open_chord_diagram_to_ascii(const sst::OpenChordDiagram& diagram)
 {
-    using D  = sst::ChordDiagram;
-    using SS = sst::ChordDiagram::string_state;
+    using D  = sst::OpenChordDiagram;
+    using SS = sst::OpenChordDiagram::string_state;
 
     const auto& strings = diagram.strings();
 
@@ -144,4 +145,4 @@ std::string to_ascii(const sst::ChordDiagram& diagram)
 
     return oss.str();
 }
-} // namespace io::instruments::guitar::chord_diagram
+} // namespace io::guitar::six_strings

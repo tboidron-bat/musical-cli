@@ -41,16 +41,21 @@ target_sources(musical-core
 
         src/instruments/guitar/Tuning.cpp
         
-        src/instruments/guitar/six_strings/ChordDiagram.cpp
+        src/instruments/guitar/six_strings/OpenChordDiagram.cpp
+        src/instruments/guitar/six_strings/MovableShapeDiagram.cpp        
 
-        src/instruments/guitar/six_strings/database_shape_a.cpp 
-        src/instruments/guitar/six_strings/database_shape_c.cpp
-        src/instruments/guitar/six_strings/database_shape_d.cpp
-        src/instruments/guitar/six_strings/database_shape_e.cpp
-        src/instruments/guitar/six_strings/database_shape_g.cpp
-        src/instruments/guitar/six_strings/database_by_shape.cpp
-        src/instruments/guitar/six_strings/database_queries.cpp
+        src/instruments/guitar/six_strings/database_open_a.cpp 
+        src/instruments/guitar/six_strings/database_open_c.cpp
+        src/instruments/guitar/six_strings/database_open_d.cpp
+        src/instruments/guitar/six_strings/database_open_e.cpp
+        src/instruments/guitar/six_strings/database_open_g.cpp
+        src/instruments/guitar/six_strings/db_open_queries.cpp
+        
+        
+        src/instruments/guitar/six_strings/database_movable_a.cpp         
+        src/instruments/guitar/six_strings/db_movable_queries.cpp
 
+        src/io/utils/input/normalize_to_ascii.cpp                
 
         src/io/note/input/NoteLexer.cpp                
         src/io/note/input/NoteParser.cpp        
@@ -65,7 +70,8 @@ target_sources(musical-core
                 
         src/io/scale/scalepattern_formatter.cpp
 
-        src/io/instruments/guitar/six_strings/chord_diagram/to_ascii.cpp        
+        src/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.cpp    
+        src/io/instruments/guitar/six_strings/movable_chord_diagram_to_ascii.cpp    
 
         # analysis
         src/analysis/ChordAnalysis.cpp

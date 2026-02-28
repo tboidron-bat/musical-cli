@@ -7,17 +7,17 @@ namespace musical::core::chord {
 }
 
 namespace musical::instruments::guitar::six_strings {
-    class ChordDiagram;
+    class OpenChordDiagram;
 }
 
-namespace io::instruments::guitar::six_strings::chord_diagram {
+namespace io::guitar::six_strings {
 
 /**
  * Génère une représentation ASCII d’un accord
  * pour guitare 6 cordes en accordage standard.
  */
 std::string 
-to_ascii(const musical::core::chord::Chord& chord);
+open_chord_diagram_to_ascii(const musical::core::chord::Chord& chord);
 
 /**
  * Génère une représentation ASCII directe
@@ -26,6 +26,6 @@ to_ascii(const musical::core::chord::Chord& chord);
  * Utilisé notamment pour l’option CLI --all.
  */
 std::string 
-to_ascii(const musical::instruments::guitar::six_strings::ChordDiagram& diagram);
+open_chord_diagram_to_ascii(const musical::instruments::guitar::six_strings::OpenChordDiagram& diagram);
 
 } // namespace io::instruments::guitar::chord_diagram6strings

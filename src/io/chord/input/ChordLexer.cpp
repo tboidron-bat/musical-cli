@@ -1,59 +1,22 @@
 #include <musical/io/chord/input/ChordLexer.h>
-#include <musical/io/chord/input/tokens.h>
 #include <musical/io/note/input/NoteLexer.h>
+#include <musical/io/utils/input/normalize_to_ascii.h>
 
 #include <vector>
 #include <optional>
-#include <cctype>
-#include <algorithm>
 
 namespace musical::io::chord
 {
 
 // -------------------------------------------------------------
-// ASCII case-insensitive comparison
-// -------------------------------------------------------------
-static bool starts_with_ci_ascii(std::string_view input,
-                                 std::string_view prefix)
-{
-    if (input.size() < prefix.size())
-        return false;
-
-    for (size_t i = 0; i < prefix.size(); ++i)
-    {
-        unsigned char a =
-            static_cast<unsigned char>(input[i]);
-
-        unsigned char b =
-            static_cast<unsigned char>(prefix[i]);
-
-        if (std::tolower(a) != std::tolower(b))
-            return false;
-    }
-
-    return true;
-}
-
-// -------------------------------------------------------------
 // Lexeme match (table triée par longueur décroissante)
 // -------------------------------------------------------------
-static std::optional<Lexeme>
+static std::optional<lexeme_t>
 match_lexeme(std::string_view input)
 {
     for (const auto& lex : SORTED_LEXEMES)
     {
-        bool match = false;
-
-        if (lex.case_sensitive)
-        {
-            match = input.starts_with(lex.text);
-        }
-        else
-        {
-            match = starts_with_ci_ascii(input, lex.text);
-        }
-
-        if (match)
+        if (input.starts_with(lex.text))
             return lex;
     }
 
@@ -63,59 +26,56 @@ match_lexeme(std::string_view input)
 // -------------------------------------------------------------
 // Tokenize
 // -------------------------------------------------------------
-std::vector<Token>
+std::vector<token_t>
 ChordLexer::tokenize(std::string_view input)
 {
-    std::vector<Token> tokens;
+    std::vector<token_t> tokens;
 
-    while (!input.empty())
+    // 🔹 Normalisation globale une seule fois
+    std::string normalized =
+        musical::io::normalize_to_ascii(input);
+
+    std::string_view view = normalized;
+
+    while (!view.empty())
     {
         // -------------------------------------------------
         // Slash (bass note indicator)
         // -------------------------------------------------
-        if (input.front() == '/')
+        if (view.front() == '/')
         {
             tokens.push_back({
-                TokenType::SLASH,
-                RootToken{"/"}
+                token_t::TokenType::SLASH,
+                root_token_t{"/"}
             });
 
-            input.remove_prefix(1);
+            view.remove_prefix(1);
             continue;
         }
 
         // -------------------------------------------------
-        // Root (uniquement au début ou après slash)
+        // Root (début ou après slash)
         // -------------------------------------------------
         bool expect_root =
             tokens.empty() ||
-            tokens.back().type == TokenType::SLASH;
+            tokens.back().type == token_t::TokenType::SLASH;
 
         if (expect_root)
         {
             size_t consumed =
-                musical::io::note::NoteLexer::parse_note_length(input);
+                musical::io::note::NoteLexer::parse_note_length(view);
 
             if (consumed > 0)
             {
-                std::string root = std::string(input.substr(0, consumed));
-
-                std::transform(root.begin(),
-                            root.end(),
-                            root.begin(),
-                            [](unsigned char c)
-                            {
-                                return std::tolower(c);
-                            });                
+                std::string root =
+                    std::string(view.substr(0, consumed));
 
                 tokens.push_back({
-                    TokenType::ROOT,
-                    RootToken{
-                        root
-                    }
+                    token_t::TokenType::ROOT,
+                    root_token_t{ root }
                 });
 
-                input.remove_prefix(consumed);
+                view.remove_prefix(consumed);
                 continue;
             }
         }
@@ -123,17 +83,17 @@ ChordLexer::tokenize(std::string_view input)
         // -------------------------------------------------
         // Lexeme chord (maj7, min, sus2, add11, etc.)
         // -------------------------------------------------
-        if (auto lex = match_lexeme(input))
+        if (auto lex = match_lexeme(view))
         {
             tokens.push_back({
-                TokenType::LEXEME,
-                LexemeToken{
+                token_t::TokenType::LEXEME,
+                lexeme_token_t{
                     lex->category,
                     std::string(lex->text)
                 }
             });
 
-            input.remove_prefix(lex->text.size());
+            view.remove_prefix(lex->text.size());
             continue;
         }
 
@@ -141,13 +101,13 @@ ChordLexer::tokenize(std::string_view input)
         // Unknown character
         // -------------------------------------------------
         tokens.push_back({
-            TokenType::UNKNOWN,
-            RootToken{
-                std::string(1, input.front())
+            token_t::TokenType::UNKNOWN,
+            root_token_t{
+                std::string(1, view.front())
             }
         });
 
-        input.remove_prefix(1);
+        view.remove_prefix(1);
     }
 
     return tokens;

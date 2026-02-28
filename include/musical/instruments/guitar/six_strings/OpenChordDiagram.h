@@ -1,51 +1,14 @@
 #pragma once
 
-#include <cstdint>
-#include <array>
-#include <vector>
-#include <map>
-#include <bitset>
-#include <stdexcept>
-
+#include <musical/instruments/guitar/six_strings/SixStringsDiagram.h>
 #include <musical/Core/pitch_t.h>
+#include <cstddef>
 
 namespace musical::instruments::guitar::six_strings {
 
-struct barre_t
+class OpenChordDiagram : public SixStringDiagram
 {
-    uint8_t _fret;
-    uint8_t _finger;
-    std::bitset<6> strings; // indices des cordes concernées
-};
-
-
-class ChordDiagram
-{
-
 public:
-
-    static constexpr std::size_t STRING_COUNT = 6;
-
-    enum class CAGEDShape : int8_t
-    {
-        C,
-        A,
-        G,
-        E,
-        D
-    };
-
-
-
-    enum class GuitarString : uint8_t
-    {
-        LOW_E  = 0,  
-        A      = 1,  
-        D      = 2,  
-        G      = 3,  
-        B      = 4,  
-        HIGH_E = 5   
-    };    
 
     struct string_state
     {
@@ -91,19 +54,16 @@ public:
 private:
 
     std::array<string_state, STRING_COUNT> _strings;
-    GuitarString _root_string; // index de la corde ou se trouve la tonique            
-    CAGEDShape _caged_shape;   
 
 public:
 
-    ChordDiagram(
+    OpenChordDiagram(
         const std::array<string_state, STRING_COUNT>& strings
         , GuitarString root_string
         , CAGEDShape caged_shape
     )
-        : _strings(strings)
-        , _root_string(root_string)
-        , _caged_shape(caged_shape)
+        : SixStringDiagram(root_string, caged_shape)
+        , _strings(strings)
     {
     }
 
@@ -111,25 +71,14 @@ public:
     {
         return _strings;
     }    
-    GuitarString root_string() const { return _root_string; }    
-
     musical::core::pitch_t root_pitch() const; // calculé à partir de la corde de la tonique et du fret éventuel
 
     bool needs_fret_label() const
     {
         return first_fret() > 4;
     }
-    bool is_open_chord() const
-    {
-        for (const auto& s : _strings)
-        {
-            if (s.state() == string_state::State::OPEN_STRING)
-                return true;
-        }
-        return false;
-    }
-    bool has_barre() const;
-    std::size_t first_fret() const;    
-    std::size_t nb_frets() const;
+    bool has_barre() const override;
+    std::size_t first_fret() const override;    
+    std::size_t nb_frets() const override;
 };
 } // namespace musical::instruments::guitar::six_string

@@ -15,15 +15,8 @@ void print_usage()
     std::cout <<
         "Usage:\n"
         "  chord [options] <symbol>\n\n"
-
-        "Description:\n"
-        "  Analyse et affiche des informations sur un accord musical.\n\n"
-
-        "Arguments:\n"
-        "  <symbol>    Symbole de l'accord (ex: Cmaj7, F#m7b5, Ré, Bb7, C/G)\n\n"
-
-        "Example:\n"
-        "  chord Bb7b9\n";
+        "Try:\n"
+        "  chord --help    for more information.\n";
 }
 
 
@@ -32,7 +25,11 @@ void print_usage()
 // ------------------------------------------------------------
 void print_help(const ChordCommand& cmd)
 {
-    print_usage();
+    std::cout << "Chord CLI — version 0.01\n\n";
+
+    std::cout <<
+        "Usage:\n"
+        "  chord [options] <symbol>\n";
 
     std::cout << "\nOptions:\n\n";
 

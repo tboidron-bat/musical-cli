@@ -1,7 +1,7 @@
 #pragma once
 
 #include <ostream>
-#include <musical/io/chord/input/tokens.h>
+#include <musical/io/chord/input/lexemes.h>
 
 namespace musical::core::chord
 {
@@ -12,5 +12,5 @@ namespace musical::core::chord
 
 namespace musical::io::chord
 {
-    std::ostream& operator<<(std::ostream& os, LexemeCategory cat);
+    std::ostream& operator<<(std::ostream& os, lexeme_t::Category cat);
 }

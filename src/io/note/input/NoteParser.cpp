@@ -79,7 +79,7 @@ NoteParser::parse(const std::vector<token_t>& tokens)
         return std::nullopt;
 
     // 1️⃣ Le premier token doit être un NAME
-    if (tokens[0].kind != TokenKind::NAME)
+    if (tokens[0].kind != token_t::TokenKind::NAME)
         return std::nullopt;
 
     auto name = to_name(tokens[0].text);
@@ -94,7 +94,7 @@ NoteParser::parse(const std::vector<token_t>& tokens)
     // 2️⃣ Si un second token existe → ACCIDENTAL
     if (tokens.size() == 2)
     {
-        if (tokens[1].kind != TokenKind::ACCIDENTAL)
+        if (tokens[1].kind != token_t::TokenKind::ACCIDENTAL)
             return std::nullopt;
 
         auto acc = to_accidental(tokens[1].text);

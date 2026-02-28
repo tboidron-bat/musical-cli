@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 
-#include <musical/instruments/guitar/six_strings/ChordDiagram.h>
+#include <musical/instruments/guitar/six_strings/OpenChordDiagram.h>
 #include <musical/Core/chord/ChordType.h>
 
 namespace musical::instruments::guitar::six_strings
@@ -11,9 +11,9 @@ namespace musical::instruments::guitar::six_strings
 
 using DiagramMap = std::map<
     musical::core::chord::ChordType,
-    std::vector<ChordDiagram>
+    std::vector<OpenChordDiagram>
 >;
 
-const DiagramMap& database_shape_a();
+const DiagramMap& database_open_g();
 
 } // namespace musical::instruments::guitar::six_strings

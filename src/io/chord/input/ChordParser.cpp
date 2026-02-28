@@ -4,8 +4,12 @@
 #include <musical/Core/pitch_t.h>
 #include <musical/io/note/input/NoteLexer.h>
 #include <musical/io/note/input/NoteParser.h>
+#include <musical/io/chord/output/stream.h>
 
 #include <algorithm>
+#include <iostream>
+
+//#define CHORD_PARSER_DEBUG
 
 namespace musical::io::chord
 {
@@ -41,20 +45,56 @@ static void make_aug(std::vector<IT>& iv)
 // ------------------------------------------------------------
 
 std::optional<core::chord::Chord>
-ChordParser::parse(const std::vector<Token>& tokens)
+ChordParser::parse(const std::vector<token_t>& tokens)
 {
-    if (tokens.empty())
-        return std::nullopt;
+
+#ifdef CHORD_PARSER_DEBUG    
+
+    std::cout << "\n#DEBUG ChordParser::parse(...) Tokens:\n";
+
+    for (const auto& t : tokens)
+    {
+        switch (t.type)
+        {
+            case token_t::TokenType::ROOT:
+                std::cout << "  ROOT: "
+                          << std::get<root_token_t>(t.value).text
+                          << "\n";
+                break;
+
+            case token_t::TokenType::LEXEME:
+            {
+                const auto& lex =
+                    std::get<lexeme_token_t>(t.value);
+
+                std::cout << "  LEXEME: "
+                          << lex.text
+                          << " ("
+                          << lex.category
+                          << ")\n";
+                break;
+            }
+
+            case token_t::TokenType::SLASH:
+                std::cout << "  SLASH\n";
+                break;
+
+            case token_t::TokenType::UNKNOWN:
+                std::cout << "  UNKNOWN\n";
+                break;
+        }
+    }
+#endif
 
     // --------------------------------------------------------
     // 1️⃣ ROOT
     // --------------------------------------------------------
 
-    if (tokens[0].type != TokenType::ROOT)
+    if (tokens[0].type != token_t::TokenType::ROOT)
         return std::nullopt;
 
     const auto& root_text =
-        std::get<RootToken>(tokens[0].value).text;
+        std::get<root_token_t>(tokens[0].value).text;
 
     auto note_tokens =
         musical::io::note::NoteLexer::tokenize(root_text);
@@ -82,18 +122,18 @@ ChordParser::parse(const std::vector<Token>& tokens)
     {
         const auto& t = tokens[i];
 
-        if (t.type == TokenType::SLASH)
+        if (t.type == token_t::TokenType::SLASH)
             continue; // basse alternative à gérer plus tard
 
-        if (t.type != TokenType::LEXEME)
+        if (t.type != token_t::TokenType::LEXEME)
             continue;
 
         const auto& lex =
-            std::get<LexemeToken>(t.value);
+            std::get<lexeme_token_t>(t.value);
 
         switch (lex.category)
         {
-            case LexemeCategory::TRIAD:
+            case lexeme_t::Category::TRIAD:
             {
                 if (lex.text == "m" ||
                     lex.text == "min" ||
@@ -112,7 +152,7 @@ ChordParser::parse(const std::vector<Token>& tokens)
                 break;
             }
 
-            case LexemeCategory::SEVENTH:
+            case lexeme_t::Category::SEVENTH:
             {
                 if (lex.text == "7")
                     intervals.push_back(IT::SEPTIEME_MINEURE);
@@ -121,7 +161,7 @@ ChordParser::parse(const std::vector<Token>& tokens)
                 break;
             }
 
-            case LexemeCategory::EXTENSION:
+            case lexeme_t::Category::EXTENSION:
             {
                 if (lex.text == "9")
                     intervals.push_back(IT::NEUVIEME_MAJEURE);
@@ -132,7 +172,7 @@ ChordParser::parse(const std::vector<Token>& tokens)
                 break;
             }
 
-            case LexemeCategory::ALTERATION:
+            case lexeme_t::Category::ALTERATION:
             {
                 if (lex.text == "b5")
                 {
@@ -146,7 +186,7 @@ ChordParser::parse(const std::vector<Token>& tokens)
                 break;
             }
 
-            case LexemeCategory::SUSPENSION:
+            case lexeme_t::Category::SUSPENSION:
             {
                 // supprimer tierce
                 intervals.erase(
@@ -168,7 +208,7 @@ ChordParser::parse(const std::vector<Token>& tokens)
                 break;
             }
 
-            case LexemeCategory::ADDITION:
+            case lexeme_t::Category::ADDITION:
             {
                 if (lex.text == "add9")
                     intervals.push_back(IT::NEUVIEME_MAJEURE);
@@ -177,12 +217,19 @@ ChordParser::parse(const std::vector<Token>& tokens)
                 break;
             }
 
-            case LexemeCategory::SPECIAL:
+            case lexeme_t::Category::SPECIAL:
             {
                 return std::nullopt;
             }
         }
     }
+
+    if(intervals.empty())
+    {
+        std::cerr << "Chord parsing failed\n";
+        return std::nullopt;
+    }
+
 
     // --------------------------------------------------------
     // 4️⃣ Normalisation

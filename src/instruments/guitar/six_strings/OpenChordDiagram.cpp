@@ -1,34 +1,35 @@
-#include <musical/instruments/guitar/six_strings/ChordDiagram.h>
+#include <musical/instruments/guitar/six_strings/OpenChordDiagram.h>
 #include <stdexcept>
+#include <map>
 
 namespace musical::instruments::guitar::six_strings{
 
 
 //fonction helper pour calculer la hauteur d'une corde à vide
-musical::core::pitch_t pitch_for_string(const ChordDiagram::GuitarString& _root_string) 
+musical::core::pitch_t pitch_for_string(const OpenChordDiagram::GuitarString& _root_string) 
 {
     using namespace musical::core;    
 
     switch (_root_string) // ou string.number() selon ton API
     {
-        case ChordDiagram::GuitarString::LOW_E: 
+        case OpenChordDiagram::GuitarString::LOW_E: 
             return { NoteName::E, Accidental::NONE, 2 };
-        case ChordDiagram::GuitarString::A: 
+        case OpenChordDiagram::GuitarString::A: 
             return { NoteName::A, Accidental::NONE, 2 };            
-        case ChordDiagram::GuitarString::D: 
+        case OpenChordDiagram::GuitarString::D: 
             return { NoteName::D, Accidental::NONE, 3 }; 
-        case ChordDiagram::GuitarString::G: 
+        case OpenChordDiagram::GuitarString::G: 
             return { NoteName::G, Accidental::NONE, 3 }; 
-        case ChordDiagram::GuitarString::B: 
+        case OpenChordDiagram::GuitarString::B: 
             return { NoteName::B, Accidental::NONE, 3 }; 
-        case ChordDiagram::GuitarString::HIGH_E: 
+        case OpenChordDiagram::GuitarString::HIGH_E: 
             return { NoteName::E, Accidental::NONE, 4 };
     }
 
     throw std::logic_error("Invalid guitar string index");
 }
     
-musical::core::pitch_t ChordDiagram::root_pitch() const
+musical::core::pitch_t OpenChordDiagram::root_pitch() const
 {
     using namespace musical::core;
 
@@ -51,7 +52,7 @@ musical::core::pitch_t ChordDiagram::root_pitch() const
     return pitch;
 }
 
-std::size_t ChordDiagram::first_fret() const
+std::size_t OpenChordDiagram::first_fret() const
 {
     uint8_t min_fret = 255;
     bool has_fretted = false;
@@ -72,7 +73,7 @@ std::size_t ChordDiagram::first_fret() const
     return static_cast<std::size_t>(min_fret);
 }
 
-std::size_t ChordDiagram::nb_frets() const
+std::size_t OpenChordDiagram::nb_frets() const
 {
     uint8_t min_fret = 255;
     uint8_t max_fret = 0;
@@ -91,21 +92,29 @@ std::size_t ChordDiagram::nb_frets() const
         return 0; // aucun doigt posé
     return static_cast<std::size_t>(max_fret - min_fret + 1);
 }
-bool ChordDiagram::has_barre() const
+bool OpenChordDiagram::has_barre() const
 {
-    std::map<std::pair<uint8_t,uint8_t>, int> counter;
-
-    for (const auto& s : _strings)
+    for (std::size_t i = 0; i < STRING_COUNT; ++i)
     {
-        if (s.state() == string_state::State::FRETTED)
+        const auto& a = _strings[i];
+
+        if (a.state() != string_state::State::FRETTED)
+            continue;
+
+        int count = 1;
+
+        for (std::size_t j = i + 1; j < STRING_COUNT; ++j)
         {
-            auto key = std::make_pair(s.finger(), s.fret());
-            counter[key]++;
-        }
-    }
+            const auto& b = _strings[j];
 
-    for (const auto& [key, count] : counter)
-    {
+            if (b.state() == string_state::State::FRETTED &&
+                b.fret() == a.fret() &&
+                b.finger() == a.finger())
+            {
+                count++;
+            }
+        }
+
         if (count >= 2)
             return true;
     }

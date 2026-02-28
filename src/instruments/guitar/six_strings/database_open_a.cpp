@@ -1,98 +1,77 @@
-#include <musical/instruments/guitar/six_strings/database_shape_c.h>
+#include <musical/instruments/guitar/six_strings/database_open_a.h>
 #include <musical/Core/intervals_defs.h>
 
 namespace musical::instruments::guitar::six_strings
 {
 
-const DiagramMap& database_shape_c()
+const DiagramMap& database_open_a()
 {
-    using D  = ChordDiagram;
+    using D  = OpenChordDiagram;
     using S  = D::string_state;
     using SHAPE = D::CAGEDShape;
-    using ROOT  = D::GuitarString;
     using CT = musical::core::chord::ChordType;
     using IT = musical::core::IntervalType;
 
     static const DiagramMap db =
     {
         // =================================================
-        // MAJEUR (forme C)
+        // A MAJEUR (forme A)
         // =================================================
         { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE }), {
 
-            // C
             D{{ 
                 S::muted(),
-                S::fretted(3,3),
-                S::fretted(2,2),
                 S::open_string(),
-                S::fretted(1,1),
+                S::fretted(2,1),
+                S::fretted(2,2),
+                S::fretted(2,3),
                 S::open_string()
-            }, ROOT::A, SHAPE::C}
+            }, D::GuitarString::A, SHAPE::A}
         }},
 
         // =================================================
-        // MINEUR (forme C partielle)
+        // A MINEUR (forme A)
         // =================================================
         { CT({ IT::TIERCE_MINEURE, IT::QUINTE_JUSTE }), {
 
-            // Cm (version partielle typique)
             D{{ 
                 S::muted(),
-                S::fretted(3,3),
-                S::fretted(1,1),
                 S::open_string(),
+                S::fretted(2,2),
+                S::fretted(2,3),
                 S::fretted(1,1),
-                S::muted()
-            }, ROOT::A, SHAPE::C}
+                S::open_string()
+            }, D::GuitarString::A, SHAPE::A}
         }},
 
         // =================================================
-        // DOMINANTE 7 (forme C)
+        // A DOMINANTE 7 (forme A)
         // =================================================
         { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MINEURE }), {
 
-            // C7
             D{{ 
                 S::muted(),
-                S::fretted(3,3),
+                S::open_string(),
                 S::fretted(2,2),
-                S::fretted(3,4),
-                S::fretted(1,1),
+                S::open_string(),
+                S::fretted(2,3),
                 S::open_string()
-            }, ROOT::A, SHAPE::C}
+            }, D::GuitarString::A, SHAPE::A}
         }},
 
         // =================================================
-        // MAJ7 (forme C)
-        // =================================================
-        { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MAJEURE }), {
-
-            // Cmaj7
-            D{{ 
-                S::muted(),
-                S::fretted(3,3),
-                S::fretted(2,2),
-                S::open_string(),
-                S::open_string(),
-                S::open_string()
-            }, ROOT::A, SHAPE::C}
-        }},
-
-        // =================================================
-        // m7 (forme C)
+        // A m7 (forme A)
         // =================================================
         { CT({ IT::TIERCE_MINEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MINEURE }), {
 
-            // Cm7 (version partielle typique)
             D{{ 
                 S::muted(),
-                S::fretted(3,3),
+                S::open_string(),
+                S::fretted(2,2),
+                S::open_string(),
                 S::fretted(1,1),
-                S::fretted(3,4),
-                S::fretted(1,1),
-                S::muted()
-            }, ROOT::A, SHAPE::C}
+                S::open_string()
+            }, D::GuitarString::A, SHAPE::A}
         }}
     };
 

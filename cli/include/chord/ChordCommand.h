@@ -34,7 +34,12 @@ private:
     std::optional<musical::core::chord::Chord>
     parse_chord(const std::string& symbol) const;
 
-    int show_diagrams(const musical::core::chord::Chord& chord) const;
+    int show_diagrams(
+        const musical::core::chord::Chord& chord,
+        int position = -1) const;
+
+    int dump_database() const;
+
 
     void play_chord(const musical::core::chord::Chord& chord,
                     double strum_delay_ms,

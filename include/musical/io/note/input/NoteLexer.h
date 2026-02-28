@@ -1,10 +1,14 @@
 #pragma once
 
-#include <array>
-#include <vector>
+#include <string>
 #include <string_view>
+#include <vector>
+#include <array>
 
 namespace musical::io::note
+{
+
+struct token_t
 {
     enum class TokenKind
     {
@@ -12,77 +16,84 @@ namespace musical::io::note
         ACCIDENTAL
     };
 
-    struct lexeme_t
-    {
-        std::string_view text;   // UTF-8
-        TokenKind kind;
-    };
+    TokenKind kind;
+    std::string text;   // slice de la chaîne analysée
+};
 
-    // ⚠️ Tous les littéraux sont en UTF-8 explicite
-    // ⚠️ Ordre trié du plus long au plus court pour éviter ambiguïtés
-    inline constexpr std::array<lexeme_t, 24> lexemes =
-    {
-        // =====================================================
-        // ALTÉRATIONS (LONGUES AVANT COURTES)
-        // =====================================================
+// ------------------------------------------------------------
+// Définition de lexèmes (règles)
+// ------------------------------------------------------------
+struct lexeme_def
+{
+    std::string_view text;
+    token_t::TokenKind kind;
+};
 
-        lexeme_t{ "##",  TokenKind::ACCIDENTAL },
-        lexeme_t{ "bb",  TokenKind::ACCIDENTAL },
+inline constexpr std::array<lexeme_def, 18> lexemes =
+{{
+    // --- FR (longs d'abord)
+    { "sol", token_t::TokenKind::NAME },
+    { "do",  token_t::TokenKind::NAME },
+    { "re",  token_t::TokenKind::NAME },
+    { "mi",  token_t::TokenKind::NAME },
+    { "fa",  token_t::TokenKind::NAME },
+    { "la",  token_t::TokenKind::NAME },
+    { "si",  token_t::TokenKind::NAME },
 
-        // Unicode (multi-octets UTF-8)
-        lexeme_t{ "𝄪",  TokenKind::ACCIDENTAL }, // U+1D12A (4 bytes UTF-8)
-        lexeme_t{ "𝄫",  TokenKind::ACCIDENTAL }, // U+1D12B (4 bytes UTF-8)
+    // --- Saxon
+    { "c", token_t::TokenKind::NAME },
+    { "d", token_t::TokenKind::NAME },
+    { "e", token_t::TokenKind::NAME },
+    { "f", token_t::TokenKind::NAME },
+    { "g", token_t::TokenKind::NAME },
+    { "a", token_t::TokenKind::NAME },
+    { "b", token_t::TokenKind::NAME },
 
-        lexeme_t{ "#",   TokenKind::ACCIDENTAL },
-        lexeme_t{ "b",   TokenKind::ACCIDENTAL },
+    // --- Accidentals (2 chars d'abord)
+    { "##", token_t::TokenKind::ACCIDENTAL },
+    { "bb", token_t::TokenKind::ACCIDENTAL },
+    { "#",  token_t::TokenKind::ACCIDENTAL },
+    { "b",  token_t::TokenKind::ACCIDENTAL }    
+}};
 
-        lexeme_t{ "♯",  TokenKind::ACCIDENTAL }, // U+266F (3 bytes UTF-8)
-        lexeme_t{ "♭",  TokenKind::ACCIDENTAL }, // U+266D (3 bytes UTF-8)
+/**
+ * @brief Helper permettant de détecter une note
+ *        (nom + altération optionnelle).
+ *
+ * ⚠️ L’entrée est supposée être déjà normalisée
+ *    en ASCII minuscule (via normalize_to_ascii).
+ *
+ * Cette classe :
+ *   - ne valide pas musicalement
+ *   - ne construit pas de pitch
+ *   - ne gère pas l’UTF-8
+ *
+ * Elle se contente d’identifier la structure :
+ *   NAME + ACCIDENTAL optionnel
+ */
+class NoteLexer
+{
+public:
 
-        lexeme_t{ "n",   TokenKind::ACCIDENTAL },
-        lexeme_t{ "♮",  TokenKind::ACCIDENTAL }, // U+266E (3 bytes UTF-8)
+    /**
+     * @brief Retourne la longueur (en caractères ASCII)
+     *        d'une note valide en début de chaîne.
+     *
+     * Exemple :
+     *   "c#maj7" → 2
+     *   "solbb"  → 5
+     *   "xmaj7"  → 0
+     */
+    static size_t
+    parse_note_length(std::string_view normalized_input);
 
-        // =====================================================
-        // NOMS LATINS (LONG AVANT COURT)
-        // =====================================================
+    /**
+     * @brief Découpe une note en tokens.
+     *
+     * L'entrée doit être normalisée (ASCII minuscule).
+     */
+    static std::vector<token_t>
+    tokenize(std::string_view normalized_input);
+};
 
-        lexeme_t{ "sol", TokenKind::NAME },
-        lexeme_t{ "do",  TokenKind::NAME },
-        lexeme_t{ "re",  TokenKind::NAME },
-        lexeme_t{ "mi",  TokenKind::NAME },
-        lexeme_t{ "fa",  TokenKind::NAME },
-        lexeme_t{ "la",  TokenKind::NAME },
-        lexeme_t{ "si",  TokenKind::NAME },
-
-        // =====================================================
-        // NOMS SAXONS
-        // =====================================================
-
-        lexeme_t{ "c",   TokenKind::NAME },
-        lexeme_t{ "d",   TokenKind::NAME },
-        lexeme_t{ "e",   TokenKind::NAME },
-        lexeme_t{ "f",   TokenKind::NAME },
-        lexeme_t{ "g",   TokenKind::NAME },
-        lexeme_t{ "a",   TokenKind::NAME },
-        lexeme_t{ "b",   TokenKind::NAME }
-    };
-
-    struct token_t
-    {
-        TokenKind kind;
-        std::string_view text;   // UTF-8 slice of input
-    };
-
-    class NoteLexer
-    {
-    public:
-        // Tokenize note (UTF-8 aware, byte-level deterministic scan)
-        static std::vector<token_t>
-        tokenize(std::string_view input);
-
-        // Returns number of UTF-8 bytes consumed for a valid note
-        // (NAME + optional ACCIDENTAL)
-        static size_t
-        parse_note_length(std::string_view input);
-    };
-}
+} // namespace musical::io::note

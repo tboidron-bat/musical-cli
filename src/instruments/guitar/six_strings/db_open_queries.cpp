@@ -94,29 +94,34 @@ find_all_positions(SixStringDiagram::CAGEDShape shape)
 // RANDOM
 // ============================================================
 
-// OpenChordDiagram get_random_diagram()
-// {
-//     static std::mt19937 gen(std::random_device{}());
+OpenChordDiagram get_random_diagram()
+{
+    static std::mt19937 gen(std::random_device{}());
 
-//     std::uniform_int_distribution<int> shape_dist(0, 4);
-//     auto shape = static_cast<SixStringDiagram::CAGEDShape>(shape_dist(gen));
+    std::uniform_int_distribution<int> shape_dist(0, 4);
+    auto shape =
+        static_cast<SixStringDiagram::CAGEDShape>(shape_dist(gen));
 
-//     const auto& db = database_for_shape(shape);
+    const auto& db = open_database_for_shape(shape);  // ✔ correction
 
-//     if (db.empty())
-//         throw std::runtime_error("Empty database");
+    if (db.empty())
+        throw std::runtime_error("Empty database");
 
-//     std::uniform_int_distribution<size_t> chord_dist(0, db.size() - 1);
-//     auto chord_it = std::next(db.begin(), chord_dist(gen));
+    std::uniform_int_distribution<size_t>
+        chord_dist(0, db.size() - 1);
 
-//     const auto& diagrams = chord_it->second;
+    auto chord_it =
+        std::next(db.begin(), chord_dist(gen));
 
-//     if (diagrams.empty())
-//         throw std::runtime_error("No diagrams for selected chord type");
+    const auto& diagrams = chord_it->second;
 
-//     std::uniform_int_distribution<size_t> diag_dist(0, diagrams.size() - 1);
+    if (diagrams.empty())
+        throw std::runtime_error("No diagrams for selected chord type");
 
-//     return diagrams[diag_dist(gen)];
-// }
+    std::uniform_int_distribution<size_t>
+        diag_dist(0, diagrams.size() - 1);
 
-} // namespace musical::instruments::guitar::six_strings::database_queries
+    return diagrams[diag_dist(gen)];
+}
+
+} // namespace musical::instruments::guitar::six_strings::db_open_queries

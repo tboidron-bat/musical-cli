@@ -7,7 +7,7 @@ namespace musical::core::chord {
     class Chord;
 }
 
-namespace musical::analysis::chord_name {
+namespace musical::analysis::chord {
 
     /**
      * @brief Proposition de nom pour un accord analysé.
@@ -36,7 +36,7 @@ namespace musical::analysis::chord_name {
      *  - possède déjà des intervalles relatifs
      *  - est indépendant de toute réalisation (voicing, octave, etc.)
      */
-    std::vector<candidate> find(const musical::core::chord::Chord& chord);
+    std::vector<candidate> find_name(const musical::core::chord::Chord& chord);
 
     // ─────────────────────────────
     // Analyses spécialisées
@@ -51,4 +51,4 @@ namespace musical::analysis::chord_name {
     std::vector<candidate>
     analyse_tetrade(const musical::core::chord::Chord& chord);
 
-} // namespace musical::analysis::chord_name
+} // namespace musical::analysis::chord

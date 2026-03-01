@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-namespace musical::analysis::chord_name {
+namespace musical::analysis::chord {
 
 using IT = musical::core::IntervalType;
 
@@ -14,7 +14,7 @@ using IT = musical::core::IntervalType;
 // Dispatcher
 // ============================================================
 std::vector<candidate>
-find(const core::chord::Chord& chord)
+find_name(const core::chord::Chord& chord)
 {
     if (chord.size() < 2)
         return {};
@@ -153,4 +153,4 @@ analyse_tetrade(const core::chord::Chord& chord)
     return results;
 }
 
-} // namespace musical::analysis::chord_name
+} // namespace musical::analysis::chord

@@ -3,13 +3,14 @@
 #include <cstdint>
 #include <array>
 
+#include <musical/Core/pitch_t.h>
 #include <musical/instruments/guitar/six_strings/SixStringsDiagram.h>
 
 
 namespace musical::instruments::guitar::six_strings {
 
 
-//ex:   |1|1|1|1|1| <-- relative fret 1
+//ex:   |1|1|1|1|1| <-- _base_fret
 //      | | | | | |
 //      | |2|3|4| | <-- offset
 //      | | | | | |
@@ -61,6 +62,8 @@ private:
 
     std::array<string_state, SixStringDiagram::STRING_COUNT> _strings;
 
+    uint8_t _base_fret = 0;    //
+
 
 public:
 
@@ -78,6 +81,10 @@ public:
     {
         return _strings;
     }    
+
+    void place_root(const musical::core::pitch_t& root);    
+
+    uint8_t base_fret() const { return _base_fret; }    
 
     bool has_barre() const override;
     std::size_t first_fret() const override;    

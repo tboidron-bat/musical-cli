@@ -23,6 +23,6 @@ find_all_positions(SixStringDiagram::CAGEDShape shape);
 // ------------------------------------------------------------
 // Random diagram
 // ------------------------------------------------------------
-//OpenChordDiagram get_random_diagram();
+OpenChordDiagram get_random_diagram();
 
 } // namespace musical::instruments::guitar::six_strings::db_open_queries

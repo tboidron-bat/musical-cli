@@ -5,8 +5,6 @@
 #include <musical/Core/chord/ChordType.h>
 #include <musical/instruments/guitar/six_strings/OpenChordDiagram.h>
 
-#include <musical/io/chord/output/formatter.h>
-
 #include <array>
 #include <sstream>
 #include <iostream>
@@ -41,36 +39,47 @@ static std::string to_roman(uint8_t value)
 // Dessin de la grille vide
 // ------------------------------------------------------------------
 
-static std::string draw_ascii_grid(uint8_t base_fret, uint8_t nb_frets)
-{
-    std::ostringstream oss;
+// static std::string draw_ascii_grid(uint8_t base_fret, uint8_t nb_frets)
+// {
+//     std::ostringstream oss;
 
-    // En-tête : noms des cordes
-    for (char s : {'E', 'A', 'D', 'G', 'B', 'E'})
-        oss << s << ' ';
-    oss << '\n';
+//     // En-tête : noms des cordes
+//     for (char s : {'E', 'A', 'D', 'G', 'B', 'E'})
+//         oss << s << ' ';
+//     oss << '\n';
 
-    namespace sst = musical::instruments::guitar::six_strings;
-    oss << std::string(sst::OpenChordDiagram::STRING_COUNT * 2 + 1, '-') << '\n';
+//     namespace sst = musical::instruments::guitar::six_strings;
+//     oss << std::string(sst::OpenChordDiagram::STRING_COUNT * 2 + 1, '-') << '\n';
 
-    for (uint8_t f = 0; f < nb_frets; ++f)
-    {
-        for (uint8_t c = 0; c < sst::OpenChordDiagram::STRING_COUNT; ++c)
-            oss << "| ";
+//     for (uint8_t f = 0; f < nb_frets; ++f)
+//     {
+//         for (uint8_t c = 0; c < sst::OpenChordDiagram::STRING_COUNT; ++c)
+//             oss << "| ";
 
-        if (f == 0 && base_fret > 0)
-            oss << " " << to_roman(base_fret);
+//         if (f == 0 && base_fret > 0)
+//             oss << " " << to_roman(base_fret);
 
-        oss << '\n';
-    }
+//         oss << '\n';
+//     }
 
-    return oss.str();
-}
+//     return oss.str();
+// }
 
 // ------------------------------------------------------------------
 // Rendu ASCII depuis un OpenChordDiagram
 // ------------------------------------------------------------------
-
+static std::string shape_to_string(sst::OpenChordDiagram::CAGEDShape shape)
+{
+    switch (shape)
+    {
+        case sst::OpenChordDiagram::CAGEDShape::C: return "C";
+        case sst::OpenChordDiagram::CAGEDShape::A: return "A";
+        case sst::OpenChordDiagram::CAGEDShape::G: return "G";
+        case sst::OpenChordDiagram::CAGEDShape::E: return "E";
+        case sst::OpenChordDiagram::CAGEDShape::D: return "D";
+    }
+    return "?";
+}
 std::string open_chord_diagram_to_ascii(const sst::OpenChordDiagram& diagram)
 {
     using D  = sst::OpenChordDiagram;
@@ -97,10 +106,10 @@ std::string open_chord_diagram_to_ascii(const sst::OpenChordDiagram& diagram)
         
     std::ostringstream oss;
 
-    // En-tête
-    // for (char s : {'E','A','D','G','B','E'})
-    //     oss << s << ' ';
-    // oss << '\n';
+    // 🔥 Affichage de la shape
+    oss << "[Shape "
+        << shape_to_string(diagram.shape())
+        << "]\n";    
 
     // Ligne open / muted
     for (const auto& sp : strings)

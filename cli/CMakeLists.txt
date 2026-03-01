@@ -28,6 +28,7 @@ add_executable(chord
     src/main.cpp
     src/ArgumentParser.cpp        
     src/chord/usage.cpp
+    src/chord/diagram_layout.cpp        
     src/chord/ChordCommand.cpp    
 )
 

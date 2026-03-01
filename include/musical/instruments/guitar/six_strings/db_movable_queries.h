@@ -10,6 +10,7 @@
 
 namespace musical::instruments::guitar::six_strings::db_movable_queries
 {
+
 std::vector<MovableShapeDiagram> find_movable_positions(
     const musical::core::chord::ChordType& chord_type,
     SixStringDiagram::CAGEDShape shape
@@ -17,6 +18,8 @@ std::vector<MovableShapeDiagram> find_movable_positions(
 
 std::vector<MovableShapeDiagram>
 find_all_positions(SixStringDiagram::CAGEDShape shape);
+
+MovableShapeDiagram get_random_diagram();
 
 
 } // namespace musical::instruments::guitar::six_strings::db_movable_queries

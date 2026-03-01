@@ -53,6 +53,10 @@ target_sources(musical-core
         
         
         src/instruments/guitar/six_strings/database_movable_a.cpp         
+        src/instruments/guitar/six_strings/database_movable_c.cpp         
+        src/instruments/guitar/six_strings/database_movable_d.cpp         
+        src/instruments/guitar/six_strings/database_movable_e.cpp         
+        src/instruments/guitar/six_strings/database_movable_g.cpp                                         
         src/instruments/guitar/six_strings/db_movable_queries.cpp
 
         src/io/utils/input/normalize_to_ascii.cpp                
@@ -71,7 +75,7 @@ target_sources(musical-core
         src/io/scale/scalepattern_formatter.cpp
 
         src/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.cpp    
-        src/io/instruments/guitar/six_strings/movable_chord_diagram_to_ascii.cpp    
+        src/io/instruments/guitar/six_strings/movable_shape_diagram_to_ascii.cpp    
 
         # analysis
         src/analysis/ChordAnalysis.cpp

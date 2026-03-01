@@ -8,7 +8,7 @@ namespace musical::instruments::guitar::six_strings {
 
 namespace io::guitar::six_strings {
 
-std::string movable_chord_diagram_to_ascii(
+std::string movable_shape_diagram_to_ascii(
     const musical::instruments::guitar::six_strings::MovableShapeDiagram& diagram);
 
 }

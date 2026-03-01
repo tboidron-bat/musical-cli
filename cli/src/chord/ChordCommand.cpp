@@ -1,6 +1,7 @@
 #include <chord/ChordCommand.h>
 #include <chord/Usage.h>
 #include <ArgumentParser.h>
+#include <chord/diagram_layout.h>
 
 #include <musical/io/chord/input/ChordLexer.h>
 #include <musical/io/chord/input/ChordParser.h>
@@ -9,12 +10,25 @@
 #include <musical/instruments/guitar/six_strings/db_open_queries.h>
 #include <musical/instruments/guitar/six_strings/db_movable_queries.h>
 #include <musical/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.h>
-#include <musical/io/instruments/guitar/six_strings/movable_chord_diagram_to_ascii.h>
+#include <musical/io/instruments/guitar/six_strings/movable_shape_diagram_to_ascii.h>
 
 #include <musical/audio/karplus_strong/chord_player.h>
 #include <iostream>
+#include <random>
 
 //#define CHORD_COMMAND_DEBUG
+
+#include <sys/ioctl.h>
+#include <unistd.h>
+
+static std::size_t terminal_width()
+{
+    struct winsize w{};
+    if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == 0)
+        return w.ws_col;
+
+    return 120;
+}
 
 namespace cli::chord
 {
@@ -143,20 +157,34 @@ int ChordCommand::run(int argc, char** argv)
 // ============================================================
 // Random mode
 // ============================================================
-
 int ChordCommand::handle_random() const
 {
-    // auto diagram =
-    //     guitar::six_strings::chord_diagram::database_queries::get_random_diagram();
+    static std::mt19937 gen(std::random_device{}());
+    std::uniform_int_distribution<int> dist(0, 1);
 
-    // std::cout << "Random chord:\n";
-    // std::cout
-    //     << io::instruments::guitar::six_strings::chord_diagram::to_ascii(diagram)
-    //     << "\n";
+    const bool choose_open = dist(gen) == 0;
+
+    if (choose_open)
+    {
+        const auto diagram =
+            musical::instruments::guitar::six_strings::db_open_queries::get_random_diagram();
+
+        std::cout
+            << io::guitar::six_strings::open_chord_diagram_to_ascii(diagram)
+            << "\n";
+    }
+    else
+    {
+        const auto diagram =
+            musical::instruments::guitar::six_strings::db_movable_queries::get_random_diagram();
+
+        std::cout
+            << io::guitar::six_strings::movable_shape_diagram_to_ascii(diagram)
+            << "\n";
+    }
 
     return 0;
 }
-
 
 // ============================================================
 // Symbol mode
@@ -254,14 +282,19 @@ ChordCommand::parse_chord(const std::string& symbol) const
 
 
 // ============================================================
-// Diagram display
+// DUMP DATABASE
 // ============================================================
 
 int ChordCommand::dump_database() const
 {
     using namespace musical::instruments::guitar::six_strings;
 
-    std::cout << "Dumping chord diagram database...\n\n";
+    auto width = terminal_width();    
+
+    std::cout
+        << "\nOpen chord database\n\n";
+
+    std::vector<std::string> blocks;
 
     for (int s = 0; s < 5; ++s)
     {
@@ -273,21 +306,39 @@ int ChordCommand::dump_database() const
 
         for (const auto& diagram : open_diagrams)
         {
-            std::cout
-                << io::guitar::six_strings::open_chord_diagram_to_ascii(diagram)
-                << "\n";
+            blocks.push_back(
+                io::guitar::six_strings::open_chord_diagram_to_ascii(diagram)
+            );
         }
+    }
+    std::cout
+        << cli::chord::layout_ascii_blocks(blocks, width);
+
+
+    std::cout
+        << "\nMovable shape database\n\n";
+
+
+    blocks.clear();
+    for (int s = 0; s < 5; ++s)
+    {
+        auto shape =
+            static_cast<OpenChordDiagram::CAGEDShape>(s);
 
         const auto movable_diagrams =
             db_movable_queries::find_all_positions(shape);
 
         for (const auto& diagram : movable_diagrams)
         {
-            std::cout
-                << io::guitar::six_strings::movable_chord_diagram_to_ascii(diagram)
-                << "\n";        
+            blocks.push_back(
+                io::guitar::six_strings::movable_shape_diagram_to_ascii(diagram)
+            );
         }
     }
+    std::cout
+        << cli::chord::layout_ascii_blocks(blocks, width);
+
+
     return 0;
 }
 int ChordCommand::show_diagrams
@@ -297,7 +348,11 @@ int ChordCommand::show_diagrams
 {
     using musical::instruments::guitar::six_strings::OpenChordDiagram;
 
+    auto width = terminal_width();    
+
     bool found = false;
+
+    std::vector<std::string> blocks;    
 
     for (int s = 0; s < 5; ++s)
     {
@@ -316,30 +371,34 @@ int ChordCommand::show_diagrams
 
         for (const auto& diagram : open_diagrams)
         {
-            std::cout
-                << io::guitar::six_strings::open_chord_diagram_to_ascii(diagram)
-                << "\n";
-
+            blocks.push_back(
+                io::guitar::six_strings::open_chord_diagram_to_ascii(diagram)
+            );
             found = true;
         }
 
-        const auto movable_diagrams =
+        auto movable_diagrams =
             musical::instruments::guitar::six_strings::db_movable_queries::find_movable_positions(
                 chord.type(),
                 shape
             );
 
-        for (const auto& diagram : movable_diagrams)
+        for (auto& diagram : movable_diagrams)
         {
-            std::cout
-                << io::guitar::six_strings::movable_chord_diagram_to_ascii(diagram)
-                << "\n";
+            diagram.place_root(chord.root());   
+                  
+            blocks.push_back(
+                io::guitar::six_strings::movable_shape_diagram_to_ascii(diagram)
+            );
 
             found = true;                
         }
 
-
     }
+
+    std::cout
+        << cli::chord::layout_ascii_blocks(blocks, width);
+
 
     if (!found)
     {

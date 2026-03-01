@@ -3,7 +3,6 @@
 
 namespace musical::instruments::guitar::six_strings
 {
-
 std::size_t MovableShapeDiagram::first_fret() const
 {
     uint8_t min_offset = 255;
@@ -14,41 +13,26 @@ std::size_t MovableShapeDiagram::first_fret() const
         if (s.state() == string_state::State::FRETTED_OFFSET)
         {
             has_fretted = true;
-
-            if (s.offset() < min_offset)
-                min_offset = s.offset();
+            min_offset = std::min(min_offset, s.offset());
         }
     }
 
     if (!has_fretted)
-        return 0;
+        return _base_fret;
 
-    return static_cast<std::size_t>(min_offset);
+    return static_cast<std::size_t>(_base_fret + min_offset);
 }
-
 std::size_t MovableShapeDiagram::nb_frets() const
 {
-    uint8_t min_offset = 255;
     uint8_t max_offset = 0;
-    bool has_fretted = false;
 
     for (const auto& s : _strings)
     {
         if (s.state() == string_state::State::FRETTED_OFFSET)
-        {
-            has_fretted = true;
-
-            auto off = s.offset();
-
-            if (off < min_offset) min_offset = off;
-            if (off > max_offset) max_offset = off;
-        }
+            max_offset = std::max(max_offset, s.offset());
     }
 
-    if (!has_fretted)
-        return 0;
-
-    return static_cast<std::size_t>(max_offset - min_offset + 1);
+    return max_offset + 1;    
 }
 
 bool MovableShapeDiagram::has_barre() const
@@ -80,5 +64,42 @@ bool MovableShapeDiagram::has_barre() const
 
     return false;
 }
+void MovableShapeDiagram::place_root(
+    const musical::core::pitch_t& root)
+{
+    using musical::core::pitch_t;
 
-}
+    pitch_t open_pitch;
+
+    switch (root_string())
+    {
+        case GuitarString::LOW_E:
+            open_pitch = pitch_t(core::NoteName::E, core::Accidental::NONE);
+            break;
+
+        case GuitarString::A:
+            open_pitch = pitch_t(core::NoteName::A, core::Accidental::NONE);
+            break;
+        case GuitarString::D:
+            open_pitch = pitch_t(core::NoteName::D, core::Accidental::NONE);
+            break;
+        case GuitarString::G:
+            open_pitch = pitch_t(core::NoteName::G, core::Accidental::NONE);
+            break;
+        default:
+            throw std::runtime_error("Unsupported root string");
+    }
+
+    int root_fret =
+        chromatic_index(root)- chromatic_index(open_pitch);
+
+    if (root_fret < 0)
+        root_fret += 12;
+
+    int root_offset =
+        _strings[static_cast<int>(root_string())].offset();        
+
+    int base = root_fret - root_offset;
+
+    _base_fret = base < 0 ? base +12 : base;
+}}

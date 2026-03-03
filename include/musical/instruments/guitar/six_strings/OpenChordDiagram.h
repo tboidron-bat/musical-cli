@@ -61,8 +61,9 @@ public:
         const std::array<string_state, STRING_COUNT>& strings
         , GuitarString root_string
         , CAGEDShape caged_shape
+        , uint16_t style_mask = static_cast<uint16_t>(Style::NONE)
     )
-        : SixStringDiagram(root_string, caged_shape)
+        : SixStringDiagram(root_string, caged_shape,style_mask)
         , _strings(strings)
     {
     }
@@ -81,4 +82,4 @@ public:
     std::size_t first_fret() const override;    
     std::size_t nb_frets() const override;
 };
-} // namespace musical::instruments::guitar::six_string
+} // namespace musical::instruments::guitar::six_strings

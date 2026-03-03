@@ -1,204 +1,24 @@
-.
-├── arch.txt
-├── chord.wav
-├── cli
-│   ├── CMakeLists.txt
-│   ├── include
-│   │   ├── Ansi.h
-│   │   ├── ArgumentParser.h
-│   │   ├── chord
-│   │   │   ├── ChordCommand.h
-│   │   │   ├── diagram_layout.h
-│   │   │   └── Usage.h
-│   │   ├── Command.h
-│   │   └── option_t.h
-│   └── src
-│       ├── ArgumentParser.cpp
-│       ├── chord
-│       │   ├── ChordCommand.cpp
-│       │   ├── diagram_layout.cpp
-│       │   └── usage.cpp
-│       ├── main.cpp
-│       └── scale
-│           └── scale_cmd.cpp
-├── CLI_SPEC.md
-├── CMakeLists.txt
-├── include
-│   └── musical
-│       ├── analysis
-│       │   ├── ChordAnalysis.h
-│       │   ├── ChordFunctionAnalyser.h
-│       │   ├── chord_name.h
-│       │   ├── Harmonizer.h
-│       │   └── Harmony.h
-│       ├── audio
-│       │   ├── karplus_strong
-│       │   │   └── chord_player.h
-│       │   └── wave
-│       │       └── chord_player.h
-│       ├── common
-│       │   └── musical_constants.h
-│       ├── Core
-│       │   ├── Cadence.h
-│       │   ├── chord
-│       │   │   ├── Arpeggio.h
-│       │   │   ├── Chord.h
-│       │   │   ├── ChordTypeCatalog.h
-│       │   │   ├── ChordType.h
-│       │   │   └── Factory.h
-│       │   ├── Figure.h
-│       │   ├── intervals_defs.h
-│       │   ├── Mode.h
-│       │   ├── note
-│       │   │   ├── Factory.h
-│       │   │   ├── Note.h
-│       │   │   ├── NoteService.h
-│       │   │   └── Rest.h
-│       │   ├── pitch_t.h
-│       │   ├── scale
-│       │   │   ├── scale_defs.h
-│       │   │   ├── ScaleKeyedFactory.h
-│       │   │   ├── ScaleKeyed.h
-│       │   │   ├── ScalePatternFactory.h
-│       │   │   └── ScalePattern.h
-│       │   └── Series.h
-│       ├── instruments
-│       │   └── guitar
-│       │       ├── six_strings
-│       │       │   ├── database_movable_a.h
-│       │       │   ├── database_open_a.h
-│       │       │   ├── database_open_c.h
-│       │       │   ├── database_open_d.h
-│       │       │   ├── database_open_e.h
-│       │       │   ├── database_open_g.h
-│       │       │   ├── db_movable_queries.h
-│       │       │   ├── db_open_queries.h
-│       │       │   ├── MovableShapeDiagram.h
-│       │       │   ├── OpenChordDiagram.h
-│       │       │   └── SixStringsDiagram.h
-│       │       └── Tuning.h
-│       ├── io
-│       │   ├── chord
-│       │   │   ├── input
-│       │   │   │   ├── ChordLexer.h
-│       │   │   │   ├── ChordParser.h
-│       │   │   │   └── lexemes.h
-│       │   │   └── output
-│       │   │       ├── formatter.h
-│       │   │       └── stream.h
-│       │   ├── common
-│       │   │   ├── figure_formatter.h
-│       │   │   ├── figure_mei_adapter.h
-│       │   │   └── interval_to_string.h
-│       │   ├── instruments
-│       │   │   └── guitar
-│       │   │       └── six_strings
-│       │   │           ├── movable_chord_diagram_to_ascii.h
-│       │   │           └── open_chord_diagram_to_ascii.h
-│       │   ├── note
-│       │   │   ├── input
-│       │   │   │   ├── NoteLexer.h
-│       │   │   │   └── NoteParser.h
-│       │   │   ├── output
-│       │   │   │   ├── mei_adapter.h
-│       │   │   │   ├── note_formatter.h
-│       │   │   │   └── stream.h
-│       │   │   ├── README.md
-│       │   │   └── rest_formatter.h
-│       │   ├── scale
-│       │   │   ├── scalepattern_formatter.h
-│       │   │   └── ScalePatternRepository.h
-│       │   └── utils
-│       │       └── input
-│       │           └── normalize_to_ascii.h
-│       └── ScoreElements
-│           ├── KeySignature.h
-│           ├── Measure.h
-│           └── TimeSignature.h
-├── libmusical-core.a
-├── README.md
-├── src
-│   ├── analysis
-│   │   ├── ChordAnalysis.cpp
-│   │   ├── ChordFunctionAnalyser.cpp
-│   │   ├── chord_name.cpp
-│   │   ├── Harmonizer.cpp
-│   │   └── Harmony.cpp
-│   ├── audio
-│   │   ├── karplus_strong
-│   │   │   └── chord_player.cpp
-│   │   └── wave
-│   │       └── chord_player.cpp
-│   ├── Core
-│   │   ├── Cadence.cpp
-│   │   ├── chord
-│   │   │   ├── Arpeggio.cpp
-│   │   │   ├── Chord.cpp
-│   │   │   ├── ChordTypeCatalog.cpp
-│   │   │   ├── ChordType.cpp
-│   │   │   └── Factory.cpp
-│   │   ├── Figure.cpp
-│   │   ├── Mode.cpp
-│   │   ├── note
-│   │   │   ├── Factory.cpp
-│   │   │   ├── Note.cpp
-│   │   │   ├── NoteService.cpp
-│   │   │   └── Rest.cpp
-│   │   ├── pitch_t.cpp
-│   │   └── scale
-│   │       ├── ScaleKeyed.cpp
-│   │       ├── ScaleKeyedFactory.cpp
-│   │       ├── ScalePattern.cpp
-│   │       └── ScalePatternFactory.cpp
-│   ├── instruments
-│   │   └── guitar
-│   │       ├── six_strings
-│   │       │   ├── database_maj75b.cpp
-│   │       │   ├── database_movable_a.cpp
-│   │       │   ├── database_open_a.cpp
-│   │       │   ├── database_open_c.cpp
-│   │       │   ├── database_open_d.cpp
-│   │       │   ├── database_open_e.cpp
-│   │       │   ├── database_open_g.cpp
-│   │       │   ├── db_movable_queries.cpp
-│   │       │   ├── db_open_queries.cpp
-│   │       │   ├── MovableShapeDiagram.cpp
-│   │       │   └── OpenChordDiagram.cpp
-│   │       └── Tuning.cpp
-│   ├── io
-│   │   ├── chord
-│   │   │   ├── input
-│   │   │   │   ├── ChordLexer.cpp
-│   │   │   │   └── ChordParser.cpp
-│   │   │   └── output
-│   │   │       ├── formatter.cpp
-│   │   │       └── stream.cpp
-│   │   ├── instruments
-│   │   │   └── guitar
-│   │   │       └── six_strings
-│   │   │           ├── movable_chord_diagram_to_ascii.cpp
-│   │   │           └── open_chord_diagram_to_ascii.cpp
-│   │   ├── note
-│   │   │   ├── input
-│   │   │   │   ├── NoteLexer.cpp
-│   │   │   │   └── NoteParser.cpp
-│   │   │   └── output
-│   │   │       ├── mei_adapter.cpp
-│   │   │       ├── note_formatter.cpp
-│   │   │       └── stream.cpp
-│   │   ├── scale
-│   │   │   ├── scalepattern_formatter.cpp
-│   │   │   └── ScalePatternRepository.cpp
-│   │   └── utils
-│   │       └── input
-│   │           └── normalize_to_ascii.cpp
-│   └── ScoreElements
-│       ├── KeySignature.cpp
-│       ├── Measure.cpp
-│       └── TimeSignature.cpp
-└── tests
-    ├── CMakeLists.txt
-    ├── test_chord_lexer.cpp
-    └── test_note.cpp
+Sur la branche main
+Votre branche est en avance sur 'origin/main' de 1 commit.
+  (utilisez "git push" pour publier vos commits locaux)
 
-63 directories, 139 files
+Modifications qui ne seront pas validées :
+  (utilisez "git add <fichier>..." pour mettre à jour ce qui sera validé)
+  (utilisez "git restore <fichier>..." pour annuler les modifications dans le répertoire de travail)
+	modifié :         arch.txt
+	modifié :         chord.wav
+	modifié :         cli/src/chord/ChordCommand.cpp
+	modifié :         include/musical/instruments/guitar/six_strings/MovableShapeDiagram.h
+	modifié :         include/musical/instruments/guitar/six_strings/OpenChordDiagram.h
+	modifié :         include/musical/instruments/guitar/six_strings/SixStringsDiagram.h
+	modifié :         src/instruments/guitar/six_strings/database_movable_a.cpp
+	modifié :         src/instruments/guitar/six_strings/database_movable_c.cpp
+	modifié :         src/instruments/guitar/six_strings/database_open_c.cpp
+	modifié :         src/instruments/guitar/six_strings/database_open_g.cpp
+	modifié :         src/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.cpp
+
+Fichiers non suivis:
+  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
+	include/musical/io/instruments/guitar/six_strings/stream.h
+
+aucune modification n'a été ajoutée à la validation (utilisez "git add" ou "git commit -a")

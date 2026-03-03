@@ -36,16 +36,17 @@ const MovableDiagramMap& database_movable_a()
                         S::fretted(BASE,  1)
                     },
                     SixStringDiagram::GuitarString::A,
-                    SixStringDiagram::CAGEDShape::A
+                    SixStringDiagram::CAGEDShape::A,
+                    static_cast<uint16_t>(SixStringDiagram::Style::CLASSICAL) 
                 }
             }
         },
 
         // =========================================================
         // Forme A mineure
-        // |1|1|1|1|1| <-- fret number x
-        // | | | |4| |
-        // | |2|3| | |
+        // | 1 1 1 1 1 <-- fret number x
+        // | | | | 4 |
+        // | | 2 3 | |
         // | | | | | |
         // =========================================================
 
@@ -63,17 +64,17 @@ const MovableDiagramMap& database_movable_a()
                         S::fretted(BASE,1)
                     },
                     SixStringDiagram::GuitarString::A,
-                    SixStringDiagram::CAGEDShape::A
+                    SixStringDiagram::CAGEDShape::A,
+                    static_cast<uint16_t>(SixStringDiagram::Style::CLASSICAL) 
                 }
             }
         },
 
         // =========================================================
         // Forme A7 (dominante)
-        // Forme A majeure
-        // |1|1|1|1|1| <-- fret number x
+        // | 1 1 1 1 1 <-- fret number x
         // | | | | | |
-        // | |2| |4| |
+        // | | 2 | 4 |
         // | | | | | |
         // =========================================================
         {
@@ -89,7 +90,9 @@ const MovableDiagramMap& database_movable_a()
                         S::fretted(BASE,1)
                     },
                     SixStringDiagram::GuitarString::A,
-                    SixStringDiagram::CAGEDShape::A
+                    SixStringDiagram::CAGEDShape::A,
+                    static_cast<uint16_t>(SixStringDiagram::Style::BLUES) |
+                    static_cast<uint16_t>(SixStringDiagram::Style::JAZZ)
                 }
             }
         }

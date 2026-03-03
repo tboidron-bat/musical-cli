@@ -36,10 +36,36 @@ const MovableDiagramMap& database_movable_c()
                         S::fretted(BASE + 0, 1)
                     },
                     SixStringDiagram::GuitarString::A,
-                    SixStringDiagram::CAGEDShape::C
+                    SixStringDiagram::CAGEDShape::C,
+                    static_cast<uint16_t>(SixStringDiagram::Style::CLASSICAL)
                 }
             }
-        }
+        },
+        // =========================================================
+        // Cm7 (version partielle typique)
+        // x         x 
+        // =========== 
+        // | | 1 | 1 | 
+        // | |   | | |
+        // | 3 | 4 | |
+        //
+        // =========================================================
+
+        { CT({ IT::TIERCE_MINEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MINEURE }), {
+            MSD{{ 
+                S::muted(),
+                S::fretted(BASE + 3,3),
+                S::fretted(BASE + 1,1),
+                S::fretted(BASE + 3,4),
+                S::fretted(BASE + 1,1),
+                S::muted()
+            }, 
+            SixStringDiagram::GuitarString::A,
+            SixStringDiagram::CAGEDShape::C,
+            static_cast<uint16_t>(SixStringDiagram::Style::BLUES) |
+            static_cast<uint16_t>(SixStringDiagram::Style::JAZZ)}
+        }}
+
     };
 
     return db;

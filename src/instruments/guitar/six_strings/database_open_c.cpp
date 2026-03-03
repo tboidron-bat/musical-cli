@@ -15,12 +15,17 @@ const DiagramMap& database_open_c()
 
     static const DiagramMap db =
     {
-        // =================================================
-        // MAJEUR (forme C)
-        // =================================================
+        // =========================================================
+        // C majeure
+        // x     0   0
+        // =========== 
+        // | | | | 1 |
+        // | | 2 | | |
+        // | 3 | | | |
+        // =========================================================
+
         { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE }), {
 
-            // C
             D{{ 
                 S::muted(),
                 S::fretted(3,3),
@@ -28,15 +33,24 @@ const DiagramMap& database_open_c()
                 S::open_string(),
                 S::fretted(1,1),
                 S::open_string()
-            }, ROOT::A, SHAPE::C}
+            }, 
+            ROOT::A, 
+            SHAPE::C,
+            static_cast<uint16_t>(SixStringDiagram::Style::CLASSICAL)
+        }
         }},
 
-        // =================================================
-        // MINEUR (forme C partielle)
-        // =================================================
+        // =========================================================
+        // C mineure
+        // x     0   x 
+        // =========== 
+        // | | 1 | 1 | 
+        // | | | | | |
+        // | 3 | | | 3 
+        //   
+        // =========================================================
         { CT({ IT::TIERCE_MINEURE, IT::QUINTE_JUSTE }), {
 
-            // Cm (version partielle typique)
             D{{ 
                 S::muted(),
                 S::fretted(3,3),
@@ -44,12 +58,23 @@ const DiagramMap& database_open_c()
                 S::open_string(),
                 S::fretted(1,1),
                 S::muted()
-            }, ROOT::A, SHAPE::C}
+            }, 
+            ROOT::A, 
+            SHAPE::C,
+            static_cast<uint16_t>(SixStringDiagram::Style::CLASSICAL)
+            }
         }},
 
-        // =================================================
-        // DOMINANTE 7 (forme C)
-        // =================================================
+        // =========================================================
+        // C DOMINANTE 7
+        // x         0 
+        // =========== 
+        // | | | | 1 | 
+        // | | 2 | | |
+        // | 3 | 3 | |
+        //
+        // =========================================================
+
         { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MINEURE }), {
 
             // C7
@@ -60,12 +85,24 @@ const DiagramMap& database_open_c()
                 S::fretted(3,4),
                 S::fretted(1,1),
                 S::open_string()
-            }, ROOT::A, SHAPE::C}
-        }},
+            }, 
+            ROOT::A, 
+            SHAPE::C,
+            static_cast<uint16_t>(SixStringDiagram::Style::BLUES) |
+            static_cast<uint16_t>(SixStringDiagram::Style::JAZZ)
+            }
+         }},    
 
-        // =================================================
-        // MAJ7 (forme C)
-        // =================================================
+        // =========================================================
+        // CMAJ7 
+        // x     0 0 0 
+        // =========== 
+        // | | | | | | 
+        // | | 2 | | |
+        // | 3 | | | |
+        //
+        // =========================================================
+
         { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MAJEURE }), {
 
             // Cmaj7
@@ -76,24 +113,14 @@ const DiagramMap& database_open_c()
                 S::open_string(),
                 S::open_string(),
                 S::open_string()
-            }, ROOT::A, SHAPE::C}
+            }, 
+            ROOT::A, 
+            SHAPE::C,
+            static_cast<uint16_t>(SixStringDiagram::Style::BLUES) |
+            static_cast<uint16_t>(SixStringDiagram::Style::JAZZ) |
+            static_cast<uint16_t>(SixStringDiagram::Style::FUNK)}
         }},
 
-        // =================================================
-        // m7 (forme C)
-        // =================================================
-        { CT({ IT::TIERCE_MINEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MINEURE }), {
-
-            // Cm7 (version partielle typique)
-            D{{ 
-                S::muted(),
-                S::fretted(3,3),
-                S::fretted(1,1),
-                S::fretted(3,4),
-                S::fretted(1,1),
-                S::muted()
-            }, ROOT::A, SHAPE::C}
-        }}
     };
 
     return db;

@@ -7,6 +7,7 @@
 #include <musical/io/chord/input/ChordParser.h>
 #include <musical/io/chord/output/stream.h>
 #include <musical/io/note/output/stream.h>
+#include <musical/io/instruments/guitar/six_strings/stream.h>
 #include <musical/instruments/guitar/six_strings/db_open_queries.h>
 #include <musical/instruments/guitar/six_strings/db_movable_queries.h>
 #include <musical/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.h>
@@ -292,7 +293,7 @@ int ChordCommand::dump_database() const
     auto width = terminal_width();    
 
     std::cout
-        << "\nOpen chord database\n\n";
+        << "[Open chord database]\n\n";
 
     std::vector<std::string> blocks;
 
@@ -304,15 +305,24 @@ int ChordCommand::dump_database() const
         const auto open_diagrams =
             db_open_queries::find_all_positions(shape);
 
+	
+        std::cout << ">> Shape " << shape << ": " << std::endl;
+        //std::cout << std::string(width, '_') << std::endl;        
+
         for (const auto& diagram : open_diagrams)
         {
             blocks.push_back(
                 io::guitar::six_strings::open_chord_diagram_to_ascii(diagram)
             );
         }
+
+        std::cout
+            << cli::chord::layout_ascii_blocks(blocks, width);
+        std::cout << std::string(width, '_') << std::endl;        
+        std::cout << std::endl;
+
+        blocks.clear();
     }
-    std::cout
-        << cli::chord::layout_ascii_blocks(blocks, width);
 
 
     std::cout

@@ -38,16 +38,33 @@ public:
         HIGH_E = 5
     };
 
+    enum class Style : uint16_t
+    {
+        NONE        = 0,
+        CLASSICAL   = 1 << 0,
+        FLAMENCO    = 1 << 1,
+        ROCK        = 1 << 2,
+        JAZZ        = 1 << 3,
+        BLUES       = 1 << 4,
+        FUNK        = 1 << 5,
+        AMBIENT     = 1 << 6,
+        PINKFLOYDIAN = 1 << 7,
+        BRANDXIAN   = 1 << 8,
+    };    
+
 protected:
     GuitarString _root_string; // index de la corde ou se trouve la tonique            
     CAGEDShape _shape;
+    uint16_t _style_mask = static_cast<uint16_t>(Style::NONE); // masque de styles (bitset) pour lesquels ce diagramme est pertinent
 
     SixStringDiagram(
         GuitarString root,
-        CAGEDShape shape
+        CAGEDShape shape,
+        uint16_t style_mask = static_cast<uint16_t>(Style::NONE)
     )
         : _root_string(root),
-          _shape(shape)
+          _shape(shape),
+          _style_mask(style_mask)
     {}
 
     virtual ~SixStringDiagram() = default;    
@@ -60,5 +77,18 @@ protected:
 public:
     GuitarString root_string() const { return _root_string; }
     CAGEDShape shape() const { return _shape; }
+    
+    bool has_style(Style s) const
+    {
+        return (_style_mask & static_cast<uint16_t>(s)) != 0;
+    }
+    bool has_any_style(uint16_t mask) const
+    {
+        return (_style_mask & mask) != 0;
+    }    
+    uint16_t style_mask() const
+    {
+        return _style_mask;
+    }    
 };
 }

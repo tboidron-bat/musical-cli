@@ -30,7 +30,7 @@ const DiagramMap& database_open_a()
         }},
 
         // =================================================
-        // A MINEUR (forme A)
+        // A MINEUR 
         // =================================================
         { CT({ IT::TIERCE_MINEURE, IT::QUINTE_JUSTE }), {
 
@@ -45,7 +45,13 @@ const DiagramMap& database_open_a()
         }},
 
         // =================================================
-        // A DOMINANTE 7 (forme A)
+        // A DOMINANTE 7 
+        // x 0   0   0 
+        // ===========
+        // | | | | | | 
+        // | | 2 | 3 | 
+        // | | | | | | 
+        // | | | | | | 
         // =================================================
         { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE, IT::SEPTIEME_MINEURE }), {
 

@@ -74,7 +74,7 @@ target_sources(musical-core
                 
         src/io/scale/scalepattern_formatter.cpp
 
-        src/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.cpp    
+        src/io/instruments/guitar/six_strings/stream_diagram.cpp    
         src/io/instruments/guitar/six_strings/movable_shape_diagram_to_ascii.cpp    
 
         # analysis

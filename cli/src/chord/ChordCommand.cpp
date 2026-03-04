@@ -8,9 +8,10 @@
 #include <musical/io/chord/output/stream.h>
 #include <musical/io/note/output/stream.h>
 #include <musical/io/instruments/guitar/six_strings/stream.h>
+#include <musical/io/instruments/guitar/six_strings/stream_diagram.h>
 #include <musical/instruments/guitar/six_strings/db_open_queries.h>
 #include <musical/instruments/guitar/six_strings/db_movable_queries.h>
-#include <musical/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.h>
+//#include <musical/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.h>
 #include <musical/io/instruments/guitar/six_strings/movable_shape_diagram_to_ascii.h>
 
 #include <musical/audio/karplus_strong/chord_player.h>
@@ -167,12 +168,10 @@ int ChordCommand::handle_random() const
 
     if (choose_open)
     {
-        const auto diagram =
-            musical::instruments::guitar::six_strings::db_open_queries::get_random_diagram();
-
-        std::cout
-            << io::guitar::six_strings::open_chord_diagram_to_ascii(diagram)
+        std::cout 
+            << musical::instruments::guitar::six_strings::db_open_queries::get_random_diagram() 
             << "\n";
+
     }
     else
     {
@@ -311,9 +310,9 @@ int ChordCommand::dump_database() const
 
         for (const auto& diagram : open_diagrams)
         {
-            blocks.push_back(
-                io::guitar::six_strings::open_chord_diagram_to_ascii(diagram)
-            );
+            std::ostringstream oss;
+            oss << diagram;
+            blocks.push_back(oss.str());
         }
 
         std::cout
@@ -381,9 +380,9 @@ int ChordCommand::show_diagrams
 
         for (const auto& diagram : open_diagrams)
         {
-            blocks.push_back(
-                io::guitar::six_strings::open_chord_diagram_to_ascii(diagram)
-            );
+            std::ostringstream oss;
+            oss << diagram;
+            blocks.push_back(oss.str());
             found = true;
         }
 

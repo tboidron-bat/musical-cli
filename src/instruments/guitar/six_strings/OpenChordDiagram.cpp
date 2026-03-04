@@ -51,7 +51,10 @@ musical::core::pitch_t OpenChordDiagram::root_pitch() const
 
     return pitch;
 }
-
+/*
+    retourne la frette la plus basse utilisée dans le diagramme, 
+    ou 0 si aucune frette n'est utilisée
+*/
 std::size_t OpenChordDiagram::first_fret() const
 {
     uint8_t min_fret = 255;

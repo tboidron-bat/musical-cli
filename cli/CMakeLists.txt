@@ -26,8 +26,7 @@ target_include_directories(mscale
 # =========================
 add_executable(chord
     src/main.cpp
-    src/ArgumentParser.cpp        
-    src/chord/usage.cpp
+    src/command_option.cpp
     src/chord/diagram_layout.cpp        
     src/chord/ChordCommand.cpp    
 )

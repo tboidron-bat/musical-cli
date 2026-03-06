@@ -1,6 +1,7 @@
 #include <chord/ChordCommand.h>
 #include <chord/Usage.h>
-#include <ArgumentParser.h>
+#include <command_option.h>
+
 #include <chord/diagram_layout.h>
 
 #include <musical/io/chord/input/ChordLexer.h>
@@ -11,7 +12,6 @@
 #include <musical/io/instruments/guitar/six_strings/stream_diagram.h>
 #include <musical/instruments/guitar/six_strings/db_open_queries.h>
 #include <musical/instruments/guitar/six_strings/db_movable_queries.h>
-//#include <musical/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.h>
 #include <musical/io/instruments/guitar/six_strings/movable_shape_diagram_to_ascii.h>
 
 #include <musical/audio/karplus_strong/chord_player.h>
@@ -34,132 +34,171 @@ static std::size_t terminal_width()
 
 namespace cli::chord
 {
-const std::vector<cli::option_t>&
-ChordCommand::options() const
+ChordCommand::ChordCommand()
 {
-    static const std::vector<cli::option_t> opts =
-    {
-        {
-            "--diagram",
-            "-d",
-            "Show chord diagram.\n"
-            "If <value> (1–5) is provided, show only that CAGED position.",
-            true,
-            true,
-            1,
-            std::vector<std::string>{ "1","2","3","4","5" }
-        },
-        {
-            "--random",
-            "-r",
-            "Show a completely random chord.",
-            false,
-            false,
-            0,
-            {}
-        },
-        {
-            "--play",
-            "",
-            "Play the chord using Karplus-Strong guitar synthesis.\n"
-            "Usage:\n"
-            "  --play                 (simultaneous attack)\n"
-            "  --play <delay_ms>\n"
-            "  --play <delay_ms> <downstroke>\n"
-            "\n"
-            "Examples:\n"
-            "  --play\n"
-            "  --play 15\n"
-            "  --play 20 false\n",
-            true,   // accepte des valeurs (0 à 2)
-            true,   // valeurs optionnelles
-            2,
-            {}
-        },
-        {
-            "--difficulty",
-            "",
-            "Filter diagrams by difficulty level (1–3).\n"
-            "Requires --diagram.",
-            true,
-            false,
-            1,
-            std::vector<std::string>{ "1","2","3" }
-        },
-        {
-            "--dump-db",
-            "",
-            "Dump all chord diagrams stored in the database.",
-            false,
-            false,
-            0,
-            {}
-        },        
-        {
-            "--tuning",
-            "",
-            "Guitar tuning to use for diagram rendering.\n"
-            "Supported tunings:\n"
-            "standard   (E A D G B E)\n"
-            "dropd      (D A D G B E)\n"
-            "Default: standard.\n"
-            "Requires --diagram.",
-            true,
-            false,
-            1,
-            std::vector<std::string>{ "standard","dropd" }
-        }
-    };
+    add_option(
+        static_cast<uint8_t>(OptionId::HELP),
+        "help",
+        "h",
+        "Show help message");
 
-    return opts;
-}    
+    auto& diagram = add_option(
+        static_cast<uint8_t>(OptionId::DIAGRAM),
+        "diagram",
+        "d",
+        "Show chord diagram");
 
-// ============================================================
-// Entry point
-// ============================================================
+    diagram.add_argument({
+        cli::command::option::argument_t::Type::INT,
+        "position",
+        "CAGED position (1–5)"
+    });
+
+    //std::vector<std::string>{ "1","2","3","4","5" }
+
+    auto& random = add_option(
+        static_cast<uint8_t>(OptionId::RANDOM),
+        "random",
+        "r",
+        "Show a completely random chord");
+
+    random.add_argument({
+        cli::command::option::argument_t::Type::INT,
+        "count",
+        "number of chord to generate"
+        });
+
+
+    auto& play = add_option(
+        static_cast<uint8_t>(OptionId::PLAY),
+        "play",
+        "",
+        "Play the chord using Karplus-Strong guitar synthesis");
+
+    play.add_argument({
+        cli::command::option::argument_t::Type::INT,
+        "delay",
+        "<delay_ms>"
+        });
+
+    play.add_argument({
+        cli::command::option::argument_t::Type::INT,
+        "downstroke",
+        "<downstroke>"
+        });
+
+        //  "Usage:\n"
+        //  "  --play                 (simultaneous attack)\n"
+        //  "  --play <delay_ms> <downstroke>\n"
+        //  "\n"
+        //  "Examples:\n"
+        //  "  --play\n"
+        //  "  --play 15\n"
+        //  "  --play 20 false\n",
+
+    auto& difficulty = add_option(        
+        static_cast<uint8_t>(OptionId::DIFFICULTY),        
+        "difficulty",
+        "",
+        "Filter diagrams by difficulty level (1–3)");
+        //"Requires --diagram.",        
+
+    difficulty.add_argument({
+        cli::command::option::argument_t::Type::INT,
+        "level",
+        "1, 2, 3"
+        });
+
+    add_option( 
+        static_cast<uint8_t>(OptionId::DUMP_DB),                      
+        "dump-db",
+        "",
+        "Dump all chord diagrams stored in the database");
+
+    auto& tuning = add_option(    
+        static_cast<uint8_t>(OptionId::TUNING),            
+        "tuning",
+        "",
+        "Guitar tuning to use for diagram rendering");
+    //"Requires --diagram.",        
+
+    tuning.add_argument({
+        cli::command::option::argument_t::Type::STRING,
+        "",
+        "standard, dropd"
+        });
+
+        // "Supported tunings:\n"
+        // "standard   (E A D G B E)\n"
+        // "dropd      (D A D G B E)\n"
+        // "Default: standard.\n"
+}
+
+// int ChordCommand::run(int argc, char** argv)
+// {
+//     for(auto& opt : _options)
+//     {
+//         if(opt.parse(argc, argv))
+//             return opt.execute();
+//     }
+
+//     // comportement par défaut
+// }
 
 int ChordCommand::run(int argc, char** argv)
 {
-    cli::globalconfig_t global =
-        cli::ArgumentParser::parse(argc, argv);
-
-    if (global.help)
+    // 1. parsing des options
+    for(auto& opt : _options)
     {
-        print_help(*this);
+        if(opt.parse(argc, argv))
+            _options_bitmask |= static_cast<OptionId>(opt.id());
+    }
+
+    // 2. options sans symbole
+    if(has_option(OptionId::HELP))
+    {
+        std::cout << get_help();
         return 0;
     }
+    if(has_option(OptionId::DUMP_DB))
+        return handle_option_dump_database();
 
-    if (global.version)
-    {
-        std::cout << "chord 0.01\n";
-        return 0;
-    }
+    if(has_option(OptionId::RANDOM))
+        return handle_option_random();
 
-    if (global.options.count("--dump-db"))
+    // 3. symbole d'accord requis
+    if(argc < 2)
     {
-        return dump_database();
-    }    
-
-    if (global.options.count("--random") ||
-        global.options.count("-r"))
-    {
-        return handle_random();
-    }
-
-    if (global.positional_args.empty())
-    {
-        print_usage();
+        std::cout << get_usage();
         return 1;
     }
 
-    return handle_symbol(global.positional_args.front(), global);
-}
+    auto chord = parse_chord(argv[1]);
 
+    if(!chord)
+    {
+        std::cerr << "Invalid chord symbol\n";
+        return 1;
+    }
 
-// ============================================================
+    // 4. options avec symbole
+
+    if(has_option(OptionId::DIAGRAM))
+        return handle_option_show_diagrams(*chord);
+
+    if(has_option(OptionId::PLAY))
+    {
+        handle_option_play(*chord);
+        return 0;
+    }
+
+    // 5. comportement par défaut
+    std::cout << *chord << "\n";
+    return 0;
+}// ============================================================
 // Random mode
 // ============================================================
-int ChordCommand::handle_random() const
+int ChordCommand::handle_option_random() const
 {
     static std::mt19937 gen(std::random_device{}());
     std::uniform_int_distribution<int> dist(0, 1);
@@ -171,7 +210,6 @@ int ChordCommand::handle_random() const
         std::cout 
             << musical::instruments::guitar::six_strings::db_open_queries::get_random_diagram() 
             << "\n";
-
     }
     else
     {
@@ -184,86 +222,11 @@ int ChordCommand::handle_random() const
     }
 
     return 0;
+
 }
-
-// ============================================================
-// Symbol mode
-// ============================================================
-
-int ChordCommand::handle_symbol(
-    const std::string& symbol,
-    const cli::globalconfig_t& global) const
-{
-    auto chord_opt = parse_chord(symbol);
-
-    if (!chord_opt)
-        return 1;
-
-    const auto& chord = *chord_opt;
-
-    std::cout << chord << "\n";
-
-    // ---- PLAY
-    auto it = global.options.find("--play");
-
-    if (it != global.options.end())
-    {
-        double strum_delay = 0.0;
-        bool downstroke = true;
-
-        const auto& values = it->second;
-
-        if (values.size() >= 1)
-        {
-            try
-            {
-                strum_delay = std::stod(values[0]);
-            }
-            catch (...)
-            {
-                std::cerr << "--play expects a numeric delay\n";
-                return 1;
-            }
-        }
-        if (values.size() >= 2)
-            downstroke = (values[1] == "true");
-
-        play_chord(chord, strum_delay, downstroke);
-    }
-
-
-    auto it_d = global.options.find("--diagram");
-    if (it_d == global.options.end())
-        it_d = global.options.find("-d");
-
-    if (it_d != global.options.end())
-    {
-        const auto& values = it_d->second;
-
-        if (values.empty())
-        {
-            return show_diagrams(chord, -1); // toutes positions
-        }
-
-        try
-        {
-            int position = std::stoi(values[0]);
-            return show_diagrams(chord, position);
-        }
-        catch (...)
-        {
-            std::cerr << "Invalid diagram position\n";
-            return 1;
-        }
-    }    
-    return 0;
-}
-
-
-// ============================================================
+// _____________________________________________________________
 // Parse chord
-// ============================================================
-
+// _____________________________________________________________
 std::optional<musical::core::chord::Chord>
 ChordCommand::parse_chord(const std::string& symbol) const
 {
@@ -281,11 +244,11 @@ ChordCommand::parse_chord(const std::string& symbol) const
 }
 
 
-// ============================================================
+// _____________________________________________________________
 // DUMP DATABASE
-// ============================================================
+// _____________________________________________________________
 
-int ChordCommand::dump_database() const
+int ChordCommand::handle_option_dump_database() const
 {
     using namespace musical::instruments::guitar::six_strings;
 
@@ -350,12 +313,28 @@ int ChordCommand::dump_database() const
 
     return 0;
 }
-int ChordCommand::show_diagrams
-    (
-    const musical::core::chord::Chord& chord,
-    int position) const
+int ChordCommand::handle_option_show_diagrams(
+    const musical::core::chord::Chord& chord)
 {
     using musical::instruments::guitar::six_strings::OpenChordDiagram;
+
+    int position = -1;
+
+    if(auto* opt = find_option(OptionId::DIAGRAM))
+    {
+        if(opt->argument_count() >= 1 && !opt->value(0).empty())
+        {
+            try
+            {
+                position = std::stoi(opt->value(0));
+            }
+            catch(...)
+            {
+                std::cerr << "Invalid diagram position\n";
+                return 1;
+            }
+        }
+    }    
 
     auto width = terminal_width();    
 
@@ -404,29 +383,87 @@ int ChordCommand::show_diagrams
         }
 
     }
-
     std::cout
         << cli::chord::layout_ascii_blocks(blocks, width);
-
 
     if (!found)
     {
         std::cerr << "No diagram found for this chord formula\n";
         return 1;
     }
-
     return 0;
 }
 
-void ChordCommand::play_chord(
-    const musical::core::chord::Chord& chord,
-    double strum_delay_ms,
-    bool downstroke) const
+void ChordCommand::handle_option_play(
+    const musical::core::chord::Chord& chord)
 {
+    double strum_delay_ms = 0.0;
+    bool downstroke = true;
+
+    if(auto* opt = find_option(OptionId::PLAY))
+    {
+        try
+        {
+            if(opt->argument_count() >= 1 && !opt->value(0).empty())
+                strum_delay_ms = std::stod(opt->value(0));
+
+            if(opt->argument_count() >= 2 && !opt->value(1).empty())
+                downstroke = (opt->value(1) == "true");
+        }
+        catch(...)
+        {
+            std::cerr << "Invalid arguments for --play\n";
+            return;
+        }
+    }
+
     std::cout << "Playing chord: " << chord << "\n";
 
-    musical::audio::karplus_strong::ChordPlayer::play(chord,strum_delay_ms,downstroke);
-
+    musical::audio::karplus_strong::ChordPlayer::play(
+        chord,
+        strum_delay_ms,
+        downstroke
+    );
 }
 
+std::string ChordCommand::get_name() const {
+
+    return "chord";
+}
+
+std::string ChordCommand::get_description() const
+{
+    return "Chord exploration tool for guitar diagrams and synthesis.";
+}
+
+std::string ChordCommand::get_usage() const
+{
+    std::ostringstream oss;
+
+    oss << "Usage:\n";
+    oss << "  chord [options] <symbol>\n\n";
+    oss << "Try:\n";
+    oss << "  chord --help\n";
+
+    return oss.str();
+}
+
+std::string ChordCommand::get_help() const
+{
+    std::ostringstream oss;
+
+    oss << "Command: " << get_name() << "\n";
+    oss << get_description() << "\n\n";
+
+    oss << get_usage() << "\n";
+
+    oss << "Options:\n";
+
+    for(const auto& opt : _options)
+    {
+        oss << "  " << opt << "\n";
+    }
+
+    return oss.str();
+}
 } // namespace cli::chord

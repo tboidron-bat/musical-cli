@@ -1,0 +1,17 @@
+cadence C ii V I --diagram --play
+cadence C --explain
+    Dm7 : ii (subdominant)
+    G7  : V  (dominant)
+    Cmaj7 : I (tonic)
+
+cadence C --random 4
+→ progression cohérente dans la tonalité.
+
+cadence C ii V I --play
+
+
+cadence C ii V I --diagram
+
+cadence C --style jazz
+
+cadence C I vi ii V I

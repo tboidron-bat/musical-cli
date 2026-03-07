@@ -29,6 +29,13 @@ add_executable(chord
     src/command_option.cpp
     src/chord/diagram_layout.cpp        
     src/chord/ChordCommand.cpp    
+    src/chord/help_option.cpp    
+    src/chord/diagram_option.cpp
+    src/chord/difficulty_option.cpp
+    src/chord/dumpdb_option.cpp
+    src/chord/play_option.cpp
+    src/chord/random_option.cpp                
+    src/chord/tuning_option.cpp                        
 )
 
 target_link_libraries(chord

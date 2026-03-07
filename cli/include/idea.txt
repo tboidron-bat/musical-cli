@@ -1,0 +1,6 @@
+pouvoir gerer accord multiple :
+ex : >chord Cmaj7 G7 Am7 --play
+ou
+     >chord Cmaj7 G7 Am7 Fmaj7 --play
+ou
+     >chord random 4 --play

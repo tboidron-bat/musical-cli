@@ -2,42 +2,43 @@
 
 #include <vector>
 #include <string>
-#include <option_t.h>
+#include <memory>
+
 #include <command_option.h>
 
 namespace cli
 {
-
 class Command
 {
 public:
     virtual ~Command() = default;
 
-    virtual std::string get_name() const = 0;
-    virtual std::string get_description() const = 0;    
-    virtual std::string get_usage() const = 0;        
-    virtual std::string get_help() const = 0;            
-
     virtual int run(int argc, char** argv) = 0;
 
-protected:
+protected:   
+    std::vector<std::unique_ptr<cli::command::option>> _options;    
 
-    std::vector<cli::command::option> _options;    
+public:
 
-    cli::command::option& add_option(
-        uint8_t id,
-        std::string name,
-        std::string short_name,
-        std::string description)
-    {
-        _options.emplace_back(
-            id,
-            std::move(name),
-            std::move(short_name),
-            std::move(description));
+    // cli::command::option& add_short_option(
+    //     uint8_t id,
+    //     std::string name,
+    //     std::string short_name,
+    //     std::string description)
+    // {
+    //     _options.emplace_back(
+    //         id,
+    //         std::move(name),
+    //         std::move(short_name),
+    //         std::move(description));
 
-        return _options.back();
-    }    
+    //     return _options.back();
+    // }    
+
+public:
+    virtual void print_usage() const = 0;        
+    virtual void print_help() const = 0;   
+    virtual void print_name() const = 0;                 
 };
 
 }

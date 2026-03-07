@@ -1,149 +1,117 @@
 #include <command_option.h>
+
 #include <stdexcept>
+#include <string>
 
 namespace cli::command
 {
-bool option::parse(int argc, char** argv)
+
+bool option::match_parameter(
+    const parameter_t& param,
+    std::string_view value)
+{
+    if(value.empty())
+        return false;
+
+    if(value.starts_with("-"))
+        return false;
+
+    try
+    {
+        switch(param._type)
+        {
+            case parameter_t::Type::INT:
+            {
+                std::stoi(std::string(value));
+                return true;
+            }
+
+            case parameter_t::Type::DOUBLE:
+            {
+                std::stod(std::string(value));
+                return true;
+            }
+
+            case parameter_t::Type::CHAR:
+            {
+                return value.size() == 1;
+            }
+
+            case parameter_t::Type::STRING:
+            {
+                return true;
+            }
+        }
+    }
+    catch(...)
+    {
+        return false;
+    }
+
+    return false;
+}
+
+
+size_t option::parse_parameters(
+    int argc,
+    char** argv,
+    int start_index)
+{
+    size_t parsed = 0;
+
+    for(size_t k = 0; k < _parameters.size(); ++k)
+    {
+        int arg_index = start_index + k;
+
+        if(arg_index >= argc)
+            break;
+
+        std::string_view candidate = argv[arg_index];
+
+        if(!match_parameter(_parameters[k], candidate))
+            break;
+
+        _parameters[k]._value = candidate;
+        _parameters[k]._provided = true;
+
+        ++parsed;
+    }
+
+    return parsed;
+}
+
+
+bool option::parse(
+    int argc,
+    char** argv)
 {
     for(int i = 1; i < argc; ++i)
     {
-        std::string arg = argv[i];
+        std::string_view arg = argv[i];
 
-        bool match = false;
-
-        if(arg == "--" + _name)
-            match = true;
-
-        if(!_short_name.empty() && arg == "-" + _short_name)
-            match = true;
+        bool match =
+            arg == "--" + _name ||
+            (!_short_name.empty() && arg == "-" + _short_name);
 
         if(!match)
             continue;
 
-        // option trouvée
+        _enabled = true;
 
-        if(_arguments.empty())
-            return true;
+        size_t consumed =
+            parse_parameters(argc, argv, i + 1);
 
-        // lire les valeurs attendues
-        for(std::size_t k = 0; k < _arguments.size(); ++k)
-        {
-            if(i + 1 >= argc)
-                throw std::runtime_error(
-                    "Missing value for option --" + _name
-                );
-
-            _arguments[k]._value = argv[++i];
-        }
+        i += consumed;
 
         return true;
     }
 
     return false;
 }
+
+
 std::string option::print_usage() const
 {
-    std::string result;
-
-    result += "--" + _name;
-
-    if(!_short_name.empty())
-        result += " (-" + _short_name + ")";
-
-    for(const auto& arg : _arguments)
-        result += " <" + arg._name + ">";
-
-    result += "\n";
-    result += "  " + _description + "\n";
-
-    for(const auto& arg : _arguments)
-        result += "    " + arg._description + "\n";
-
-    return result;
+    return {};
 }
-} //namespace cli::command 
-
-// const std::vector<cli::option_t>&
-// ChordCommand::options() const
-// {
-//     static const std::vector<cli::option_t> opts =
-//     {
-        // {
-        //     "--diagram",
-        //     "-d",
-        //     "Show chord diagram.\n"
-        //     "If <value> (1–5) is provided, show only that CAGED position.",
-        //     true,
-        //     true,
-        //     1,
-        //     std::vector<std::string>{ "1","2","3","4","5" }
-        // },
-        // {
-        //     "--random",
-        //     "-r",
-        //     "Show a completely random chord.",
-        //     false,
-        //     false,
-        //     0,
-        //     {}
-        // },
-        // {
-        //     "--play",
-        //     "",
-        //     "Play the chord using Karplus-Strong guitar synthesis.\n"
-        //     "Usage:\n"
-        //     "  --play                 (simultaneous attack)\n"
-        //     "  --play <delay_ms>\n"
-        //     "  --play <delay_ms> <downstroke>\n"
-        //     "\n"
-        //     "Examples:\n"
-        //     "  --play\n"
-        //     "  --play 15\n"
-        //     "  --play 20 false\n",
-        //     true,   // accepte des valeurs (0 à 2)
-        //     true,   // valeurs optionnelles
-        //     2,
-        //     {}
-        // },
-        // {
-        //     "--difficulty",
-        //     "",
-        //     "Filter diagrams by difficulty level (1–3).\n"
-        //     "Requires --diagram.",
-        //     true,
-        //     false,
-        //     1,
-        //     std::vector<std::string>{ "1","2","3" }
-        // },
-        // {
-        //     "--dump-db",
-        //     "",
-        //     "Dump all chord diagrams stored in the database.",
-        //     false,
-        //     false,
-        //     0,
-        //     {}
-        // },        
-        // {
-        //     "--tuning",
-        //     "",
-        //     "Guitar tuning to use for diagram rendering.\n"
-        //     "Supported tunings:\n"
-        //     "standard   (E A D G B E)\n"
-        //     "dropd      (D A D G B E)\n"
-        //     "Default: standard.\n"
-        //     "Requires --diagram.",
-        //     true,
-        //     false,
-        //     1,
-        //     std::vector<std::string>{ "standard","dropd" }
-        // }
-    //};
-
-    //return opts;
-//}    
-
-
-
-
-
+} // namespace cli::command

@@ -1,24 +1,34 @@
-Sur la branche main
-Votre branche est en avance sur 'origin/main' de 1 commit.
-  (utilisez "git push" pour publier vos commits locaux)
+cli
+├── CMakeLists.txt
+├── include
+│   ├── Ansi.h
+│   ├── chord
+│   │   ├── ChordCommand.h
+│   │   ├── diagram_layout.h
+│   │   ├── diagram_option.h
+│   │   ├── difficulty_option.h
+│   │   ├── dumpdb_option.h
+│   │   ├── play_option.h
+│   │   ├── random_option.h
+│   │   ├── tuning_option.h
+│   │   └── Usage.h
+│   ├── Command.h
+│   ├── command_option.h
+│   └── terminal.h
+└── src
+    ├── chord
+    │   ├── ChordCommand.cpp
+    │   ├── diagram_layout.cpp
+    │   ├── diagram_option.cpp
+    │   ├── difficulty_option.cpp
+    │   ├── dumpdb_option.cpp
+    │   ├── play_option.cpp
+    │   ├── random_option.cpp
+    │   ├── tuning_option.cpp
+    │   └── usage.cpp
+    ├── command_option.cpp
+    ├── main.cpp
+    └── scale
+        └── scale_cmd.cpp
 
-Modifications qui ne seront pas validées :
-  (utilisez "git add <fichier>..." pour mettre à jour ce qui sera validé)
-  (utilisez "git restore <fichier>..." pour annuler les modifications dans le répertoire de travail)
-	modifié :         arch.txt
-	modifié :         chord.wav
-	modifié :         cli/src/chord/ChordCommand.cpp
-	modifié :         include/musical/instruments/guitar/six_strings/MovableShapeDiagram.h
-	modifié :         include/musical/instruments/guitar/six_strings/OpenChordDiagram.h
-	modifié :         include/musical/instruments/guitar/six_strings/SixStringsDiagram.h
-	modifié :         src/instruments/guitar/six_strings/database_movable_a.cpp
-	modifié :         src/instruments/guitar/six_strings/database_movable_c.cpp
-	modifié :         src/instruments/guitar/six_strings/database_open_c.cpp
-	modifié :         src/instruments/guitar/six_strings/database_open_g.cpp
-	modifié :         src/io/instruments/guitar/six_strings/open_chord_diagram_to_ascii.cpp
-
-Fichiers non suivis:
-  (utilisez "git add <fichier>..." pour inclure dans ce qui sera validé)
-	include/musical/io/instruments/guitar/six_strings/stream.h
-
-aucune modification n'a été ajoutée à la validation (utilisez "git add" ou "git commit -a")
+6 directories, 26 files

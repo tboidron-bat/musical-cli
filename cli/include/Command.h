@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-#include <command_option.h>
+#include <CommandOption.h>
 
 namespace cli
 {
@@ -16,11 +16,11 @@ public:
     virtual int run(int argc, char** argv) = 0;
 
 protected:   
-    std::vector<std::unique_ptr<cli::command::option>> _options;    
+    std::vector<std::unique_ptr<cli::command::Option>> _options;    
 
 public:
 
-    // cli::command::option& add_short_option(
+    // cli::command::Option& add_short_option(
     //     uint8_t id,
     //     std::string name,
     //     std::string short_name,

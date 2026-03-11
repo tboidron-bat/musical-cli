@@ -3,9 +3,53 @@
 #include <musical/io/note/output/stream.h>
 #include <musical/Core/chord/Chord.h>
 #include <ostream>
+#include <sstream>
 
 #include <musical/analysis/chord_name.h>
+namespace musical::core
+{
+    std::string interval_symbol(core::IntervalType it)
+    {
+        using I = core::IntervalType;
 
+        switch (it)
+        {
+            case I::TONIQUE:                return "T";
+            case I::SECONDE_MINEURE:        return "b2";
+            case I::SECONDE_MAJEURE:        return "2";
+            case I::TIERCE_MINEURE:         return "3m";
+            case I::TIERCE_MAJEURE:         return "3M";
+            case I::QUARTE_JUSTE:           return "4";
+            case I::TRITON:                 return "b5";
+            case I::QUINTE_JUSTE:           return "5";
+            case I::SIXTE_MINEURE:          return "b6";
+            case I::SIXTE_MAJEURE:          return "6";
+            case I::SEPTIEME_MINEURE:       return "7";
+            case I::SEPTIEME_MAJEURE:       return "7M";
+            case I::OCTAVE:                 return "8";
+            case I::NEUVIEME_MINEURE:       return "b9";
+            case I::NEUVIEME_MAJEURE:       return "9";
+            case I::ONZIEME:                return "11";
+            case I::ONZIEME_AUGMENTEE:      return "#11";
+            case I::TREIZIEME_MINEURE:      return "b13";
+            case I::TREIZIEME_MAJEURE:      return "13";
+            case I::QUATORZIEME_MINEURE:    return "14m";
+            case I::QUATORZIEME_MAJEURE:    return "14M";
+            case I::DOUBLE_OCTAVE:          return "2oct";
+        }
+
+        return "interval_symbol()==>?";
+    }
+}
+#include <cctype>
+
+std::string capitalize(std::string s)
+{
+    if(!s.empty())
+        s[0] = std::toupper(s[0]);
+
+    return s;
+}
 
 namespace musical::core::chord
 {
@@ -17,24 +61,30 @@ namespace musical::core::chord
         if (candidates.empty())
             return os << "= ?";
 
-        os << candidates.front().name << " = ";
+        os << capitalize(candidates.front().name) << "\n";
 
         const auto& intervals = chord.type().intervals();
         const auto pitches = chord.notes(true);
 
-        // Tonique
-        os << pitches[0] << " (tonique)";
+        os << "Notes     : ";
 
-        // Autres notes
-        for (std::size_t i = 0; i < intervals.size(); ++i)
+        for (const auto& p : pitches)
         {
-            os << " + "
-               << pitches[i + 1]
-               << " ("
-               << intervals[i]
-               << ")";
+            std::ostringstream tmp;
+            tmp << p;
+            os << capitalize(tmp.str()) << " ";
         }
+        os << "\n";            
+                
+        os << 
+            "Intervals : T ";
 
+         for (const auto& i : intervals)
+            os 
+               << interval_symbol(i) << " ";            
+
+        os << "\n";                           
+               
         return os;
     }
 }

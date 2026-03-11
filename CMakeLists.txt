@@ -69,13 +69,17 @@ target_sources(musical-core
 
         src/io/chord/output/stream.cpp                
         src/io/chord/input/ChordLexer.cpp          
-        src/io/chord/input/ChordParser.cpp              
+        src/io/chord/input/ChordParser.cpp        
         src/io/chord/output/formatter.cpp
                 
         src/io/scale/scalepattern_formatter.cpp
 
-        src/io/instruments/guitar/six_strings/stream_diagram.cpp    
-        src/io/instruments/guitar/six_strings/movable_shape_diagram_to_ascii.cpp    
+        src/io/guitar/stream_diagram.cpp    
+        #src/io/guitar/stream_diagram2.cpp  
+        src/io/guitar/diagram/unicode/Grid.cpp  
+
+        src/io/guitar/diagram/unicode/Movable.cpp                                
+        src/io/guitar/diagram/ascii/movable.cpp    
 
         # analysis
         src/analysis/ChordAnalysis.cpp

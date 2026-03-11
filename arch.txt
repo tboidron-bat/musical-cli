@@ -1,34 +1,49 @@
-cli
+cli/
 ├── CMakeLists.txt
+├── idea.txt
 ├── include
 │   ├── Ansi.h
-│   ├── chord
-│   │   ├── ChordCommand.h
-│   │   ├── diagram_layout.h
-│   │   ├── diagram_option.h
-│   │   ├── difficulty_option.h
-│   │   ├── dumpdb_option.h
-│   │   ├── play_option.h
-│   │   ├── random_option.h
-│   │   ├── tuning_option.h
-│   │   └── Usage.h
+│   ├── command
+│   │   ├── cadence
+│   │   │   └── idea.txt
+│   │   ├── chord
+│   │   │   ├── ChordCommand.h
+│   │   │   ├── diagram_layout.h
+│   │   │   ├── diagram_option.h
+│   │   │   ├── difficulty_option.h
+│   │   │   ├── dumpdb_option.h
+│   │   │   ├── help_option.h
+│   │   │   ├── play_option.h
+│   │   │   ├── random_option.h
+│   │   │   ├── tuning_option.h
+│   │   │   └── version_option.h
+│   │   └── scale
 │   ├── Command.h
-│   ├── command_option.h
+│   ├── CommandOption.h
+│   ├── option_parameter_t.h
+│   ├── parser
+│   ├── stream_option.h
 │   └── terminal.h
 └── src
-    ├── chord
-    │   ├── ChordCommand.cpp
-    │   ├── diagram_layout.cpp
-    │   ├── diagram_option.cpp
-    │   ├── difficulty_option.cpp
-    │   ├── dumpdb_option.cpp
-    │   ├── play_option.cpp
-    │   ├── random_option.cpp
-    │   ├── tuning_option.cpp
-    │   └── usage.cpp
-    ├── command_option.cpp
+    ├── command
+    │   ├── cadence
+    │   ├── chord
+    │   │   ├── ChordCommand.cpp
+    │   │   ├── diagram_layout.cpp
+    │   │   ├── diagram_option.cpp
+    │   │   ├── difficulty_option.cpp
+    │   │   ├── dumpdb_option.cpp
+    │   │   ├── help_option.cpp
+    │   │   ├── play_option.cpp
+    │   │   ├── random_option.cpp
+    │   │   ├── tuning_option.cpp
+    │   │   ├── usage.cpp
+    │   │   └── version_option.cpp
+    │   └── scale
+    │       └── scale_cmd.cpp
+    ├── CommandOption.cpp
     ├── main.cpp
-    └── scale
-        └── scale_cmd.cpp
+    ├── option_parameter_t.cpp
+    └── parser
 
-6 directories, 26 files
+13 directories, 34 files

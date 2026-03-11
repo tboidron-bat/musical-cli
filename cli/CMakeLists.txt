@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # mscale
 # =========================
 add_executable(mscale
-    src/scale/scale_cmd.cpp
+    src/command/scale/scale_cmd.cpp
 )
 
 target_link_libraries(mscale
@@ -26,16 +26,21 @@ target_include_directories(mscale
 # =========================
 add_executable(chord
     src/main.cpp
-    src/command_option.cpp
-    src/chord/diagram_layout.cpp        
-    src/chord/ChordCommand.cpp    
-    src/chord/help_option.cpp    
-    src/chord/diagram_option.cpp
-    src/chord/difficulty_option.cpp
-    src/chord/dumpdb_option.cpp
-    src/chord/play_option.cpp
-    src/chord/random_option.cpp                
-    src/chord/tuning_option.cpp                        
+    src/CommandOption.cpp
+    src/option_parameter_t.cpp
+    src/command/chord/diagram_layout.cpp        
+    src/command/chord/ChordCommand.cpp    
+    src/command/chord/version_option.cpp    
+    src/command/chord/help_option.cpp    
+    src/command/chord/diagram_option.cpp
+    src/command/chord/difficulty_option.cpp
+    src/command/chord/dumpdb_option.cpp
+    src/command/chord/play_option.cpp
+    src/command/chord/random_option.cpp                
+    src/command/chord/tuning_option.cpp         
+    
+    #src/parser/CommandParser.cpp            
+    #src/parser/ChordCommandParser.cpp                
 )
 
 target_link_libraries(chord

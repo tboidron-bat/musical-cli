@@ -1,5 +1,5 @@
 
-#include <chord/ChordCommand.h>
+#include <command/chord/ChordCommand.h>
 #include <iostream>
 #include <string>
 

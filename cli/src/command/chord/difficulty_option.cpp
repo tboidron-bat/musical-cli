@@ -2,7 +2,7 @@
 
 namespace cli::chord
 {
-difficulty_option::difficulty_option(cli::Command*cmd)
+difficulty_option::difficulty_option(cli::Command&cmd)
 :   
 command::Option(cmd,
     "difficulty",

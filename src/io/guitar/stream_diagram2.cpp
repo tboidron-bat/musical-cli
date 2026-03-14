@@ -1,10 +1,10 @@
 #include <musical/io/guitar/stream_diagram2.h>
-#include <musical/instruments/guitar/six_strings/OpenChordDiagram.h>
+#include <musical/guitar_chord_database/OpenChordDiagram.h>
 
 #include <vector>
 #include <ostream>
 
-namespace musical::instruments::guitar::six_strings {
+namespace chord::database {
 
 static constexpr const char* STRING = "│";
 static constexpr const char* DOT    = "●";

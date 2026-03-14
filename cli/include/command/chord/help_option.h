@@ -1,6 +1,6 @@
 #pragma once
 
-#include <CommandOption.h>
+#include <Option.h>
 
 namespace cli::chord
 {
@@ -8,7 +8,7 @@ class help_option : public cli::command::Option
 {
 public:
 
-    help_option(cli::Command* cmd)
+    help_option(cli::Command&cmd)
     :
     Option(
         cmd,

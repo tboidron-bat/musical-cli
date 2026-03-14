@@ -5,7 +5,7 @@
 
 namespace cli::chord
 {
-version_option::version_option(cli::Command* cmd)
+version_option::version_option(cli::Command&cmd)
 : 
 command::Option(cmd, "version", "v", "Show program version")
 {

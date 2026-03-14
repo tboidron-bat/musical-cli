@@ -3,7 +3,6 @@
 #include <Command.h>
 #include <vector>
 #include <string>
-#include <optional>
 #include <iostream>
 
 #include <musical/Core/chord/Chord.h>
@@ -12,32 +11,28 @@ namespace cli::chord
 {
 class ChordCommand : public cli::Command
 {
-    enum OptionId
-    {
-        VERSION=0,
-        HELP,
-        DUMPDB,        
-        RANDOM,
-        DIAGRAM,
-        PLAY,
-        DIFFICULTY,
-        TUNING
-    };
 public:
     ChordCommand();
     int run(int argc, char** argv) override;
 
 private:
-    std::optional<musical::core::chord::Chord> _chord;
+    std::vector<musical::core::chord::Chord> _chords;    
 
+private:
+    //nettoie la ligne de commande de tous ce qui ne st pas un accords
+    //et renvoie la chainde de carartere correspondante
+    std::string clean(int argc, char**argv);
 public:
-    std::optional<musical::core::chord::Chord>
-    parse_chord(const std::string& symbol);
+    int parse_chord(int, char**);
 
-    const std::optional<musical::core::chord::Chord>& chord() const
+    std::vector<musical::core::chord::Chord>& chords()
     {
-        return _chord;
-    }    
+        return _chords;
+    }
+    const std::vector<musical::core::chord::Chord>& chords() const
+    {
+        return _chords;
+    }
 
 public:    
     void print_name() const override; 

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <CommandOption.h>
+#include <Option.h>
 
 namespace cli::chord
 {
     class tuning_option : public command::Option
     {
     public:
-        tuning_option(cli::Command*);
+        tuning_option(cli::Command&);
 
         int execute() const override;
     };

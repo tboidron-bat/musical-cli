@@ -53,6 +53,8 @@ std::string to_string(const musical::core::pitch_t& pitch)
             break;
     }
 
+    s += std::to_string(pitch._octave);    
+
     return s;
 }
 

@@ -4,28 +4,38 @@
 #include <vector>
 #include <cstddef>
 
-/**
- * @brief Organise plusieurs blocs ASCII côte à côte.
- *
- * Chaque élément de `blocks` doit être une chaîne multi-lignes
- * représentant un diagramme ASCII.
- *
- * @param blocks     Liste des diagrammes (format texte multi-lignes).
- * @param max_width  Largeur maximale disponible (ex: largeur terminal).
- * @param spacing    Nombre d'espaces entre les diagrammes.
- *
- * @return Une chaîne formatée contenant les diagrammes disposés
- *         en colonnes sur plusieurs lignes.
- */
-std::string layout_blocks(
-    const std::vector<std::string>& blocks,
-    std::size_t max_width,
-    std::size_t spacing = 4);
+#include <terminal.h>
 
-/**
- * @brief Découpe un bloc multi-lignes en lignes individuelles.
- *
- * Utile si vous souhaitez pré-traiter manuellement des diagrammes.
- */
-std::vector<std::string>
-split_lines(const std::string& block);
+namespace cli::chord
+{
+
+class Layout
+{
+private:
+
+    std::vector<std::vector<std::string>> _blocks;
+
+    int _h_space_between_blocks;
+    int _v_space_between_blocks;
+
+    std::size_t _terminal_width;
+
+public:
+
+    Layout(
+        std::size_t terminal_width,
+        int h_space_between_blocks = 3,
+        int v_space_between_blocks = 1);
+
+    void add_block(const std::string& block);
+
+    std::string render() const;
+
+private:
+
+    std::size_t compute_block_width() const;
+    std::size_t compute_blocks_per_line() const;
+
+};
+
+}

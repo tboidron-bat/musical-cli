@@ -3,116 +3,134 @@
 #include <sstream>
 #include <algorithm>
 
-
 #include <wchar.h>
 #include <locale>
 
-static size_t utf8_width(const std::string& s)
+static std::size_t visual_width(const std::string& s)
 {
     std::mbstate_t state{};
-    const char* ptr = s.data();
-    size_t len = s.size();
-
+    const char* ptr = s.c_str();
     wchar_t wc;
-    size_t width = 0;
 
-    while(len > 0)
+    std::size_t width = 0;
+
+    while (*ptr)
     {
-        size_t r = mbrtowc(&wc, ptr, len, &state);
+        std::size_t len =
+            std::mbrtowc(&wc, ptr, MB_CUR_MAX, &state);
 
-        if(r == (size_t)-1 || r == (size_t)-2)
+        if (len == (std::size_t)-1 || len == (std::size_t)-2)
             break;
 
         int w = wcwidth(wc);
-        if(w > 0)
+
+        if (w > 0)
             width += w;
 
-        ptr += r;
-        len -= r;
+        ptr += len;
     }
 
     return width;
 }
 
-// ------------------------------------------------------------
-// Utilitaire : split multi-lignes
-// ------------------------------------------------------------
-std::vector<std::string>
-split_lines(const std::string& block)
+namespace cli::chord
 {
-    std::vector<std::string> lines;
-    std::istringstream iss(block);
-    std::string line;
 
-    while (std::getline(iss, line))
-        lines.push_back(line);
-
-    return lines;
+Layout::Layout(
+    std::size_t terminal_width,
+    int h_space_between_blocks,
+    int v_space_between_blocks)
+:
+_terminal_width(terminal_width),
+_h_space_between_blocks(h_space_between_blocks),
+_v_space_between_blocks(v_space_between_blocks)
+{
 }
 
-std::string layout_blocks(
-    const std::vector<std::string>& blocks,
-    std::size_t term_width,
-    std::size_t spacing)
+void Layout::add_block(const std::string& block)
 {
-    if(blocks.empty())
-        return {};
+    std::stringstream ss(block);
+    std::string line;
 
-    std::vector<std::vector<std::string>> matrices;
+    std::vector<std::string> lines;
 
-    for(const auto& b : blocks)
-        matrices.push_back(split_lines(b));
+    while (std::getline(ss, line))
+        lines.push_back(line);
 
-    size_t block_height = 0;
-    size_t block_width  = 0;
+    _blocks.push_back(std::move(lines));
+}
 
-    for(const auto& m : matrices)
+std::size_t Layout::compute_block_width() const
+{
+    std::size_t width = 0;
+
+    for (const auto& block : _blocks)
     {
-        block_height = std::max(block_height, m.size());
-
-        for(const auto& line : m)
-            block_width = std::max(block_width, utf8_width(line));
+        for (const auto& line : block)
+            width = std::max(width, visual_width(line));
     }
 
-    size_t col_width = block_width + spacing;
+    return width;
+}
 
-    size_t per_row = std::max<size_t>(1, term_width / col_width);
+std::size_t Layout::compute_blocks_per_line() const
+{
+    std::size_t block_width = compute_block_width();
+
+    std::size_t total_block_width =
+        block_width + _h_space_between_blocks;
+
+    if (total_block_width == 0)
+        return 1;
+
+    std::size_t cols =
+        _terminal_width / total_block_width;
+
+    return std::max<std::size_t>(1, cols);
+}
+
+std::string Layout::render() const
+{
+    if (_blocks.empty())
+        return "";
+
+    std::size_t block_width = compute_block_width();
+    std::size_t cols = compute_blocks_per_line();
 
     std::ostringstream out;
 
-    for(size_t i = 0; i < matrices.size(); i += per_row)
+    for (std::size_t i = 0; i < _blocks.size(); i += cols)
     {
-        size_t end = std::min(i + per_row, matrices.size());
+        std::size_t end =
+            std::min(i + cols, _blocks.size());
 
-        for(size_t row = 0; row < block_height; ++row)
+        std::size_t local_height = 0;
+
+        for (std::size_t b = i; b < end; ++b)
+            local_height = std::max(local_height, _blocks[b].size());
+
+        for (std::size_t row = 0; row < local_height; ++row)
         {
-            for(size_t col = i; col < end; ++col)
+            for (std::size_t b = i; b < end; ++b)
             {
-                if(row < matrices[col].size())
-                {
-                    const auto& line = matrices[col][row];
+                const auto& block = _blocks[b];
 
-                    size_t w = utf8_width(line);
-
-                    out << line;
-
-                    if(w < block_width)
-                        out << std::string(block_width - w, ' ');
-                }
+                if (row < block.size())
+                    out << block[row];
                 else
-                {
                     out << std::string(block_width, ' ');
-                }
 
-                if(col + 1 < end)
-                    out << std::string(spacing, ' ');
+                if (b + 1 < end)
+                    out << std::string(_h_space_between_blocks, ' ');
             }
 
             out << '\n';
         }
 
-        out << '\n';
+        out << std::string(_v_space_between_blocks, '\n');
     }
 
     return out.str();
+}
+
 }

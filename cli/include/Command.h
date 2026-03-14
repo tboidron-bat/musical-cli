@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-#include <CommandOption.h>
+#include <Option.h>
 
 namespace cli
 {
@@ -19,6 +19,19 @@ protected:
     std::vector<std::unique_ptr<cli::command::Option>> _options;    
 
 public:
+
+    template<typename T>
+    T* get_option()
+    {
+        for(auto& opt : _options)
+        {
+            if(auto p = dynamic_cast<T*>(opt.get()))
+                return p;
+        }
+
+        return nullptr;
+    }
+
 
     // cli::command::Option& add_short_option(
     //     uint8_t id,

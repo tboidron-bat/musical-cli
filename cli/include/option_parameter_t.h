@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace cli::command::option
 {
@@ -28,16 +29,20 @@ public:
     std::string _value;
     bool _provided = false;
 
+    std::vector<std::string> _accepted_values{};    
+
     parameter_t(
         Type type,
         std::string name,
         std::string description,
-        Requirement requirement)
+        Requirement requirement,
+        std::vector<std::string> accepted_values = {})
     :
         _type(type),
         _name(std::move(name)),
         _description(std::move(description)),
-        _requirement(requirement)
+        _requirement(requirement),
+        _accepted_values(std::move(accepted_values))
     {}
 
     void parse(std::string_view);

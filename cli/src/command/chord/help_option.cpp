@@ -11,9 +11,9 @@ int help_option::execute() const
     if(!_enabled)
         return 0;
 
-    auto* cmd = static_cast<ChordCommand*>(_command);
+    auto& cmd = static_cast<ChordCommand&>(_command_ref);
 
-    cmd->print_help();
+    cmd.print_help();
 
     return 1;
 }

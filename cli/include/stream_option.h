@@ -1,6 +1,6 @@
 #pragma once
 
-#include <CommandOption.h>
+#include <Option.h>
 
 #include <sstream>
 #include <ostream>

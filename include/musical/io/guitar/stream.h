@@ -1,11 +1,11 @@
 #pragma once
 
-#include <musical/instruments/guitar/six_strings/SixStringsDiagram.h>
+#include <musical/guitar_chord_database/SixStringsDiagram.h>
 #include <ostream>
 #include <sstream>
 #include <string>
 
-namespace musical::instruments::guitar::six_strings {
+namespace chord::database {
 
 inline std::ostream& operator<<(std::ostream& os,
                                 SixStringDiagram::CAGEDShape shape)

@@ -39,25 +39,25 @@ target_sources(musical-core
         src/Core/scale/ScalePattern.cpp
         src/Core/scale/ScalePatternFactory.cpp
 
-        src/instruments/guitar/Tuning.cpp
+        src/guitar_chord_database/Tuning.cpp
         
-        src/instruments/guitar/six_strings/OpenChordDiagram.cpp
-        src/instruments/guitar/six_strings/MovableShapeDiagram.cpp        
+        src/guitar_chord_database/OpenChordDiagram.cpp
+        src/guitar_chord_database/MovableShapeDiagram.cpp        
 
-        src/instruments/guitar/six_strings/database_open_a.cpp 
-        src/instruments/guitar/six_strings/database_open_c.cpp
-        src/instruments/guitar/six_strings/database_open_d.cpp
-        src/instruments/guitar/six_strings/database_open_e.cpp
-        src/instruments/guitar/six_strings/database_open_g.cpp
-        src/instruments/guitar/six_strings/db_open_queries.cpp
+        src/guitar_chord_database/database_open_a.cpp 
+        src/guitar_chord_database/database_open_c.cpp
+        src/guitar_chord_database/database_open_d.cpp
+        src/guitar_chord_database/database_open_e.cpp
+        src/guitar_chord_database/database_open_g.cpp
+        src/guitar_chord_database/db_open_queries.cpp
         
         
-        src/instruments/guitar/six_strings/database_movable_a.cpp         
-        src/instruments/guitar/six_strings/database_movable_c.cpp         
-        src/instruments/guitar/six_strings/database_movable_d.cpp         
-        src/instruments/guitar/six_strings/database_movable_e.cpp         
-        src/instruments/guitar/six_strings/database_movable_g.cpp                                         
-        src/instruments/guitar/six_strings/db_movable_queries.cpp
+        src/guitar_chord_database/database_movable_a.cpp         
+        src/guitar_chord_database/database_movable_c.cpp         
+        src/guitar_chord_database/database_movable_d.cpp         
+        src/guitar_chord_database/database_movable_e.cpp         
+        src/guitar_chord_database/database_movable_g.cpp                                         
+        src/guitar_chord_database/db_movable_queries.cpp
 
         src/io/utils/input/normalize_to_ascii.cpp                
 
@@ -74,12 +74,13 @@ target_sources(musical-core
                 
         src/io/scale/scalepattern_formatter.cpp
 
-        src/io/guitar/stream_diagram.cpp    
+        # guitar chord diagram        
+        #src/io/guitar/ascii/stream_diagram.cpp    
+        #src/io/guitar/ascii/MovableDiagram.cpp    
         #src/io/guitar/stream_diagram2.cpp  
-        src/io/guitar/diagram/unicode/Grid.cpp  
-
-        src/io/guitar/diagram/unicode/Movable.cpp                                
-        src/io/guitar/diagram/ascii/movable.cpp    
+        src/io/guitar/unicode/Grid.cpp  
+        src/io/guitar/unicode/MovableDiagram.cpp                                
+        src/io/guitar/unicode/OpenDiagram.cpp                                
 
         # analysis
         src/analysis/ChordAnalysis.cpp

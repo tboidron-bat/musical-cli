@@ -2,7 +2,7 @@
 
 namespace cli::chord
 {
-tuning_option::tuning_option(cli::Command*cmd)
+tuning_option::tuning_option(cli::Command&cmd)
 :
 cli::command::Option(cmd,"tuning","","Guitar tuning to use for diagram rendering")
 {

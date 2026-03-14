@@ -1,6 +1,6 @@
 #include <option_parameter_t.h>
 
-#include <stdexcept>
+#include <sstream>
 #include <string>
 #include <string_view>
 
@@ -12,43 +12,46 @@ bool parameter_t::match_parameter(std::string_view value)
     if(value.empty() || value[0] == '-')
         return false;
 
-    try
+    std::istringstream iss{std::string(value)};
+
+    switch(_type)
     {
-        switch(_type)
+        case Type::BOOL:
         {
-            case Type::BOOL:
-                return value == "true"  ||
-                       value == "false" ||
-                       value == "1"     ||
-                       value == "0";
-
-            case Type::INT:
-                std::stoi(std::string(value));
-                return true;
-
-            case Type::DOUBLE:
-                std::stod(std::string(value));
-                return true;
-
-            case Type::CHAR:
-                return value.size() == 1;
-
-            case Type::STRING:
-                return true;
+            return value == "true"  ||
+                   value == "false" ||
+                   value == "1"     ||
+                   value == "0";
         }
-    }
-    catch(...)
-    {
-        return false;
+
+        case Type::INT:
+        {
+            int v;
+            return (iss >> v) && iss.eof();
+        }
+
+        case Type::DOUBLE:
+        {
+            double v;
+            return (iss >> v) && iss.eof();
+        }
+
+        case Type::CHAR:
+        {
+            return value.size() == 1;
+        }
+
+        case Type::STRING:
+        {
+            return true;
+        }
     }
 
     return false;
 }
 
-
 void parameter_t::parse(std::string_view value)
 {
-    // normalisation bool
     if(_type == Type::BOOL)
     {
         if(value == "1")
@@ -62,6 +65,7 @@ void parameter_t::parse(std::string_view value)
     {
         _value = std::string(value);
     }
+
     _provided = true;
 }
 

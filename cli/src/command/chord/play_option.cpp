@@ -9,7 +9,7 @@
 
 namespace cli::chord
 {
-play_option::play_option(cli::Command*cmd)
+play_option::play_option(cli::Command&cmd)
 :
 command::Option(
     cmd,
@@ -53,28 +53,27 @@ int play_option::execute() const
     bool downstroke = true;
 
     //DELAY
-    if(get_parameter(0)._provided)
+    if(parameter(0)._provided)
     {
-        strum_delay_ms = std::stoi(get_parameter(0)._value);
+        strum_delay_ms = std::stoi(parameter(0)._value);
 
     }
     //DOWNSTROKE
-    if(get_parameter(1)._provided)
+    if(parameter(1)._provided)
     {
-        downstroke = get_parameter(1)._value == "true";
+        downstroke = parameter(1)._value == "true";
     }
 
 
-    const ChordCommand* cmd =
-        static_cast<const ChordCommand*>(_command);
+    auto& cmd = static_cast<ChordCommand&>(_command_ref);
 
-    if(!cmd->chord())
+    if(cmd.chords().empty())
     {
         std::cerr << "Chord required\n";
         return 1;
     }
 
-    const auto& chord = *cmd->chord();
+    const auto& chord = cmd.chords().front();
 
     musical::audio::karplus_strong::ChordPlayer::play(
         chord,

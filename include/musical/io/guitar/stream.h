@@ -1,6 +1,6 @@
 #pragma once
 
-#include <musical/guitar_chord_database/SixStringsDiagram.h>
+#include <musical/guitar_chord_database/Diagram.h>
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -8,72 +8,70 @@
 namespace chord::database {
 
 inline std::ostream& operator<<(std::ostream& os,
-                                SixStringDiagram::CAGEDShape shape)
+                                Diagram::CAGED shape)
 {
-    using Shape = SixStringDiagram::CAGEDShape;
-
     switch (shape)
     {
-        case Shape::C: return os << "C";
-        case Shape::A: return os << "A";
-        case Shape::G: return os << "G";
-        case Shape::E: return os << "E";
-        case Shape::D: return os << "D";
+        case Diagram::CAGED::C: return os << "C";
+        case Diagram::CAGED::A: return os << "A";
+        case Diagram::CAGED::G: return os << "G";
+        case Diagram::CAGED::E: return os << "E";
+        case Diagram::CAGED::D: return os << "D";
     }
     return os;
 }
 
-inline std::ostream& operator<<(std::ostream& os,
-                                SixStringDiagram::Style s)
-{
-    using Style = SixStringDiagram::Style;
+// inline std::ostream& operator<<(std::ostream& os,
+//                                 Diagram::Style s)
+// {
+//     using Style = Diagram::Style;
 
-    switch (s)
-    {
-        case Style::CLASSICAL: return os << "classical";
-        case Style::FLAMENCO:  return os << "flamenco";
-        case Style::ROCK:      return os << "rock";
-        case Style::JAZZ:      return os << "jazz";
-        case Style::BLUES:     return os << "blues";
-        case Style::FUNK:      return os << "funk";
-        default:               return os << "none";
-    }
-}
+//     switch (s)
+//     {
+//         case Style::CLASSICAL: return os << "classical";
+//         case Style::FLAMENCO:  return os << "flamenco";
+//         case Style::ROCK:      return os << "rock";
+//         case Style::JAZZ:      return os << "jazz";
+//         case Style::BLUES:     return os << "blues";
+//         case Style::FUNK:      return os << "funk";
+//         default:               return os << "none";
+//     }
+// }
 
-inline std::string style_mask_to_string(uint16_t mask)
-{
-    using Style = SixStringDiagram::Style;
+// inline std::string style_mask_to_string(uint16_t mask)
+// {
+//     using Style = Diagram::Style;
 
-    std::ostringstream oss;
-    bool first = true;
+//     std::ostringstream oss;
+//     bool first = true;
 
-    auto print_if = [&](Style s)
-    {
-        if (mask & static_cast<uint16_t>(s))
-        {
-            if (!first) oss << ",";
-            oss << s;
-            first = false;
-        }
-    };
+//     auto print_if = [&](Style s)
+//     {
+//         if (mask & static_cast<uint16_t>(s))
+//         {
+//             if (!first) oss << ",";
+//             oss << s;
+//             first = false;
+//         }
+//     };
 
-    print_if(Style::CLASSICAL);
-    print_if(Style::FLAMENCO);
-    print_if(Style::ROCK);
-    print_if(Style::JAZZ);
-    print_if(Style::BLUES);
-    print_if(Style::FUNK);
+//     print_if(Style::CLASSICAL);
+//     print_if(Style::FLAMENCO);
+//     print_if(Style::ROCK);
+//     print_if(Style::JAZZ);
+//     print_if(Style::BLUES);
+//     print_if(Style::FUNK);
 
-    if (first)
-        oss << "none";
+//     if (first)
+//         oss << "none";
 
-    return oss.str();
-}
+//     return oss.str();
+// }
 
 
 // inline std::istream& operator>>(std::istream& is, StyleMask& sm)
 // {
-//     using Style = SixStringDiagram::Style;
+//     using Style = Diagram::Style;
 
 //     std::string input;
 //     is >> input;

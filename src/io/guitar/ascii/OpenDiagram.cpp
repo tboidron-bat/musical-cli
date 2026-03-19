@@ -77,8 +77,8 @@ static void draw_fingers(
 
     constexpr auto N = OpenChordDiagram::STRING_COUNT;
 
-    std::size_t first_fret = diagram.first_fret();
-    std::size_t height     = diagram.nb_frets();
+    std::size_t first_fret = diagram.first_case();
+    std::size_t height     = diagram.nb_case();
 
     const auto& strings = diagram.strings();
 
@@ -111,7 +111,7 @@ make_grid(const OpenChordDiagram& diagram)
 {
     constexpr auto N = OpenChordDiagram::STRING_COUNT;
 
-    std::size_t height = diagram.nb_frets();
+    std::size_t height = diagram.nb_case();
 
     std::vector<std::vector<char>> grid(
         height,
@@ -127,7 +127,7 @@ static void draw_first_fret_label(
     std::ostream& os,
     const OpenChordDiagram& diagram)
 {
-    std::size_t first = diagram.first_fret();
+    std::size_t first = diagram.first_case();
 
     if (first <= 4)
         return;
@@ -181,7 +181,7 @@ static std::size_t draw_missing_frets_before(
 {
     constexpr auto N = OpenChordDiagram::STRING_COUNT;
 
-    std::size_t first = diagram.first_fret();
+    std::size_t first = diagram.first_case();
 
     if (first <= 1)
         return 0;
@@ -245,7 +245,7 @@ std::ostream& operator<<(
 
     auto grid = make_grid(diagram);
 
-    if(diagram.first_fret() <= 4){
+    if(diagram.first_case() <= 4){
 
         std::size_t before = draw_missing_frets_before(os, diagram);
 

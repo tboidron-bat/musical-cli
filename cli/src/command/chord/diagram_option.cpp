@@ -2,15 +2,15 @@
 #include <command/chord/diagram_layout.h>
 #include <command/chord/ChordCommand.h>
 
-#include <musical/io/guitar/unicode/OpenDiagram.h>
-#include <musical/io/guitar/unicode/MovableDiagram.h>
 
-#include <musical/guitar_chord_database/db_open_queries.h>
-#include <musical/guitar_chord_database/db_movable_queries.h>
+#include <musical/analysis/chord/naming.h>
+#include <musical/io/guitar/unicode/DiagramRenderer.h>
 
+#include <musical/guitar_chord_database/open_queries.h>
+#include <musical/guitar_chord_database/movable_queries.h>
 #include <musical/io/guitar/stream.h>
 
-//#include <musical/io/guitar/ascii/stream_diagram.h>
+#include <musical/io/note/out/note_formatter.h>
 
 #include <terminal.h>
 #include <iostream>
@@ -48,15 +48,17 @@ cli::command::Option(
 }
 void diagram_option::render(
     const musical::core::chord::Chord& chord,    
-    const std::vector<::chord::database::MovableShapeDiagram>& diagrams) const
+    const std::vector<::chord::database::Diagram>& diagrams) const
 {
     std::vector<std::string> blocks;       
 
     for(auto diagram : diagrams)
     {
-        diagram.place_root(chord.root());               
+        diagram.place_root(
+            chromatic_index(chord.root()) % 12);               
+
         blocks.push_back(
-            io::guitar::unicode::MovableDiagram(diagram).render()
+            io::guitar::unicode::DiagramRenderer::render(diagram)
         );
     }
 
@@ -67,13 +69,14 @@ void diagram_option::render(
 
     std::cout << layout.render();
 }
-void diagram_option::render(const std::vector<::chord::database::OpenChordDiagram>& diagrams) const
+void diagram_option::render(
+    const std::vector<::chord::database::Diagram>& diagrams) const
 {
     std::vector<std::string> blocks;   
 
     for (const auto& diagram : diagrams)
         blocks.push_back(
-            io::guitar::unicode::OpenDiagram(diagram).render());
+            io::guitar::unicode::DiagramRenderer::render(diagram));
 
     Layout layout(terminal::get_width());
 
@@ -82,7 +85,6 @@ void diagram_option::render(const std::vector<::chord::database::OpenChordDiagra
 
     std::cout << layout.render();
 }
-//std::vector<::chord::database::SixStringDiagram>
 void
 diagram_option::find_all(const musical::core::chord::Chord&chord) const
 {
@@ -91,29 +93,31 @@ for(auto i : chord.type().intervals())
     std::cout << static_cast<int>(i) << " ";
 #endif
 
-    std::vector<::chord::database::OpenChordDiagram> open_diagrams =
+    //analyser le chord.type() pour en tirer le nom
+    std::string type_name = 
+        musical::analysis::chord::find_name(chord.type());
+
+    std::string full_name =
+        musical::io::note::formatter::to_string(chord.root()) + ":" + type_name;        
+
+    std::vector<::chord::database::Diagram> open_diagrams =
         ::chord::database::queries::open::find_all_positions(
-            chord.root(),
-            chord.type()
-        );   
+            full_name);   
 
 #ifdef DEBUG
-    std::cout << '[' << __func__ << ']'
+    std::cout << '[' << __func__ << "] chord name = " << full_name;
 #endif
 
     std::cout 
         << "find " << open_diagrams.size() << " open(s) diagram(s)."
         << std::endl;
 
-    render(open_diagrams);        
-
-    std::vector<::chord::database::MovableShapeDiagram> movable_diagrams =
-        ::chord::database::queries::movable::find_all_positions(
-            chord.type()
-        );   
-
+    render(open_diagrams);  
+    
+    auto movable_diagrams = ::chord::database::queries::movable::find_diagrams(type_name); 
+        
 #ifdef DEBUG
-    std::cout << '[' << __func__ << ']'
+    std::cout << '[' << __func__ << ']';
 #endif
 
     std::cout 
@@ -122,23 +126,26 @@ for(auto i : chord.type().intervals())
 
     render(chord, movable_diagrams);                    
 }
-//std::vector<::chord::database::SixStringDiagram> 
 void
 diagram_option::find_caged(
     const musical::core::chord::Chord&chord,
-    ::chord::database::SixStringDiagram::CAGEDShape filter) const
+    ::chord::database::Diagram::CAGED filter) const
 {
+    std::string name = 
+        musical::analysis::chord::find_name(chord.type());
+
+
     auto open_diagrams = 
         ::chord::database::queries::open::find_positions(
             chord.root(),
-            chord.type(),
+            name,
             filter
         );            
 
     render(open_diagrams);        
 
-    auto movable_diagrams = ::chord::database::queries::movable::find_positions(
-            chord.type(),
+    auto movable_diagrams = ::chord::database::queries::movable::find_diagrams(
+            name,
             filter);
 
     render(chord,movable_diagrams);                                
@@ -166,17 +173,10 @@ int diagram_option::execute() const
         std::cout << "parameter(0)._provided" << std::endl;
 #endif
         int caged = std::stoi(parameter(0)._value);
-        find_caged(chord,static_cast<::chord::database::SixStringDiagram::CAGEDShape>(caged));
+        find_caged(chord,static_cast<::chord::database::Diagram::CAGED>(caged));
     }
     else
         find_all(chord);
-
-    // if(blocks.empty())
-    // {
-    //     std::cerr << "No diagram found for this chord formula\n";
-    //     return EXIT_FAILURE;
-    // }
-
     
     return EXIT_SUCCESS;
 }

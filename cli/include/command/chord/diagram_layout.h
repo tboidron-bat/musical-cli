@@ -8,11 +8,9 @@
 
 namespace cli::chord
 {
-
 class Layout
 {
 private:
-
     std::vector<std::vector<std::string>> _blocks;
 
     int _h_space_between_blocks;
@@ -32,10 +30,7 @@ public:
     std::string render() const;
 
 private:
-
     std::size_t compute_block_width() const;
     std::size_t compute_blocks_per_line() const;
-
 };
-
 }

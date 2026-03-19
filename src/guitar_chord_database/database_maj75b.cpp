@@ -1,65 +1,33 @@
 #pragma once
 
-#include <musical/guitar_chord_database/OpenChordDiagram.h>
-#include <musical/Core/intervals_defs.h>
+#include <musical/guitar_chord_database/Diagram.h>
 
 namespace chord::database
 {
 
-inline const DiagramMap& database_maj7b5()
+inline const diagram_map& database_maj7b5()
 {
-    using D  = OpenChordDiagram;
-    using S  = D::string_state;
-    using SH = D::CAGEDShape;
-    using ROOT = D::GuitarString;
-    using CT = musical::core::chord::ChordType;
-    using IT = musical::core::IntervalType;
+    using D = Diagram;
 
-    static const DiagramMap db =
+    constexpr uint8_t X = D::MUTE;
+    constexpr uint8_t O = 0;
+
+    static const diagram_map db =
     {
-        { CT({ IT::TIERCE_MAJEURE, IT::QUINTE_DIMINUEE, IT::SEPTIEME_MAJEURE }), {
+        { "7Mb5", {
 
-        // =================================================
-        // maj7b5 – basse corde A (forme type A déplacée)
-        //
-        // x 0 2 1 2 0
-        // =================
-        // | | | | | |
-        // | | 2 | 3 |
-        // | | | 1 | |
-        // | | | | | |
-        //
-        // fondamentale sur corde A
-        // =================================================
-        D{{
-            S::muted(),
-            S::open_string(),
-            S::fretted(2,2),
-            S::fretted(1,1),
-            S::fretted(2,3),
-            S::open_string()
-        }, ROOT::A, SH::A},
-
-        // =================================================
         // maj7b5 – basse corde E (forme type E)
-        //
+
         // 1 x 2 2 1 x
-        // =================
-        // |1| | | | | |
-        // | | |2|3| | |
+        // =============
+        // 1 | | | 1 | |
+        // | | 2 3 | | |
         // | | | | | | |
         // | | | | | | |
         //
         // fondamentale sur corde LOW_E
         // =================================================
-        D{{
-            S::fretted(1,1),
-            S::muted(),
-            S::fretted(2,3),
-            S::fretted(2,4),
-            S::fretted(1,2),
-            S::muted()
-        }, ROOT::LOW_E, SH::E},
+        D({ 1, X, 2, 2, 1, X }, 0, D::CAGED::E),
 
         // =================================================
         // maj7b5 – voicing compact jazz (4 cordes)
@@ -73,14 +41,7 @@ inline const DiagramMap& database_maj7b5()
         //
         // fondamentale sur corde D
         // =================================================
-        D{{
-            S::muted(),
-            S::muted(),
-            S::fretted(2,3),
-            S::fretted(1,1),
-            S::fretted(2,4),
-            S::fretted(1,2)
-        }, ROOT::D, SH::D},
+        D({ X, X, 2, 1, 2, 1 }, 2, D::CAGED::D),
 
         // =================================================
         // maj7b5 – renversement (tierce à la basse)
@@ -94,14 +55,7 @@ inline const DiagramMap& database_maj7b5()
         //
         // fondamentale interne (renversement)
         // =================================================
-        D{{
-            S::muted(),
-            S::muted(),
-            S::fretted(1,1),
-            S::fretted(1,2),
-            S::fretted(2,3),
-            S::fretted(2,4)
-        }, ROOT::D, SH::D}
+        D({ X, X, 1, 1, 2, 2 }, 2, D::CAGED::D)
 
         }}
     };

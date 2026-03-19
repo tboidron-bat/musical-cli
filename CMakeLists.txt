@@ -39,61 +39,54 @@ target_sources(musical-core
         src/Core/scale/ScalePattern.cpp
         src/Core/scale/ScalePatternFactory.cpp
 
-        src/guitar_chord_database/Tuning.cpp
-        
-        src/guitar_chord_database/OpenChordDiagram.cpp
-        src/guitar_chord_database/MovableShapeDiagram.cpp        
-
-        src/guitar_chord_database/database_open_a.cpp 
-        src/guitar_chord_database/database_open_c.cpp
-        src/guitar_chord_database/database_open_d.cpp
-        src/guitar_chord_database/database_open_e.cpp
-        src/guitar_chord_database/database_open_g.cpp
-        src/guitar_chord_database/db_open_queries.cpp
-        
-        
-        src/guitar_chord_database/database_movable_a.cpp         
-        src/guitar_chord_database/database_movable_c.cpp         
-        src/guitar_chord_database/database_movable_d.cpp         
-        src/guitar_chord_database/database_movable_e.cpp         
-        src/guitar_chord_database/database_movable_g.cpp                                         
-        src/guitar_chord_database/db_movable_queries.cpp
-
-        src/io/utils/input/normalize_to_ascii.cpp                
-
-        src/io/note/input/NoteLexer.cpp                
-        src/io/note/input/NoteParser.cpp        
-        src/io/note/output/note_formatter.cpp
-        src/io/note/output/stream.cpp                
-        src/io/note/output/mei_adapter.cpp        
-
-        src/io/chord/output/stream.cpp                
-        src/io/chord/input/ChordLexer.cpp          
-        src/io/chord/input/ChordParser.cpp        
-        src/io/chord/output/formatter.cpp
-                
-        src/io/scale/scalepattern_formatter.cpp
-
-        # guitar chord diagram        
-        #src/io/guitar/ascii/stream_diagram.cpp    
-        #src/io/guitar/ascii/MovableDiagram.cpp    
-        #src/io/guitar/stream_diagram2.cpp  
-        src/io/guitar/unicode/Grid.cpp  
-        src/io/guitar/unicode/MovableDiagram.cpp                                
-        src/io/guitar/unicode/OpenDiagram.cpp                                
-
-        # analysis
-        src/analysis/ChordAnalysis.cpp
-        src/analysis/ChordFunctionAnalyser.cpp
-        src/analysis/chord_name.cpp
-        src/analysis/Harmonizer.cpp
-        # src/analysis/Harmony.cpp # désactivé pour l'instant        
-
-
         # ScoreElements
         src/ScoreElements/KeySignature.cpp
         src/ScoreElements/Measure.cpp
         src/ScoreElements/TimeSignature.cpp
+
+
+        src/guitar_chord_database/Tuning.cpp
+
+        src/guitar_chord_database/Diagram.cpp        
+        src/guitar_chord_database/data_open.cpp 
+        src/guitar_chord_database/open_queries.cpp
+        src/guitar_chord_database/data_movable.cpp         
+        src/guitar_chord_database/movable_queries.cpp
+
+        # guitar chord diagram        
+        src/io/guitar/unicode/GridCore.cpp                 
+        src/io/guitar/unicode/OpenGrid.cpp                  
+        src/io/guitar/unicode/DottedGrid.cpp                                  
+        src/io/guitar/unicode/DiagramRenderer.cpp                                                
+
+        #src/io/guitar/unicode/MovableDiagram.cpp                                
+
+        
+
+
+        src/io/utils/in/normalize_to_ascii.cpp                
+
+        src/io/note/in/NoteLexer.cpp                
+        src/io/note/in/NoteParser.cpp        
+        src/io/note/out/note_formatter.cpp
+        src/io/note/out/stream.cpp                
+        src/io/note/out/mei_adapter.cpp        
+
+        src/io/chord/out/stream.cpp                
+        src/io/chord/in/ChordLexer.cpp          
+        src/io/chord/in/ChordParser.cpp        
+        src/io/chord/out/formatter.cpp
+                
+        src/io/scale/scalepattern_formatter.cpp
+
+
+        # analysis
+        src/analysis/ChordAnalysis.cpp
+        src/analysis/ChordFunctionAnalyser.cpp
+        src/analysis/chord/naming.cpp
+        src/analysis/Harmonizer.cpp
+        # src/analysis/Harmony.cpp # désactivé pour l'instant        
+
 
         src/audio/wave/chord_player.cpp
         src/audio/karplus_strong/chord_player.cpp        

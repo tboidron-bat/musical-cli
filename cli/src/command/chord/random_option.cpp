@@ -3,17 +3,20 @@
 #include <command/chord/diagram_layout.h>
 #include <terminal.h>
 
-#include <musical/guitar_chord_database/db_open_queries.h>
-#include <musical/guitar_chord_database/db_movable_queries.h>
-//#include <musical/io/guitar/ascii/stream_diagram.h>
-//#include <musical/io/guitar/stream_diagram2.h>
-#include <musical/io/guitar/unicode/MovableDiagram.h>
-#include <musical/io/guitar/unicode/OpenDiagram.h>
+#include <musical/guitar_chord_database/Diagram.h>
+#include <musical/guitar_chord_database/open_queries.h>
+#include <musical/guitar_chord_database/movable_queries.h>
+
+#include <musical/io/note/out/note_formatter.h>
+#include <musical/io/chord/in/ChordLexer.h>
+#include <musical/io/chord/in/ChordParser.h>
+
+#include <musical/io/guitar/unicode/DiagramRenderer.h>
 
 #include <random>
 #include <iostream>
 
-#include <musical/io/chord/output/stream.h> //DEBUG
+#include <musical/io/chord/out/stream.h> //DEBUG
 
 namespace cli::chord
 {
@@ -54,10 +57,13 @@ int random_option::execute() const
             auto [type, diagram] =            
                 ::chord::database::queries::open::get_random_diagram();
 
-            cmd.chords().emplace_back(diagram.root_pitch(),
-                                        type);    
-                                        
-            blocks.push_back(io::guitar::unicode::OpenDiagram(diagram).render());
+            auto tokens = musical::io::chord::ChordLexer::tokenize(type);
+            auto chord_opt = musical::io::chord::ChordParser::parse(tokens);
+
+            if (chord_opt)
+                cmd.chords().push_back(*chord_opt);
+
+            blocks.push_back(io::guitar::unicode::DiagramRenderer::render(diagram));
                                         
         }
         else
@@ -70,10 +76,18 @@ int random_option::execute() const
             musical::core::pitch_t root =
                 musical::core::pitch_from_chromatic_index(pitch_dist(gen));
 
-            cmd.chords().emplace_back(root,type);
+            std::string symbol =
+                musical::io::note::formatter::to_string(root)
+                + type;
 
+            auto tokens = musical::io::chord::ChordLexer::tokenize(symbol);
+            auto chord_opt = musical::io::chord::ChordParser::parse(tokens);
+
+            if (chord_opt)
+                cmd.chords().push_back(*chord_opt);            
+            
             blocks.push_back(
-                io::guitar::unicode::MovableDiagram(diagram).render());
+                io::guitar::unicode::DiagramRenderer::render(diagram));
 
         }        
         count--;

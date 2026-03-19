@@ -1,4 +1,4 @@
-#include <musical/io/guitar//unicode/MovableDiagram.h>
+#include <musical/io/guitar/unicode/MovableDiagram.h>
 
 namespace io::guitar::unicode
 {
@@ -7,13 +7,13 @@ namespace sst = chord::database;
 
 MovableDiagram::MovableDiagram(const sst::MovableShapeDiagram& diagram)
 :
-Grid(6, diagram.nb_frets(), diagram.first_fret() == 0)
+GridCore(6, diagram.nb_case())
 {
     using SS = sst::MovableShapeDiagram::string_state;
 
     const auto& strings = diagram.strings();
 
-    std::size_t first_fret = diagram.first_fret();
+    std::size_t first_fret = diagram.first_case();
 
     for (std::size_t s = 0; s < strings.size(); ++s)
     {
@@ -28,9 +28,9 @@ Grid(6, diagram.nb_frets(), diagram.first_fret() == 0)
                 absolute_fret - first_fret;
 
             set_finger(
-                static_cast<Grid::STRING>(s),
+                static_cast<GridCore::STRING>(s),
                 relative_fret,
-                static_cast<Grid::DOIGT>(sp.finger()));
+                static_cast<GridCore::DOIGT>(sp.finger()));
         }
     }
 }

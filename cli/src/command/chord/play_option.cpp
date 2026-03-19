@@ -2,7 +2,7 @@
 #include <command/chord/ChordCommand.h>
 
 #include <musical/audio/karplus_strong/chord_player.h>
-#include <musical/io/chord/output/stream.h>
+#include <musical/io/note/out/stream.h>
 
 #include <iostream>
 

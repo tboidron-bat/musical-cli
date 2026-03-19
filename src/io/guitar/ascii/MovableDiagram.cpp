@@ -35,12 +35,12 @@ std::string to_ascii(
 
     const auto& strings = diagram.strings();
 
-    std::size_t first_fret = diagram.first_fret();
+    std::size_t first_fret = diagram.first_case();
 
     // if(first_fret == 0)
     //     return {};
 
-    std::size_t height     = diagram.nb_frets();
+    std::size_t height     = diagram.nb_case();
 
     if (height == 0)
         height = 1;

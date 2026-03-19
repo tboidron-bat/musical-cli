@@ -1,11 +1,10 @@
 #pragma once
 
-#include <musical/io/guitar/unicode/Grid.h>
-#include <musical/guitar_chord_database/MovableShapeDiagram.h>
+#include <musical/io/guitar/unicode/GridCore.h>
 
 namespace io::guitar::unicode
 {
-class MovableDiagram : public Grid
+class MovableDiagram : public GridCore
 {
 public:
 

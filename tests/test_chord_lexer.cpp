@@ -1,4 +1,4 @@
-#include <musical/io/chord/input/ChordLexer.h>
+#include <musical/io/chord/in/ChordLexer.h>
 #include <cassert>
 #include <iostream>
 #include <vector>

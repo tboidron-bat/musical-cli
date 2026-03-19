@@ -11,16 +11,15 @@
 #include <command/chord/difficulty_option.h>
 #include <command/chord/tuning_option.h>
 
-#include <musical/io/guitar/unicode/Grid.h>
-
-#include <musical/io/chord/input/ChordLexer.h>
-#include <musical/io/chord/input/ChordParser.h>
-#include <musical/io/chord/output/stream.h>
+#include <musical/io/chord/in/ChordLexer.h>
+#include <musical/io/chord/in/ChordParser.h>
+#include <musical/io/note/out/stream.h>
+#include <musical/io/chord/out/stream.h>
 
 #include <sstream>
 #include <regex>
 
-#define CHORD_COMMAND_DEBUG
+//#define CHORD_COMMAND_DEBUG
 
 namespace cli::chord
 {

@@ -4,9 +4,8 @@
 
 #include <Option.h>
 
-#include <musical/guitar_chord_database/OpenChordDiagram.h>
-#include <musical/guitar_chord_database/MovableShapeDiagram.h>
-#include <musical/guitar_chord_database/SixStringsDiagram.h>
+
+#include <musical/guitar_chord_database/Diagram.h>
 #include <musical/Core/chord/Chord.h>
 
 namespace cli::chord
@@ -21,15 +20,15 @@ namespace cli::chord
     private:
         void find_caged(
             const musical::core::chord::Chord&,
-            ::chord::database::SixStringDiagram::CAGEDShape) const;
+            ::chord::database::Diagram::CAGED) const;
 
         void find_all(
             const musical::core::chord::Chord&) const;
 
-        void render(const std::vector<::chord::database::OpenChordDiagram>&) const;
+        void render(const std::vector<::chord::database::Diagram>&) const;
         void render(
             const musical::core::chord::Chord& chord,
-            const std::vector<::chord::database::MovableShapeDiagram>&) const;         
+            const std::vector<::chord::database::Diagram>&) const;         
     };
 
 }

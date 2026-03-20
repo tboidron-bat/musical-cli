@@ -116,7 +116,7 @@ void GridCore::write_right(std::size_t row, const std::string& txt)
     if (r.size() < RIGHT_SPACING)
         return;
 
-    std::size_t start = r.size() - RIGHT_SPACING;
+    std::size_t start = r.size() - RIGHT_SPACING + 1;
 
     for (std::size_t i = 0; i < txt.size() && i < RIGHT_SPACING; ++i)
     {

@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <iostream>
 
-//#define CHORD_PARSER_DEBUG
+#define DEBUG
 
 namespace musical::io::chord
 {
@@ -48,9 +48,10 @@ std::optional<core::chord::Chord>
 ChordParser::parse(const std::vector<token_t>& tokens)
 {
 
-#ifdef CHORD_PARSER_DEBUG    
+#ifdef DEBUG    
 
-    std::cout << "\n#DEBUG ChordParser::parse(...) Tokens:\n";
+    std::cout << std::string(20,'#') << "DEBUG" << std::string(20,'#') << '\n'
+            << "ChordParser::"<<__func__<< "()\n";
 
     for (const auto& t : tokens)
     {
@@ -84,6 +85,8 @@ ChordParser::parse(const std::vector<token_t>& tokens)
                 break;
         }
     }
+
+    std::cout << std::string(46,'#') << '\n';
 #endif
 
     // --------------------------------------------------------

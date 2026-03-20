@@ -57,8 +57,13 @@ void diagram_option::render(
         diagram.place_root(
             chromatic_index(chord.root()) % 12);               
 
+        //FILTRE CRUCIAL pour ne pas faire des diagram open avec 
+        //des diagrams movable
+        if (diagram.base_case() == 0)
+            continue;            
+
         blocks.push_back(
-            io::guitar::unicode::DiagramRenderer::render(diagram)
+             io::guitar::unicode::DiagramRenderer::render(diagram)
         );
     }
 
@@ -105,12 +110,12 @@ for(auto i : chord.type().intervals())
             full_name);   
 
 #ifdef DEBUG
-    std::cout << '[' << __func__ << "] chord name = " << full_name;
-#endif
-
-    std::cout 
+    std::cout << '[' << __func__ << "] chord name = " << full_name
         << "find " << open_diagrams.size() << " open(s) diagram(s)."
         << std::endl;
+#endif
+
+    std::cout << "Open diagram:\n";
 
     render(open_diagrams);  
     
@@ -121,7 +126,7 @@ for(auto i : chord.type().intervals())
 #endif
 
     std::cout 
-        << "find " << movable_diagrams.size() << " movable(s) diagram(s)."
+        << "Movable diagram:"
         << std::endl;
 
     render(chord, movable_diagrams);                    

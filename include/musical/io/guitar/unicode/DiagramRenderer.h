@@ -31,6 +31,11 @@ private:
     static void fill_grid(
         GridCore& grid,
         const chord::database::Diagram& diagram);
+
+    static void write_fret(
+        GridCore& grid,
+        const chord::database::Diagram& diagram);
+
 };
 
 }

@@ -5,19 +5,39 @@
 
 #include <algorithm>
 #include <unordered_map>
-#include <sstream>
-#include <map>
 #include <stdexcept>
 
 namespace musical::score {
 
 // ============================================================
+// Helpers
+// ============================================================
+
+static std::string to_lower(std::string s)
+{
+    std::transform(s.begin(), s.end(), s.begin(),
+        [](unsigned char c){ return std::tolower(c); });
+    return s;
+}
+
+static core::pitch_t base_pitch(KeyModeType mode)
+{
+    using core::NoteName;
+    using core::Accidental;
+
+    if (mode == KeyModeType::AEOLIAN)
+        return { NoteName::A, Accidental::NONE, 4 };
+
+    return { NoteName::C, Accidental::NONE, 4 };
+}
+
+// ============================================================
 // Mode parsing
 // ============================================================
 
-KeyModeType KeySignature::mode_from_string(const std::string& name_input)
+KeyModeType KeySignature::mode_from_string(const std::string& input)
 {
-    static const std::unordered_map<std::string, KeyModeType> mode_map = {
+    static const std::unordered_map<std::string, KeyModeType> map = {
         {"ionian", KeyModeType::IONIAN},
         {"dorian", KeyModeType::DORIAN},
         {"phrygian", KeyModeType::PHRYGIAN},
@@ -27,11 +47,9 @@ KeyModeType KeySignature::mode_from_string(const std::string& name_input)
         {"locrian", KeyModeType::LOCRIAN}
     };
 
-    std::string name = name_input;
-    std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+    auto name = to_lower(input);
 
-    auto it = mode_map.find(name);
-    if (it != mode_map.end())
+    if (auto it = map.find(name); it != map.end())
         return it->second;
 
     throw std::invalid_argument(
@@ -48,11 +66,11 @@ std::string KeySignature::to_string(KeyModeType m)
     switch (m)
     {
         case KeyModeType::IONIAN:     return "ionian";
-        case KeyModeType::AEOLIAN:    return "aeolian";
         case KeyModeType::DORIAN:     return "dorian";
         case KeyModeType::PHRYGIAN:   return "phrygian";
         case KeyModeType::LYDIAN:     return "lydian";
         case KeyModeType::MIXOLYDIAN: return "mixolydian";
+        case KeyModeType::AEOLIAN:    return "aeolian";
         case KeyModeType::LOCRIAN:    return "locrian";
     }
 
@@ -64,11 +82,11 @@ std::string KeySignature::to_french(KeyModeType m)
     switch (m)
     {
         case KeyModeType::IONIAN:     return "ionien";
-        case KeyModeType::AEOLIAN:    return "éolien";
         case KeyModeType::DORIAN:     return "dorien";
         case KeyModeType::PHRYGIAN:   return "phrygien";
         case KeyModeType::LYDIAN:     return "lydien";
         case KeyModeType::MIXOLYDIAN: return "mixolydien";
+        case KeyModeType::AEOLIAN:    return "éolien";
         case KeyModeType::LOCRIAN:    return "locrien";
     }
 
@@ -84,17 +102,16 @@ KeySignature::circle_fifths(const core::pitch_t& pitch)
 {
     std::array<std::string, SHARP_KEY_COUNT> result{};
 
-    auto gamme = core::scale::ScaleKeyedFactory::create(
-        core::IntervalType::QUINTE_JUSTE,
+    auto scale = core::scale::ScaleKeyedFactory::create(
+        core::Interval::PERFECT_FIFTH,
         pitch
     );
 
-    gamme.truncate(SHARP_KEY_COUNT);
+    scale.truncate(SHARP_KEY_COUNT);
 
     for (std::size_t i = 0; i < SHARP_KEY_COUNT; ++i)
     {
-        result[i] =
-            musical::io::note::formatter::to_string(gamme[i+1]);
+        result[i] = musical::io::note::formatter::to_string(scale[i + 1]);
     }
 
     return result;
@@ -105,18 +122,17 @@ KeySignature::circle_fourths(const core::pitch_t& pitch)
 {
     std::array<std::string, FLAT_KEY_COUNT> result{};
 
-    auto gamme = core::scale::ScaleKeyedFactory::create(
-        core::IntervalType::QUARTE_JUSTE,
+    auto scale = core::scale::ScaleKeyedFactory::create(
+        core::Interval::PERFECT_FOURTH,
         pitch,
         false
     );
 
-    gamme.truncate(FLAT_KEY_COUNT);
+    scale.truncate(FLAT_KEY_COUNT);
 
     for (std::size_t i = 0; i < FLAT_KEY_COUNT; ++i)
     {
-        result[i] =
-            musical::io::note::formatter::to_string(gamme[i]);
+        result[i] = musical::io::note::formatter::to_string(scale[i]);
     }
 
     return result;
@@ -130,15 +146,8 @@ std::string KeySignature::from_mei(
     const std::string& mei_mode,
     const std::string& mei_keysig)
 {
-    KeyModeType mode = mode_from_string(mei_mode);
-
-    // Pour simplifier et éviter la duplication monstrueuse :
-    // on utilise le cercle approprié
-
-    core::pitch_t base{ core::NoteName::C, core::Accidental::NONE, 4 };
-
-    if (mode == KeyModeType::AEOLIAN)
-        base = { core::NoteName::A, core::Accidental::NONE, 4 };
+    auto mode = mode_from_string(mei_mode);
+    auto base = base_pitch(mode);
 
     auto sharps = circle_fifths(base);
     auto flats  = circle_fourths(base);
@@ -146,17 +155,16 @@ std::string KeySignature::from_mei(
     if (mei_keysig == "0")
         return musical::io::note::formatter::to_string(base);
 
+    if (mei_keysig.size() < 2)
+        throw std::runtime_error("[KeySignature::from_mei] invalid format");
+
+    int n = mei_keysig[0] - '0';
+
     if (mei_keysig.back() == 's')
-    {
-        int n = mei_keysig[0] - '0';
-        return sharps[n-1];
-    }
+        return sharps[n - 1];
 
     if (mei_keysig.back() == 'f')
-    {
-        int n = mei_keysig[0] - '0';
-        return flats[n-1];
-    }
+        return flats[n - 1];
 
     throw std::runtime_error("[KeySignature::from_mei] invalid mei_keysig");
 }
@@ -169,27 +177,24 @@ std::string KeySignature::to_mei_string(
     KeyModeType mode,
     const core::pitch_t& tonality)
 {
-    core::pitch_t base{ core::NoteName::C, core::Accidental::NONE, 4 };
-
-    if (mode == KeyModeType::AEOLIAN)
-        base = { core::NoteName::A, core::Accidental::NONE, 4 };
+    auto base = base_pitch(mode);
 
     auto sharps = circle_fifths(base);
     auto flats  = circle_fourths(base);
 
-    std::string n =
-        musical::io::note::formatter::to_string(tonality);
+    auto n = musical::io::note::formatter::to_string(tonality);
+    auto base_str = musical::io::note::formatter::to_string(base);
 
-    if (n == musical::io::note::formatter::to_string(base))
+    if (n == base_str)
         return "0";
 
     for (std::size_t i = 0; i < sharps.size(); ++i)
         if (sharps[i] == n)
-            return std::to_string(i+1) + "s";
+            return std::to_string(i + 1) + "s";
 
     for (std::size_t i = 0; i < flats.size(); ++i)
         if (flats[i] == n)
-            return std::to_string(i+1) + "f";
+            return std::to_string(i + 1) + "f";
 
     throw std::runtime_error("[KeySignature::to_mei_string] failure");
 }

@@ -47,7 +47,7 @@ ScaleKeyed ScaleKeyedFactory::create(
 // Create from repeated interval
 // ------------------------------------------------------------
 ScaleKeyed ScaleKeyedFactory::create(
-    IntervalType interval,
+    Interval interval,
     const pitch_t& tonic,
     bool with_sharp)
 {

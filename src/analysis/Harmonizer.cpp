@@ -7,7 +7,7 @@ using namespace musical::analysis;
 
 Harmonizer::Harmonizer(
 	HarmoIntervalType h,
-	core::chord::ChordClassType c)
+	ChordClassType c)
 	:
 		_harm_intvl(h),
 		_chord_class(c)

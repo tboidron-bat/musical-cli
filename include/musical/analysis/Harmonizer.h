@@ -18,15 +18,38 @@ enum class HarmoIntervalType : uint8_t {
     SIXTE
 };    
 
+enum class ChordClassType {
+    DYAD=2,     
+    TRIAD,    
+    TETRAD,   
+    PENTAD,   
+    HEXAD,    
+    UNKNOWN
+};  
+// ChordClassType ChordType::class_type() const
+// {
+//     // +1 car la tonique n'est pas stockée dans _intervals
+//     switch (size() + 1)
+//     {
+//         case 2: return ChordClassType::DYAD;
+//         case 3: return ChordClassType::TRIAD;
+//         case 4: return ChordClassType::TETRAD;
+//         case 5: return ChordClassType::PENTAD;
+//         case 6: return ChordClassType::HEXAD;
+//         default: return ChordClassType::UNKNOWN;
+//     }
+// } 
+
+
 class Harmonizer {
 
     HarmoIntervalType _harm_intvl;
-    core::chord::ChordClassType _chord_class;
+    ChordClassType _chord_class;
 
 public:
     Harmonizer(
         HarmoIntervalType h = HarmoIntervalType::TIERCE,
-        core::chord::ChordClassType c = core::chord::ChordClassType::TETRAD);
+        ChordClassType c = ChordClassType::TETRAD);
 
     // Setter pour l'intervalle d'harmonisation
     void set_harm(HarmoIntervalType harm_intvl) {
@@ -34,7 +57,7 @@ public:
     }
 
     // Setter pour la classe d'accord
-    void set_chord(core::chord::ChordClassType chord_class) {
+    void set_chord(ChordClassType chord_class) {
         _chord_class = chord_class;
     }
 

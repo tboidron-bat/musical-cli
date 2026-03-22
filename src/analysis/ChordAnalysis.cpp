@@ -1,39 +1,37 @@
 #include <musical/analysis/ChordAnalysis.h>
 #include <musical/Core/chord/Chord.h>
-#include <musical/Core/intervals_defs.h>
-
-#include <algorithm>
+#include <musical/Core/Intervals.h>
 
 namespace musical::analysis::chord
 {
 
-using musical::core::IntervalType;
+using musical::core::Interval;
 using musical::core::chord::Chord;
+
+// ------------------------------------------------------------
+// Qualité triadique
+// ------------------------------------------------------------
 
 bool is_minor(const Chord& chord)
 {
-    const auto& iv = chord.type().intervals();
-
-    return std::find(iv.begin(), iv.end(),
-                     IntervalType::TIERCE_MINEURE) != iv.end();
+    return chord.type().has(Interval::MINOR_THIRD);
 }
 
 bool is_major(const Chord& chord)
 {
-    const auto& iv = chord.type().intervals();
-
-    return std::find(iv.begin(), iv.end(),
-                     IntervalType::TIERCE_MAJEURE) != iv.end();
+    return chord.type().has(Interval::MAJOR_THIRD);
 }
+
+// ------------------------------------------------------------
+// Extensions
+// ------------------------------------------------------------
 
 bool has_seventh(const Chord& chord)
 {
-    const auto& iv = chord.type().intervals();
+    const auto& t = chord.type();
 
-    return std::find(iv.begin(), iv.end(),
-                     IntervalType::SEPTIEME_MINEURE) != iv.end()
-        || std::find(iv.begin(), iv.end(),
-                     IntervalType::SEPTIEME_MAJEURE) != iv.end();
+    return t.has(Interval::MINOR_SEVENTH) ||
+           t.has(Interval::MAJOR_SEVENTH);
 }
 
 } // namespace musical::analysis::chord

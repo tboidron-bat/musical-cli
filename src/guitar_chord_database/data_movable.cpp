@@ -3,6 +3,9 @@
 namespace chord::database
 {
 
+using movable_diagram_map =
+std::map<std::string,std::vector<Diagram>>;
+
 const movable_diagram_map& data_movable()
 {
     using D = Diagram;
@@ -12,7 +15,7 @@ const movable_diagram_map& data_movable()
 
     static const movable_diagram_map db =
     {
-        { "maj", 
+        { "maj", //interval_mask = 10010000
             {
             
             // | 1 1 1 1 1 
@@ -116,6 +119,7 @@ const movable_diagram_map& data_movable()
             }
         },   
         { "maj:7M:#4:/3", 
+            // mask = (1<<4 | 1<<11 | 1<<6)            
             {
             //           
             // | 1 1 | | |
@@ -126,7 +130,8 @@ const movable_diagram_map& data_movable()
             }
         },         
         {
-            "maj:7M:#11:/7M",
+            "maj:7M:#11", //ajouter :/7M ?
+            //mask = (1<<4 | 1<<11 | 1<<18)            
             {
             //sound flamenco
             //           x
@@ -139,7 +144,8 @@ const movable_diagram_map& data_movable()
             }
         },
         {
-            "maj:7M:#11:/3",
+            "maj:7M:#11", //ajouter :/3?
+            // mask = (1<<4 | 1<<11 | 1<<18)
             {
             //sound flamenco
             // x        
@@ -155,14 +161,14 @@ const movable_diagram_map& data_movable()
             // 2 | | 3 3 |
             // | | | | | |
             // | | | | | 4                                    
-            D({ 2, X, BASE, 2, 2, 4 }, GuitarStandardTuning::D, D::CAGED::D),
+            D({ 2, X, BASE, 2, 2, 4 }, GuitarStandardTuning::D, D::CAGED::D)
 
 
             }
         },
-
         {
-            "maj:7M:no5:#4:/#4",
+            "maj:7M:no5:#4", //ajouter :/#4?
+            // mask = (1<<4 | 1<<6 | 1<<11)                        
             {
             //sound flamenco
             // x         x
@@ -174,6 +180,84 @@ const movable_diagram_map& data_movable()
             D({ X, 4, 4, BASE, BASE, X }, GuitarStandardTuning::G, D::CAGED::G) // CAGED::G & E
 
             }
+        },
+        {
+            "sus2:7M:13",
+            // mask = (1<<2 | 1<<11 | 1<<21)            
+            {
+            // x     
+            // | 1 1 1 1 1
+            // | | | 2 | |
+            // | | 3 | | 4            
+            // | | | | | |
+            D({ X, BASE, 2, 1, BASE, 2 }, GuitarStandardTuning::A, D::CAGED::A) 
+
+            }
+        },
+        {            
+            "maj:7M:6:9",
+            // mask = (1<<4 | 1<<7 | 1<<9 | 1<<11 | 1<<14)            
+            {
+            // | 1 1 1 1 1
+            // 2 | | | 3 |
+            // | | | | | |            
+            D({ 1, BASE, BASE, BASE, 1, BASE }, GuitarStandardTuning::LOW_E, D::CAGED::G) 
+            }                
+        },
+        {            
+            "maj:7M:9:13:no5",
+            // mask = (1<<4 | 1<<11 | 1<<14 | 1<<21)            
+            {
+            // 1 1 1 1 1 1
+            // 2 | | | | |            
+            // | | 3 | | |            
+            // | | | | 4 |                        
+            D({ 1, BASE, 2, BASE, 3, BASE }, GuitarStandardTuning::LOW_E, D::CAGED::G), //&CAGED:E 
+            // 1 | | | | |            
+            // | | 2 3 | |            
+            // | | | | 4 4            
+            // | | | | | |            
+            D({BASE, X, 1, 1, 2, 2 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
+            //   x     
+            // | | | | 1 1
+            // | | | | | |
+            // | | | 2 | |
+            // 3 | | | | |
+            // | | 4 | | |
+            D({ 3, X, 4, 2, 1, 1 }, GuitarStandardTuning::LOW_E, D::CAGED::E) //& CAGED::G
+            }                
+        },
+        {
+            "maj:7M:6:9:no5",
+            // mask = (1<<4 | 1<<9 | 1<<11 | 1<<14)            
+            {  
+            // x
+            // | | 1 1 1 1            
+            // | | | | | |            
+            // | | | 3 | |            
+            // | 4 | | | |            
+            D({X, 3, BASE, 2, BASE, BASE }, GuitarStandardTuning::A, D::CAGED::C) 
+            }                
+        },
+
+        { 
+            "maj:7M:b5", 
+            // mask = (1<<4 | 1<<11 | 1<<6)                        
+            {
+            //   x       x 
+            // | | | | 1 | 
+            // 2 | | | | | 
+            // | | 3 4 | | 
+
+            D({ 1, X, 2, 2, BASE, X }, GuitarStandardTuning::LOW_E, D::CAGED::E),
+            // x x 
+            // | | 1 | | | 
+            // | | | 2 | | 
+            // | | | | 3 4 
+            // | | | | | |         
+            D({ X, X, BASE, 1, 2, 2 }, GuitarStandardTuning::D, D::CAGED::D),
+
+            }
         }
     };
 
@@ -181,3 +265,12 @@ const movable_diagram_map& data_movable()
 }
 
 } // namespace chord::database
+
+            // "",
+            // {
+            // // | | | | | |            
+            // // | | | | | |            
+            // // | | | | | |            
+            // // | | | | | |            
+            // D({BASE, BASE, BASE, BASE, BASE, BASE }, GuitarStandardTuning::, D::CAGED::) 
+            // }                

@@ -4,9 +4,7 @@
 #include <musical/Core/pitch_t.h>
 #include <musical/io/note/in/NoteLexer.h>
 #include <musical/io/note/in/NoteParser.h>
-#include <musical/io/chord/out/stream.h>
 
-#include <algorithm>
 #include <iostream>
 
 #define DEBUG
@@ -14,30 +12,31 @@
 namespace musical::io::chord
 {
 
-using IT = musical::core::IntervalType;
+using IT = musical::core::Interval;
+using CT = musical::core::chord::ChordType;
 
 // ------------------------------------------------------------
 // Helpers
 // ------------------------------------------------------------
 
-static void make_major(std::vector<IT>& iv)
+static CT make_major()
 {
-    iv = { IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE };
+    return CT({ IT::MAJOR_THIRD, IT::PERFECT_FIFTH });
 }
 
-static void make_minor(std::vector<IT>& iv)
+static CT make_minor()
 {
-    iv = { IT::TIERCE_MINEURE, IT::QUINTE_JUSTE };
+    return CT({ IT::MINOR_THIRD, IT::PERFECT_FIFTH });
 }
 
-static void make_dim(std::vector<IT>& iv)
+static CT make_dim()
 {
-    iv = { IT::TIERCE_MINEURE, IT::TRITON };
+    return CT({ IT::MINOR_THIRD, IT::TRITONE });
 }
 
-static void make_aug(std::vector<IT>& iv)
+static CT make_aug()
 {
-    iv = { IT::TIERCE_MAJEURE, IT::SIXTE_MINEURE };
+    return CT({ IT::MAJOR_THIRD, IT::MINOR_SIXTH });
 }
 
 // ------------------------------------------------------------
@@ -48,52 +47,15 @@ std::optional<core::chord::Chord>
 ChordParser::parse(const std::vector<token_t>& tokens)
 {
 
-#ifdef DEBUG    
-
-    std::cout << std::string(20,'#') << "DEBUG" << std::string(20,'#') << '\n'
-            << "ChordParser::"<<__func__<< "()\n";
-
-    for (const auto& t : tokens)
-    {
-        switch (t.type)
-        {
-            case token_t::TokenType::ROOT:
-                std::cout << "  ROOT: "
-                          << std::get<root_token_t>(t.value).text
-                          << "\n";
-                break;
-
-            case token_t::TokenType::LEXEME:
-            {
-                const auto& lex =
-                    std::get<lexeme_token_t>(t.value);
-
-                std::cout << "  LEXEME: "
-                          << lex.text
-                          << " ("
-                          << lex.category
-                          << ")\n";
-                break;
-            }
-
-            case token_t::TokenType::SLASH:
-                std::cout << "  SLASH\n";
-                break;
-
-            case token_t::TokenType::UNKNOWN:
-                std::cout << "  UNKNOWN\n";
-                break;
-        }
-    }
-
-    std::cout << std::string(46,'#') << '\n';
+#ifdef DEBUG
+    std::cout << "######## DEBUG ChordParser ########\n";
 #endif
 
     // --------------------------------------------------------
     // 1️⃣ ROOT
     // --------------------------------------------------------
 
-    if (tokens[0].type != token_t::TokenType::ROOT)
+    if (tokens.empty() || tokens[0].type != token_t::TokenType::ROOT)
         return std::nullopt;
 
     const auto& root_text =
@@ -114,8 +76,7 @@ ChordParser::parse(const std::vector<token_t>& tokens)
     // 2️⃣ Default triad = major
     // --------------------------------------------------------
 
-    std::vector<IT> intervals;
-    make_major(intervals);
+    CT chord_type = make_major();
 
     // --------------------------------------------------------
     // 3️⃣ Process LEXEMES
@@ -126,7 +87,7 @@ ChordParser::parse(const std::vector<token_t>& tokens)
         const auto& t = tokens[i];
 
         if (t.type == token_t::TokenType::SLASH)
-            continue; // basse alternative à gérer plus tard
+            continue;
 
         if (t.type != token_t::TokenType::LEXEME)
             continue;
@@ -138,40 +99,39 @@ ChordParser::parse(const std::vector<token_t>& tokens)
         {
             case lexeme_t::Category::TRIAD:
             {
-                if (lex.text == "m" ||
-                    lex.text == "min" ||
-                    lex.text == "-")
-                {
-                    make_minor(intervals);
-                }
+                if (lex.text == "m" || lex.text == "min" || lex.text == "-")
+                    chord_type = make_minor();
+
                 else if (lex.text == "dim")
-                {
-                    make_dim(intervals);
-                }
+                    chord_type = make_dim();
+
                 else if (lex.text == "aug")
-                {
-                    make_aug(intervals);
-                }
+                    chord_type = make_aug();
+
                 break;
             }
 
             case lexeme_t::Category::SEVENTH:
             {
                 if (lex.text == "7")
-                    intervals.push_back(IT::SEPTIEME_MINEURE);
+                    chord_type += IT::MINOR_SEVENTH;
                 else
-                    intervals.push_back(IT::SEPTIEME_MAJEURE);
+                    chord_type += IT::MAJOR_SEVENTH;
+
                 break;
             }
 
             case lexeme_t::Category::EXTENSION:
             {
                 if (lex.text == "9")
-                    intervals.push_back(IT::NEUVIEME_MAJEURE);
+                    chord_type += IT::MAJOR_NINTH;
+
                 else if (lex.text == "11")
-                    intervals.push_back(IT::ONZIEME);
+                    chord_type += IT::PERFECT_ELEVENTH;
+
                 else if (lex.text == "13")
-                    intervals.push_back(IT::TREIZIEME_MAJEURE);
+                    chord_type += IT::MAJOR_THIRTEENTH;
+
                 break;
             }
 
@@ -179,34 +139,24 @@ ChordParser::parse(const std::vector<token_t>& tokens)
             {
                 if (lex.text == "b5")
                 {
-                    auto it = std::find(intervals.begin(),
-                                        intervals.end(),
-                                        IT::QUINTE_JUSTE);
-
-                    if (it != intervals.end())
-                        *it = IT::TRITON;
+                    chord_type -= IT::PERFECT_FIFTH;
+                    chord_type += IT::TRITONE;
                 }
+
                 break;
             }
 
             case lexeme_t::Category::SUSPENSION:
             {
-                // supprimer tierce
-                intervals.erase(
-                    std::remove_if(intervals.begin(),
-                                   intervals.end(),
-                                   [](IT iv)
-                                   {
-                                       return iv == IT::TIERCE_MAJEURE ||
-                                              iv == IT::TIERCE_MINEURE;
-                                   }),
-                    intervals.end()
-                );
+                // remove 3rd
+                chord_type -= IT::MAJOR_THIRD;
+                chord_type -= IT::MINOR_THIRD;
 
                 if (lex.text == "sus2")
-                    intervals.push_back(IT::SECONDE_MAJEURE);
+                    chord_type += IT::MAJOR_SECOND;
+
                 else if (lex.text == "sus4")
-                    intervals.push_back(IT::QUARTE_JUSTE);
+                    chord_type += IT::PERFECT_FOURTH;
 
                 break;
             }
@@ -214,9 +164,11 @@ ChordParser::parse(const std::vector<token_t>& tokens)
             case lexeme_t::Category::ADDITION:
             {
                 if (lex.text == "add9")
-                    intervals.push_back(IT::NEUVIEME_MAJEURE);
+                    chord_type += IT::MAJOR_NINTH;
+
                 else if (lex.text == "add11")
-                    intervals.push_back(IT::ONZIEME);
+                    chord_type += IT::PERFECT_ELEVENTH;
+
                 break;
             }
 
@@ -227,22 +179,19 @@ ChordParser::parse(const std::vector<token_t>& tokens)
         }
     }
 
-    if(intervals.empty())
+    if (chord_type.empty())
     {
         std::cerr << "Chord parsing failed\n";
         return std::nullopt;
     }
 
-
     // --------------------------------------------------------
-    // 4️⃣ Normalisation
+    // 4️⃣ Build chord
     // --------------------------------------------------------
-
-    std::sort(intervals.begin(), intervals.end());
 
     return musical::core::chord::Chord(
         root_pitch,
-        musical::core::chord::ChordType(intervals)
+        chord_type
     );
 }
 

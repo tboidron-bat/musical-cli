@@ -84,7 +84,7 @@ target_sources(musical-core
         src/analysis/ChordAnalysis.cpp
         src/analysis/ChordFunctionAnalyser.cpp
         src/analysis/chord/naming.cpp
-        src/analysis/Harmonizer.cpp
+        #src/analysis/Harmonizer.cpp
         # src/analysis/Harmony.cpp # désactivé pour l'instant        
 
 

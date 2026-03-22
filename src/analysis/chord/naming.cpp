@@ -1,98 +1,92 @@
 #include <musical/analysis/chord/naming.h>
-#include <musical/Core/chord/ChordType.h> 
-
-//#include <musical/Core/intervals_defs.h>
-
-#include <vector>
+#include <musical/Core/chord/ChordType.h>
 
 namespace musical::analysis::chord
 {
 
-using IT = musical::core::IntervalType;
+using IT = musical::core::Interval;
+using CT = musical::core::chord::ChordType;
 
-// helper pour éviter les répétitions
-static bool equals(
-    const std::vector<IT>& a,
-    std::initializer_list<IT> b)
+// helper
+static bool has_all(const CT& c, std::initializer_list<IT> list)
 {
-    return a.size() == b.size()
-        && std::equal(a.begin(), a.end(), b.begin());
+    for (auto i : list)
+        if (!c.has(i))
+            return false;
+    return true;
 }
 
 // ============================================================
 // CHORD TYPE → STRING
 // ============================================================
-std::string find_name(
-    const musical::core::chord::ChordType& type)
+std::string find_name(const CT& c)
 {
-    const auto& iv = type.intervals();
-
     // TRIADES
-    if (equals(iv, { IT::TIERCE_MAJEURE, IT::QUINTE_JUSTE }))
+    if (has_all(c, { IT::MAJOR_THIRD, IT::PERFECT_FIFTH }))
         return "maj";
 
-    if (equals(iv, { IT::TIERCE_MINEURE, IT::QUINTE_JUSTE }))
+    if (has_all(c, { IT::MINOR_THIRD, IT::PERFECT_FIFTH }))
         return "min";
 
-    if (equals(iv, { IT::TIERCE_MINEURE, IT::TRITON }))
+    if (has_all(c, { IT::MINOR_THIRD, IT::TRITONE }))
         return "dim";
 
-    if (equals(iv, { IT::TIERCE_MAJEURE, IT::SIXTE_MINEURE }))
+    if (has_all(c, { IT::MAJOR_THIRD, IT::MINOR_SIXTH }))
         return "aug";
 
     // TETRADES
-    if (equals(iv, {
-            IT::TIERCE_MAJEURE,
-            IT::QUINTE_JUSTE,
-            IT::SEPTIEME_MINEURE }))
-        return "maj:7";
+    if (has_all(c, {
+            IT::MAJOR_THIRD,
+            IT::PERFECT_FIFTH,
+            IT::MINOR_SEVENTH }))
+        return "7";
 
-    if (equals(iv, {
-            IT::TIERCE_MAJEURE,
-            IT::QUINTE_JUSTE,
-            IT::SEPTIEME_MAJEURE }))
-        return "maj:7M";
+    if (has_all(c, {
+            IT::MAJOR_THIRD,
+            IT::PERFECT_FIFTH,
+            IT::MAJOR_SEVENTH }))
+        return "maj7";
 
-    if (equals(iv, {
-            IT::TIERCE_MINEURE,
-            IT::QUINTE_JUSTE,
-            IT::SEPTIEME_MINEURE }))
-        return "min:7";
+    if (has_all(c, {
+            IT::MINOR_THIRD,
+            IT::PERFECT_FIFTH,
+            IT::MINOR_SEVENTH }))
+        return "m7";
 
-    if (equals(iv, {
-            IT::TIERCE_MINEURE,
-            IT::TRITON,
-            IT::SEPTIEME_MINEURE }))
-        return "min:7:b5";
+    if (has_all(c, {
+            IT::MINOR_THIRD,
+            IT::TRITONE,
+            IT::MINOR_SEVENTH }))
+        return "m7b5";
 
-    if (equals(iv, {
-            IT::TIERCE_MINEURE,
-            IT::TRITON,
-            IT::SIXTE_MAJEURE }))
+    if (has_all(c, {
+            IT::MINOR_THIRD,
+            IT::TRITONE,
+            IT::MAJOR_SIXTH }))
         return "dim7";
 
     // SUS
-    if (equals(iv, {
-            IT::QUARTE_JUSTE,
-            IT::QUINTE_JUSTE }))
+    if (has_all(c, {
+            IT::PERFECT_FOURTH,
+            IT::PERFECT_FIFTH }))
         return "sus4";
 
-    if (equals(iv, {
-            IT::SECONDE_MAJEURE,
-            IT::QUINTE_JUSTE }))
+    if (has_all(c, {
+            IT::MAJOR_SECOND,
+            IT::PERFECT_FIFTH }))
         return "sus2";
 
     // ADD
-    if (equals(iv, {
-            IT::TIERCE_MAJEURE,
-            IT::QUINTE_JUSTE,
-            IT::SECONDE_MAJEURE }))
+    if (has_all(c, {
+            IT::MAJOR_THIRD,
+            IT::PERFECT_FIFTH,
+            IT::MAJOR_SECOND }))
         return "add2";
 
-    if (equals(iv, {
-            IT::TIERCE_MAJEURE,
-            IT::QUINTE_JUSTE,
-            IT::QUARTE_JUSTE }))
+    if (has_all(c, {
+            IT::MAJOR_THIRD,
+            IT::PERFECT_FIFTH,
+            IT::PERFECT_FOURTH }))
         return "add4";
 
     return "unknown";

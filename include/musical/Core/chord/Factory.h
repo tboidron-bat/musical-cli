@@ -28,7 +28,7 @@ public:
     static Chord create(
         const pitch_t& root,
         const musical::core::scale::ScaleKeyed& gamme,
-        ChordClassType nb_note = ChordClassType::TRIAD
+        uint8_t nb_note = 3
     );
 };
 

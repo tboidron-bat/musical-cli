@@ -1,80 +1,64 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
-#include <musical/Core/intervals_defs.h>
-#include <algorithm>
-#include <utility>
+
+#include <musical/Core/Intervals.h>
+
+
+
 
 namespace musical::core::chord {
-
+ 
 /**
- * @brief Structure intervallique d’un type d’accord.
- *
- * Représente un ensemble d’intervalles chromatiques relatifs
- * à une tonique implicite (non incluse).
- *
- * Les intervalles sont exprimés en demi-tons positifs.
  *
  * Exemple :
- *   m7 → {3, 7, 10}
- *
+ *   ChordType m7 = ChordType({
+ *    Interval::MINOR_THIRD,
+ *    Interval::PERFECT_FIFTH,
+ *    Interval::MINOR_SEVENTH
+ *    });    
+ * 
  * La tonique appartient à la classe Chord.
  */
 
-    enum class ChordClassType {
 
-        DYAD=2,     
-        TRIAD,    
-        TETRAD,   
-        PENTAD,   
-        HEXAD,    
-        UNKNOWN
-    };    
-
-
-    
 class ChordType
 {
-    // Les intervalles doivent être triés et uniques.
-    std::vector<IntervalType> _intervals;
-    
+private:
+    using IntervalMask = uint64_t; 
+
+    IntervalMask _intervals_mask {0};
+   
 public:
-    explicit ChordType(std::vector<IntervalType> intervals)
-    {
-        std::sort(intervals.begin(), intervals.end());
-        intervals.erase(
-            std::unique(intervals.begin(), intervals.end()),
-            intervals.end()
-        );
-        _intervals = std::move(intervals);
-    }
+    constexpr ChordType() = default;
 
-    /**
-     * @brief Ordre strict faible basé sur la structure intervallique.
-     *
-     * Permet d’utiliser ChordType comme clé dans des conteneurs ordonnés
-     * (ex: std::map).
-     *
-     * L’ordre est purement lexicographique et repose sur la comparaison
-     * des vecteurs d’intervalles.
-     *
-     * Cet ordre n’a aucune signification musicale.
-     */
-    bool operator<(const ChordType& other) const
-    {
-        return _intervals < other._intervals;
-    }
-    bool operator==(const ChordType& other) const
-    {
-        return _intervals == other._intervals;
-    }    
+    constexpr explicit ChordType(IntervalMask intervals_mask)
+        : _intervals_mask(intervals_mask)
+    {}
 
-    ChordClassType class_type() const;
+    constexpr ChordType(std::initializer_list<Interval> list);
 
+public:
+    constexpr ChordType& operator += (Interval) noexcept;
+    constexpr ChordType& operator -= (Interval) noexcept;    
 
-    // --- Accesseurs ---
-    const std::vector<IntervalType>& intervals() const { return _intervals; }    
-    std::size_t size() const;    
+    constexpr bool operator==(const ChordType& other) const;
+
+    IntervalMask intervals_mask() const noexcept { return _intervals_mask; }    
+
+    constexpr bool empty() const noexcept;
+    constexpr bool has(Interval) const noexcept;
+    constexpr bool has(uint64_t) const noexcept;
+
+    constexpr std::size_t size() const;    
+    constexpr void clear() noexcept;       
+
+public:
+    static constexpr IntervalMask make(Interval);    
+    static constexpr IntervalMask make(std::initializer_list<Interval>);            
+    static IntervalMask make(const std::vector<Interval>&);    
+
 };
 
 } 

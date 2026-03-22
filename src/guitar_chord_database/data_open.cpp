@@ -191,7 +191,6 @@ const diagram_map& database_open()
         },
 
         // ========================
-        // AUTRES
         // ========================
 
         { "a:7:b5", 
@@ -238,7 +237,18 @@ const diagram_map& database_open()
             // | 3 | | | |
             D({ X, 3, 2, 0, 0, 2 }, GuitarStandardTuning::A, D::CAGED::C),
             }
+        },
+        { "c:7M:6:9:no5", 
+            {           
+            // x   0   0 0
+            // =========== 
+            // | | | | | |
+            // | | | 2 | | 
+            // | 3 | | | |
+            D({ X, 3, 0, 2, 0, 0 }, GuitarStandardTuning::A, D::CAGED::C),
+            }
         }
+
     };
 
     return db;

@@ -7,7 +7,7 @@
 #include <musical/Core/scale/ScaleKeyed.h>
 #include <musical/Core/pitch_t.h>
 #include <musical/Core/note/Note.h>
-#include <musical/Core/intervals_defs.h>
+#include <musical/Core/Intervals.h>
 
 namespace musical::core::scale {
 
@@ -28,7 +28,7 @@ public:
     // Repeated interval generation (pitch_t version - NEW)
     // ------------------------------------------------------------
     static ScaleKeyed create(
-        IntervalType interval,
+        Interval interval,
         const pitch_t& tonique,
         bool with_sharp = true
     );

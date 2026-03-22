@@ -23,7 +23,7 @@ std::vector<pitch_t> Chord::notes(bool with_sharp) const
     result.push_back(_tonic);
 
     // Ajouter les autres notes via les intervalles
-    for (IntervalType interval : _type.intervals())
+    for (Interval interval : _type.intervals())
     {
         int semitone = root_pc + static_cast<int>(interval);
         pitch_t p = pitch_from_chromatic_index(semitone, with_sharp);

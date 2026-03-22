@@ -16,10 +16,10 @@ Factory::create(
     const pitch_t& root,
     ChordTypeCatalog::StandardChord type)
 {
-    const ChordType& chordType =
-        ChordTypeCatalog::get(type);
-
-    return Chord(root, chordType);
+    return Chord(
+        root,
+        ChordTypeCatalog::get(type)
+    );
 }
 
 
@@ -30,29 +30,34 @@ Chord
 Factory::create(
     const pitch_t& root,
     const musical::core::scale::ScaleKeyed& scale,
-    ChordClassType nb_notes)
+    uint8_t nb_notes)
 {
-    std::vector<IntervalType> intervals;
+    using I = Interval;
 
-    int root_pc = static_cast<int>(chromatic_index(root));
+    if (scale.size() == 0)
+        throw std::invalid_argument("Scale is empty");
 
-    for (int i = 1; i < static_cast<int>(nb_notes); ++i)
+    ChordType chordType;
+
+    const int root_pc = static_cast<int>(chromatic_index(root));
+
+    for (uint8_t i = 1; i < nb_notes; ++i)
     {
-        int degree = i * 2;
-        const pitch_t& n = scale[degree % scale.size()];
+        // empilement de tierces → 1, 3, 5, 7, 9...
+        const std::size_t degree =
+            (i * 2) % scale.size();
 
-        int pc = static_cast<int>(chromatic_index(n));
+        const pitch_t& note = scale[degree];
+
+        int pc = static_cast<int>(chromatic_index(note));
+
         int semitones = pc - root_pc;
+        semitones = (semitones + 12) % 12;
 
-        if (semitones < 0)
-            semitones += 12;
-
-        intervals.push_back(
-            static_cast<IntervalType>(semitones)
-        );
+        chordType += static_cast<I>(semitones);
     }
 
-    return Chord(root, ChordType(intervals));
+    return Chord(root, chordType);
 }
 
 } // namespace musical::core::chord

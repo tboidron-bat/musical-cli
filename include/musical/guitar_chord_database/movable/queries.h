@@ -1,26 +1,28 @@
 #pragma once
 
 #include <vector>
-#include <string>
 #include <utility>
+#include <cstdint>
 
 #include <musical/guitar_chord_database/Diagram.h>
 
 namespace chord::database::queries::movable
 {
 
-// ============================================================
-// FIND SHAPES BY TYPE
-// ============================================================
-std::vector<Diagram>
-find_diagrams(const std::string& chord_type_name);
+using IntervalMask = uint64_t;
 
 // ============================================================
-// FIND SHAPES BY TYPE + CAGED
+// FIND SHAPES BY MASK
+// ============================================================
+std::vector<Diagram>
+find_diagrams(IntervalMask mask);
+
+// ============================================================
+// FIND SHAPES BY MASK + CAGED
 // ============================================================
 std::vector<Diagram>
 find_diagrams(
-    const std::string& chord_type_name,
+    IntervalMask mask,
     Diagram::CAGED shape);
 
 // ============================================================
@@ -35,9 +37,7 @@ find_all_diagrams(Diagram::CAGED shape);
 // ------------------------------------------------------------
 // RANDOM DIAGRAM
 // ------------------------------------------------------------
-
-std::pair<std::string, Diagram>
+std::pair<IntervalMask, Diagram>
 get_random_diagram();
 
-
-}
+} // namespace chord::database::queries::movable

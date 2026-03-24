@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <ostream>
 
 namespace musical::core
 {
@@ -45,7 +46,8 @@ std::size_t chromatic_index(const pitch_t&) noexcept;
 
 pitch_t pitch_from_chromatic_index(
     int index,
-    bool with_sharp = true
-);
+    bool with_sharp = true);
+
+std::ostream& operator<<(std::ostream& os, const pitch_t& pitch);    
 
 } // namespace musical::core

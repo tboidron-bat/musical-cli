@@ -1,11 +1,11 @@
 #include <musical/ScoreElements/KeySignature.h>
 #include <musical/Core/pitch_t.h>
 #include <musical/Core/scale/ScaleKeyedFactory.h>
-#include <musical/io/note/out/note_formatter.h>
 
 #include <algorithm>
 #include <unordered_map>
 #include <stdexcept>
+#include <sstream>
 
 namespace musical::score {
 
@@ -18,6 +18,14 @@ static std::string to_lower(std::string s)
     std::transform(s.begin(), s.end(), s.begin(),
         [](unsigned char c){ return std::tolower(c); });
     return s;
+}
+
+// 🔥 nouveau helper (remplace note_formatter)
+static std::string pitch_to_string(const core::pitch_t& p)
+{
+    std::ostringstream oss;
+    oss << p;
+    return oss.str();
 }
 
 static core::pitch_t base_pitch(KeyModeType mode)
@@ -111,7 +119,7 @@ KeySignature::circle_fifths(const core::pitch_t& pitch)
 
     for (std::size_t i = 0; i < SHARP_KEY_COUNT; ++i)
     {
-        result[i] = musical::io::note::formatter::to_string(scale[i + 1]);
+        result[i] = pitch_to_string(scale[i + 1]);
     }
 
     return result;
@@ -132,7 +140,7 @@ KeySignature::circle_fourths(const core::pitch_t& pitch)
 
     for (std::size_t i = 0; i < FLAT_KEY_COUNT; ++i)
     {
-        result[i] = musical::io::note::formatter::to_string(scale[i]);
+        result[i] = pitch_to_string(scale[i]);
     }
 
     return result;
@@ -153,7 +161,7 @@ std::string KeySignature::from_mei(
     auto flats  = circle_fourths(base);
 
     if (mei_keysig == "0")
-        return musical::io::note::formatter::to_string(base);
+        return pitch_to_string(base);
 
     if (mei_keysig.size() < 2)
         throw std::runtime_error("[KeySignature::from_mei] invalid format");
@@ -182,8 +190,8 @@ std::string KeySignature::to_mei_string(
     auto sharps = circle_fifths(base);
     auto flats  = circle_fourths(base);
 
-    auto n = musical::io::note::formatter::to_string(tonality);
-    auto base_str = musical::io::note::formatter::to_string(base);
+    auto n = pitch_to_string(tonality);
+    auto base_str = pitch_to_string(base);
 
     if (n == base_str)
         return "0";

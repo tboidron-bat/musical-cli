@@ -1,9 +1,11 @@
 #pragma once
 
-#include <musical/Core/Figure.h> 
 #include <cstdint> 
+#include <ostream>
 
+#include <musical/Core/Figure.h> 
 #include <musical/Core/pitch_t.h> 
+
 
 namespace musical::core::note {
     
@@ -56,7 +58,17 @@ public:
     /*--- Others ---*/
     std::size_t chromatic_index() const noexcept
     {
-        return musical::core::chromatic_index(_pitch);
+        return ::musical::core::chromatic_index(_pitch);
     }
 };
+inline std::ostream& operator<<(std::ostream& os, const Note& note)
+{
+    // on reconstruit un pitch_t depuis Note
+    pitch_t p;
+    p._name       = note.name();
+    p._accidental = note.accidental();
+    p._octave     = note.octave();
+    os << p;
+    return os;
+}
 }

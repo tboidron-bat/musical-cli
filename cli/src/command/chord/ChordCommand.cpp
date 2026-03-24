@@ -13,8 +13,6 @@
 
 #include <musical/io/chord/in/ChordLexer.h>
 #include <musical/io/chord/in/ChordParser.h>
-#include <musical/io/note/out/stream.h>
-#include <musical/io/chord/out/stream.h>
 
 #include <sstream>
 #include <regex>

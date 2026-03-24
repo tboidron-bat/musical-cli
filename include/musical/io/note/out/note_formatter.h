@@ -8,26 +8,16 @@
 
 namespace musical::io::note::formatter 
 {
-    /**
-     * @brief
-     * Retourne une représentation textuelle linéaire d'un pitch.
-     */
-    std::string to_string(const musical::core::pitch_t& pitch); 
-
 
     /**
-     * @brief Convertit un nom de note en notation latine 
-     * comme : "do", "ré#" ou "mib" 
-     * vers sa représentation anglo-saxonne équivalente 
-     * comme : "c", "d#", "eb".
+     *  Convertit  "do", "ré#" ou "mib" en
+     *  "c", "d#", "eb". etc ...
      */
     std::string to_saxon(const std::string&);  
-
-
+    
     /**
-     * @brief Convertit une notation anglo-saxonne
-     * ex : "c", "d#", "eb"
-     * vers notation latine : "do", "ré#", "mib"
+     *  Convertit "c", "d#", "eb"
+     *  en  : "do", "ré#", "mib". etc ...
      */
     std::string to_latin(const std::string&); 
 

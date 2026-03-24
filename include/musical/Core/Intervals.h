@@ -135,9 +135,5 @@ inline const char* to_symbol(Interval it)
 
     return "?";
 }
-inline std::ostream& operator<<(std::ostream& os, Interval it)
-{
-    return os << to_symbol(it);
-}
 }
 

@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <random>
+#include <algorithm>
 
 namespace musical::audio::karplus_strong
 {

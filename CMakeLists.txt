@@ -28,12 +28,14 @@ target_sources(musical-core
 
         src/Core/note/Rest.cpp        
 
+        #core::Chord
         src/Core/chord/ChordType.cpp        
         src/Core/chord/ChordTypeCatalog.cpp                
         src/Core/chord/Chord.cpp
         src/Core/chord/Factory.cpp
         src/Core/chord/Arpeggio.cpp        
 
+        #core::Scale        
         src/Core/scale/ScaleKeyed.cpp
         src/Core/scale/ScaleKeyedFactory.cpp
         src/Core/scale/ScalePattern.cpp
@@ -44,14 +46,26 @@ target_sources(musical-core
         src/ScoreElements/Measure.cpp
         src/ScoreElements/TimeSignature.cpp
 
-
-        src/guitar_chord_database/Tuning.cpp
-
+        # guitar chord database
         src/guitar_chord_database/Diagram.cpp        
-        src/guitar_chord_database/data_open.cpp 
-        src/guitar_chord_database/open_queries.cpp
-        src/guitar_chord_database/data_movable.cpp         
-        src/guitar_chord_database/movable_queries.cpp
+            #open
+        src/guitar_chord_database/open/database.cpp 
+        src/guitar_chord_database/open/queries.cpp
+        src/guitar_chord_database/open/maj.cpp                 
+        src/guitar_chord_database/open/min.cpp                 
+        src/guitar_chord_database/open/dim.cpp                 
+        src/guitar_chord_database/open/aug.cpp                 
+        src/guitar_chord_database/open/sus2.cpp                 
+        src/guitar_chord_database/open/sus4.cpp                 
+            #movable
+        src/guitar_chord_database/movable/database.cpp         
+        src/guitar_chord_database/movable/queries.cpp        
+        src/guitar_chord_database/movable/maj.cpp                 
+        src/guitar_chord_database/movable/min.cpp                 
+        src/guitar_chord_database/movable/dim.cpp                 
+        src/guitar_chord_database/movable/aug.cpp                 
+        src/guitar_chord_database/movable/sus2.cpp                 
+        src/guitar_chord_database/movable/sus4.cpp                 
 
         # guitar chord diagram        
         src/io/guitar/unicode/GridCore.cpp                 
@@ -59,23 +73,16 @@ target_sources(musical-core
         src/io/guitar/unicode/DottedGrid.cpp                                  
         src/io/guitar/unicode/DiagramRenderer.cpp                                                
 
-        #src/io/guitar/unicode/MovableDiagram.cpp                                
-
-        
-
-
+        #         
         src/io/utils/in/normalize_to_ascii.cpp                
-
         src/io/note/in/NoteLexer.cpp                
         src/io/note/in/NoteParser.cpp        
         src/io/note/out/note_formatter.cpp
-        src/io/note/out/stream.cpp                
         src/io/note/out/mei_adapter.cpp        
 
-        src/io/chord/out/stream.cpp                
+
         src/io/chord/in/ChordLexer.cpp          
         src/io/chord/in/ChordParser.cpp        
-        src/io/chord/out/formatter.cpp
                 
         src/io/scale/scalepattern_formatter.cpp
 
@@ -83,7 +90,7 @@ target_sources(musical-core
         # analysis
         src/analysis/ChordAnalysis.cpp
         src/analysis/ChordFunctionAnalyser.cpp
-        src/analysis/chord/naming.cpp
+        src/analysis/chord/io.cpp
         #src/analysis/Harmonizer.cpp
         # src/analysis/Harmony.cpp # désactivé pour l'instant        
 

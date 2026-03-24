@@ -1,4 +1,4 @@
-#include <musical/analysis/chord/naming.h>
+#include <musical/analysis/chord/io.h>
 #include <musical/Core/chord/ChordType.h>
 
 namespace musical::analysis::chord
@@ -17,79 +17,92 @@ static bool has_all(const CT& c, std::initializer_list<IT> list)
 }
 
 // ============================================================
-// CHORD TYPE → STRING
+// CHORD TYPE → STREAM
 // ============================================================
-std::string find_name(const CT& c)
+std::ostream& operator<<(std::ostream& os, const CT& c)
 {
-    // TRIADES
-    if (has_all(c, { IT::MAJOR_THIRD, IT::PERFECT_FIFTH }))
-        return "maj";
+    // ========================================================
+    // TETRADES (prioritaires)
+    // ========================================================
 
-    if (has_all(c, { IT::MINOR_THIRD, IT::PERFECT_FIFTH }))
-        return "min";
-
-    if (has_all(c, { IT::MINOR_THIRD, IT::TRITONE }))
-        return "dim";
-
-    if (has_all(c, { IT::MAJOR_THIRD, IT::MINOR_SIXTH }))
-        return "aug";
-
-    // TETRADES
     if (has_all(c, {
             IT::MAJOR_THIRD,
             IT::PERFECT_FIFTH,
             IT::MINOR_SEVENTH }))
-        return "7";
+        return os << "7";
 
     if (has_all(c, {
             IT::MAJOR_THIRD,
             IT::PERFECT_FIFTH,
             IT::MAJOR_SEVENTH }))
-        return "maj7";
+        return os << "maj7";
 
     if (has_all(c, {
             IT::MINOR_THIRD,
             IT::PERFECT_FIFTH,
             IT::MINOR_SEVENTH }))
-        return "m7";
+        return os << "m7";
 
     if (has_all(c, {
             IT::MINOR_THIRD,
             IT::TRITONE,
             IT::MINOR_SEVENTH }))
-        return "m7b5";
+        return os << "m7b5";
 
     if (has_all(c, {
             IT::MINOR_THIRD,
             IT::TRITONE,
             IT::MAJOR_SIXTH }))
-        return "dim7";
+        return os << "dim7";
 
+    // ========================================================
+    // TRIADES
+    // ========================================================
+
+    if (has_all(c, { IT::MAJOR_THIRD, IT::PERFECT_FIFTH }))
+        return os << "maj";
+
+    if (has_all(c, { IT::MINOR_THIRD, IT::PERFECT_FIFTH }))
+        return os << "min";
+
+    if (has_all(c, { IT::MINOR_THIRD, IT::TRITONE }))
+        return os << "dim";
+
+    // ⚠️ théorique : devrait être AUGMENTED_FIFTH
+    if (has_all(c, { IT::MAJOR_THIRD, IT::MINOR_SIXTH }))
+        return os << "aug";
+
+    // ========================================================
     // SUS
+    // ========================================================
+
     if (has_all(c, {
             IT::PERFECT_FOURTH,
             IT::PERFECT_FIFTH }))
-        return "sus4";
+        return os << "sus4";
 
     if (has_all(c, {
             IT::MAJOR_SECOND,
             IT::PERFECT_FIFTH }))
-        return "sus2";
+        return os << "sus2";
 
+    // ========================================================
     // ADD
+    // ========================================================
+
     if (has_all(c, {
             IT::MAJOR_THIRD,
             IT::PERFECT_FIFTH,
             IT::MAJOR_SECOND }))
-        return "add2";
+        return os << "add2";
 
     if (has_all(c, {
             IT::MAJOR_THIRD,
             IT::PERFECT_FIFTH,
             IT::PERFECT_FOURTH }))
-        return "add4";
+        return os << "add4";
 
-    return "unknown";
+    return os << "unknown";
 }
 
 } // namespace musical::analysis::chord

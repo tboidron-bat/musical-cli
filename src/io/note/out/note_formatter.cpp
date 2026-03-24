@@ -16,50 +16,6 @@ namespace musical::io::note::formatter
 {    
 
 // ------------------------------------------------------------
-// Conversion pitch → string
-// ------------------------------------------------------------
-std::string to_string(const musical::core::pitch_t& pitch) 
-{
-    using musical::core::NoteName;
-    using musical::core::Accidental;
-
-    static constexpr std::array<char,7> letters =
-        { 'c','d','e','f','g','a','b' };
-
-    char letter = letters[static_cast<int>(pitch._name)];
-
-    std::string s(1, letter);
-
-    switch(pitch._accidental)
-    {
-        case Accidental::SHARP:
-            s += musical::notation::SHARP_ASCII; 
-            break;
-
-        case Accidental::FLAT:
-            s += musical::notation::FLAT_ASCII; 
-            break;
-
-        case Accidental::DOUBLE_SHARP:
-            s += std::string(2, musical::notation::SHARP_ASCII);
-            break;
-
-        case Accidental::DOUBLE_FLAT:
-            s += std::string(2, musical::notation::FLAT_ASCII);
-            break;
-
-        case Accidental::NONE:
-        default:
-            break;
-    }
-
-    //s += std::to_string(pitch._octave);    
-
-    return s;
-}
-
-
-// ------------------------------------------------------------
 // NORMALISATION ASCII SIMPLE
 // ------------------------------------------------------------
 std::string normalize_name(const std::string& input)

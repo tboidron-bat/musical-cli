@@ -1,17 +1,10 @@
 #include <musical/Core/chord/ChordType.h>
 
+#include <musical/analysis/chord/io.h>
 #include <bit>
-#include <assert.h>
 
 namespace musical::core::chord
 {
-uint64_t ChordType::make(Interval i) 
-{
-    // Option safe (debug)
-    assert(i != Interval::ROOT);
-
-    return 1ULL << static_cast<uint8_t>(i);
-}
 ChordType::IntervalMask 
 ChordType::make(const std::vector<Interval>& v)
 {
@@ -66,5 +59,33 @@ bool ChordType::empty() const noexcept
 void ChordType::clear() noexcept
 {
     _intervals_mask = 0;
+}
+std::ostream& operator<<(std::ostream& os, const ChordType& chord_type)
+{
+    using musical::core::Interval;
+    using musical::core::to_symbol;
+
+    uint64_t mask = chord_type.intervals_mask();
+
+    os << "{ ";
+
+    bool first = true;
+
+    while (mask)
+    {
+        uint8_t i = std::countr_zero(mask);
+
+        if (!first)
+            os << ' ';
+
+        os << to_symbol(static_cast<Interval>(i));
+
+        mask &= (mask - 1); // clear lowest bit
+        first = false;
+    }
+
+    os << " }";
+
+    return os;
 }
 }    

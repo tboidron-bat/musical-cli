@@ -1,5 +1,5 @@
-#include <musical/guitar_chord_database/open_queries.h>
-#include <musical/guitar_chord_database/data_open.h>
+#include <musical/guitar_chord_database/open/queries.h>
+#include <musical/guitar_chord_database/open/database.h>
 
 #include <random>
 #include <stdexcept>

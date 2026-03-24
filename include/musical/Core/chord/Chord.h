@@ -32,4 +32,6 @@ public:
     std::vector<pitch_t> notes(bool with_sharp = true) const;
 };
 
+std::ostream& operator<<(std::ostream&, const Chord&);
+
 } // namespace musical::core::chord

@@ -1,5 +1,5 @@
-#include <musical/guitar_chord_database/movable_queries.h>
-#include <musical/guitar_chord_database/data_movable.h>
+#include <musical/guitar_chord_database/movable/queries.h>
+#include <musical/guitar_chord_database/movable/database.h>
 
 #include <stdexcept>
 #include <random>
@@ -18,14 +18,14 @@ static std::mt19937& rng()
 }
 
 // ------------------------------------------------------------
-// FIND BY TYPE
+// FIND BY MASK
 // ------------------------------------------------------------
 std::vector<Diagram>
-find_diagrams(const std::string& chord_type_name)
+find_diagrams(IntervalMask mask)
 {
     const auto& db = data_movable();
 
-    auto it = db.find(chord_type_name);
+    auto it = db.find(mask);
 
     if (it == db.end())
         return {};
@@ -34,18 +34,18 @@ find_diagrams(const std::string& chord_type_name)
 }
 
 // ------------------------------------------------------------
-// FIND BY TYPE + CAGED
+// FIND BY MASK + CAGED
 // ------------------------------------------------------------
 std::vector<Diagram>
 find_diagrams(
-    const std::string& chord_type_name,
+    IntervalMask mask,
     Diagram::CAGED shape)
 {
     std::vector<Diagram> result;
 
     const auto& db = data_movable();
 
-    auto it = db.find(chord_type_name);
+    auto it = db.find(mask);
 
     if (it == db.end())
         return result;
@@ -69,7 +69,7 @@ find_all_diagrams()
 
     const auto& db = data_movable();
 
-    for (const auto& [name, diagrams] : db)
+    for (const auto& [mask, diagrams] : db)
     {
         result.insert(
             result.end(),
@@ -91,7 +91,7 @@ find_all_diagrams(Diagram::CAGED shape)
 
     const auto& db = data_movable();
 
-    for (const auto& [name, diagrams] : db)
+    for (const auto& [mask, diagrams] : db)
     {
         for (const auto& d : diagrams)
         {
@@ -106,7 +106,7 @@ find_all_diagrams(Diagram::CAGED shape)
 // ------------------------------------------------------------
 // RANDOM DIAGRAM
 // ------------------------------------------------------------
-std::pair<std::string, Diagram>
+std::pair<IntervalMask, Diagram>
 get_random_diagram()
 {
     const auto& db = data_movable();
@@ -115,12 +115,12 @@ get_random_diagram()
         throw std::runtime_error("Empty movable database");
 
     std::uniform_int_distribution<size_t>
-        name_dist(0, db.size() - 1);
+        mask_dist(0, db.size() - 1);
 
-    auto name_it =
-        std::next(db.begin(), name_dist(rng()));
+    auto it =
+        std::next(db.begin(), mask_dist(rng()));
 
-    const auto& diagrams = name_it->second;
+    const auto& diagrams = it->second;
 
     if (diagrams.empty())
         throw std::runtime_error("No diagrams for selected chord");
@@ -129,7 +129,7 @@ get_random_diagram()
         diag_dist(0, diagrams.size() - 1);
 
     return {
-        name_it->first,
+        it->first,
         diagrams[diag_dist(rng())]
     };
 }

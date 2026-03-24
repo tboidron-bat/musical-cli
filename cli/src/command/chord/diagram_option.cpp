@@ -3,7 +3,7 @@
 #include <command/chord/ChordCommand.h>
 
 
-#include <musical/analysis/chord/naming.h>
+#include <musical/analysis/chord/io.h>
 #include <musical/io/guitar/unicode/DiagramRenderer.h>
 
 #include <musical/guitar_chord_database/open_queries.h>

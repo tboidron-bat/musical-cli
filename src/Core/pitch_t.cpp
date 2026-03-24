@@ -1,8 +1,9 @@
 #include <musical/Core/pitch_t.h>
+#include <array>
+#include <ostream>
 
 namespace musical::core
 {
-
 static int normalize(int v)
 {
     return ((v % 12) + 12) % 12;
@@ -125,5 +126,32 @@ pitch_t pitch_from_chromatic_index(
     // impossible normalement
     return { NN::C, AC::NONE, 0 };
 }
+std::ostream& operator<<(std::ostream& os, const pitch_t& pitch)
+{
+    using musical::core::Accidental;
 
+    // notes naturelles
+    static constexpr char letters[7] = { 'c','d','e','f','g','a','b' };
+
+    // mapping accident -> string (0 = NONE)
+    static constexpr const char* accidentals[] =
+    {
+        "",     // NONE
+        "#",    // SHARP
+        "b",    // FLAT
+        "##",   // DOUBLE_SHARP
+        "bb"    // DOUBLE_FLAT
+    };
+
+    const auto name_idx = static_cast<uint8_t>(pitch._name);
+    const auto acc_idx  = static_cast<uint8_t>(pitch._accidental);
+
+    os << letters[name_idx]
+       << accidentals[acc_idx];
+
+    // optionnel
+    // os << pitch._octave;
+
+    return os;
+}
 } // namespace musical::core

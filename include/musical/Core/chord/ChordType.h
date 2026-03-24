@@ -2,11 +2,9 @@
 
 #include <cstdint>
 #include <vector>
+#include <assert.h>
 
 #include <musical/Core/Intervals.h>
-
-
-
 
 namespace musical::core::chord {
  
@@ -31,34 +29,40 @@ private:
     IntervalMask _intervals_mask {0};
    
 public:
-    constexpr ChordType() = default;
+    ChordType() = default;
 
-    constexpr explicit ChordType(IntervalMask intervals_mask)
+    explicit ChordType(IntervalMask intervals_mask)
         : _intervals_mask(intervals_mask)
     {}
 
-    constexpr ChordType(std::initializer_list<Interval> list);
+    ChordType(std::initializer_list<Interval> list);
 
 public:
-    constexpr ChordType& operator += (Interval) noexcept;
-    constexpr ChordType& operator -= (Interval) noexcept;    
-
-    constexpr bool operator==(const ChordType& other) const;
+    ChordType& operator += (Interval) noexcept;
+    ChordType& operator -= (Interval) noexcept;    
+    bool operator==(const ChordType& other) const;
 
     IntervalMask intervals_mask() const noexcept { return _intervals_mask; }    
 
-    constexpr bool empty() const noexcept;
-    constexpr bool has(Interval) const noexcept;
-    constexpr bool has(uint64_t) const noexcept;
-
-    constexpr std::size_t size() const;    
-    constexpr void clear() noexcept;       
+    bool empty() const noexcept;
+    bool has(Interval) const noexcept;
+    bool has(uint64_t) const noexcept;
+    std::size_t size() const;    
+    void clear() noexcept;       
 
 public:
-    static constexpr IntervalMask make(Interval);    
-    static constexpr IntervalMask make(std::initializer_list<Interval>);            
+    static IntervalMask make(Interval i)
+    {
+        // Option safe (debug)
+        assert(i != Interval::ROOT);
+
+        return 1ULL << static_cast<uint8_t>(i);
+    }
+    static IntervalMask make(std::initializer_list<Interval>);            
     static IntervalMask make(const std::vector<Interval>&);    
 
 };
+
+std::ostream& operator<<(std::ostream&, const ChordType&);
 
 } 

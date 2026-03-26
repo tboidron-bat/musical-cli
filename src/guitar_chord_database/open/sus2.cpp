@@ -15,7 +15,7 @@ const open_diagram_map& sus2_open()
         // SUS2
         // ========================
 
-        { { Note::A, TRIAD_SUS2 },
+        { { NoteEnum::A, TRIAD_SUS2 },
             {
             // x 0     0 0
             // =========== 
@@ -25,7 +25,7 @@ const open_diagram_map& sus2_open()
             D({ X, 0, 2, 2, 0, 0 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { Note::C, TRIAD_SUS2 },
+        { { NoteEnum::C, TRIAD_SUS2 },
             {
 
             // x   0 0 
@@ -36,7 +36,7 @@ const open_diagram_map& sus2_open()
             D({ X, 3, 0, 0, 1, 3 }, GuitarStandardTuning::A, D::CAGED::C),
             }
         },
-        { { Note::D, TRIAD_SUS2 },
+        { { NoteEnum::D, TRIAD_SUS2 },
             {
             // x   0     0
             // =========== 
@@ -46,7 +46,7 @@ const open_diagram_map& sus2_open()
             D({ X, X, 0, 2, 3, 0 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { Note::E, TRIAD_SUS2 },
+        { { NoteEnum::E, TRIAD_SUS2 },
             {
             // 0       0 0
             // =========== 
@@ -57,7 +57,7 @@ const open_diagram_map& sus2_open()
             D({ 0, 2, 4, 4, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             }
         },
-        { { Note::G, TRIAD_SUS2 },
+        { { NoteEnum::G, TRIAD_SUS2 },
             {
             //   0 0 0
             // =========== 
@@ -75,7 +75,7 @@ const open_diagram_map& sus2_open()
         // SUS2 7
         // ========================
 
-        { { Note::A, (TRIAD_SUS2 | (1ULL << 10)) },
+        { { NoteEnum::A, (TRIAD_SUS2 | (1ULL << 10)) },
             {
             // a:sus2:7
             // x 0   0  0 0
@@ -86,7 +86,7 @@ const open_diagram_map& sus2_open()
             D({ X, 0, 2, 0, 0, 0 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { Note::C, (TRIAD_SUS2 | (1ULL << 10)) },
+        { { NoteEnum::C, (TRIAD_SUS2 | (1ULL << 10)) },
             {
             // C:sus2:7
             // x   0   0 0
@@ -97,7 +97,7 @@ const open_diagram_map& sus2_open()
             D({ X, 3, 0, 3, 1, 3 }, GuitarStandardTuning::A, D::CAGED::C),
             }
         },
-        { { Note::D, (TRIAD_SUS2 | (1ULL << 10)) },
+        { { NoteEnum::D, (TRIAD_SUS2 | (1ULL << 10)) },
             {
             // d:sus2:7
             // x x 0     0
@@ -108,7 +108,7 @@ const open_diagram_map& sus2_open()
             D({ X, X, 0, 2, 1, 0 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { Note::E, (TRIAD_SUS2 | (1ULL << 10)) },
+        { { NoteEnum::E, (TRIAD_SUS2 | (1ULL << 10)) },
             {
             // e:sus2:7
             // 0       0 0
@@ -120,7 +120,7 @@ const open_diagram_map& sus2_open()
             D({ 0, 2, 4, 4, 3, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             }
         },
-        { { Note::G, (TRIAD_SUS2 | (1ULL << 10)) },
+        { { NoteEnum::G, (TRIAD_SUS2 | (1ULL << 10)) },
             {
             // g:sus2:7 
             //   0 0 0
@@ -137,7 +137,7 @@ const open_diagram_map& sus2_open()
         // ========================
 
 
-        { { Note::A, (TRIAD_SUS2 | (1ULL << 11)) },
+        { { NoteEnum::A, (TRIAD_SUS2 | (1ULL << 11)) },
             {
                 // a:sus2:7M
                 // x  0    0 0
@@ -148,7 +148,7 @@ const open_diagram_map& sus2_open()
                 D({ X, 0, 2, 1, 0, 0 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { Note::D, (TRIAD_SUS2 | (1ULL << 11)) },
+        { { NoteEnum::D, (TRIAD_SUS2 | (1ULL << 11)) },
             {
                 // d:sus2:7M 
                 // x  0    0 0
@@ -159,7 +159,7 @@ const open_diagram_map& sus2_open()
                 D({ X, X, 0, 2, 2, 0 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { Note::G, (TRIAD_SUS2 | (1ULL << 11)) },
+        { { NoteEnum::G, (TRIAD_SUS2 | (1ULL << 11)) },
             {
                 // g:sus2:7M
                 // x  0    0 0

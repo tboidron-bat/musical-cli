@@ -23,8 +23,9 @@ namespace musical::core::chord {
 
 class ChordType
 {
-private:
+public:
     using IntervalMask = uint64_t; 
+private:
 
     IntervalMask _intervals_mask {0};
    

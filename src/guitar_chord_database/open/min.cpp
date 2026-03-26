@@ -15,12 +15,12 @@ const open_diagram_map& min_open()
         // MINEUR
         // ========================
 
-        { { Note::A, TRIAD_MIN },
+        { { NoteEnum::A, TRIAD_MIN },
             {
             D({ X, 0, 2, 2, 1, 0 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { Note::C, TRIAD_MIN },
+        { { NoteEnum::C, TRIAD_MIN },
             {
             // x     0   x 
             // =========== 
@@ -30,17 +30,17 @@ const open_diagram_map& min_open()
             D({ X, 3, 1, 0, 1, X }, GuitarStandardTuning::A, D::CAGED::C),
             }
         },
-        { { Note::D, TRIAD_MIN },
+        { { NoteEnum::D, TRIAD_MIN },
             {
             D({ X, X, 0, 2, 3, 1 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { Note::E, TRIAD_MIN },
+        { { NoteEnum::E, TRIAD_MIN },
             {
             D({ 0, 2, 2, 0, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             }
         },
-        { { Note::G, TRIAD_MIN },
+        { { NoteEnum::G, TRIAD_MIN },
             {
             // x   0 0 0
             // =========== 
@@ -55,22 +55,22 @@ const open_diagram_map& min_open()
         // MIN7
         // ========================
 
-        { { Note::A, (TRIAD_MIN | ( 1ULL << 10 )) },
+        { { NoteEnum::A, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
             D({ X, 0, 2, 0, 1, 0 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { Note::D, (TRIAD_MIN | ( 1ULL << 10 )) },
+        { { NoteEnum::D, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
             D({ X, X, 0, 2, 1, 1 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { Note::E, (TRIAD_MIN | ( 1ULL << 10 )) },
+        { { NoteEnum::E, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
             D({ 0, 2, 0, 0, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             }
         },
-        { { Note::G, (TRIAD_MIN | ( 1ULL << 10 )) },
+        { { NoteEnum::G, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
             //     0 0 
             // =========== 

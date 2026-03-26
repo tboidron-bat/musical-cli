@@ -4,6 +4,7 @@
 
 #include <musical/Core/pitch_t.h>
 #include <musical/Core/chord/Chord.h>
+#include <musical/Core/chord/ChordType.h>
 #include <musical/Core/chord/ChordTypeCatalog.h>
 #include <musical/Core/scale/ScaleKeyed.h>
 
@@ -30,6 +31,13 @@ public:
         const musical::core::scale::ScaleKeyed& gamme,
         uint8_t nb_note = 3
     );
+
+
+    static Chord create(
+        const pitch_t& root,
+        ChordType::IntervalMask mask
+    );
+
 };
 
 } // namespace musical::core::chord

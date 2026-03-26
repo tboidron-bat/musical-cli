@@ -20,7 +20,7 @@ const open_diagram_map& dim_open()
         // DIM TRIAD
         // ========================
 
-        { { Note::A, TRIAD_DIM },
+        { { NoteEnum::A, TRIAD_DIM },
             {
             // a:dim
             // x 0       x     
@@ -39,7 +39,7 @@ const open_diagram_map& dim_open()
             D({ X, 0, 1, 2, 1, 5 }, GuitarStandardTuning::A, D::CAGED::A)
             }
         },
-        { { Note::D, TRIAD_DIM },
+        { { NoteEnum::D, TRIAD_DIM },
             {
             // d:dim
             // x x 0      
@@ -50,7 +50,7 @@ const open_diagram_map& dim_open()
             D({ X, X, 0, 1, 3, 1 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { Note::E, TRIAD_DIM },
+        { { NoteEnum::E, TRIAD_DIM },
             {
             // e:dim
             // 0     0   0
@@ -67,7 +67,7 @@ const open_diagram_map& dim_open()
         // DIM7 ou rond barré 
         // ========================
 
-        { { Note::A, (TRIAD_DIM | bb7) },
+        { { NoteEnum::A, (TRIAD_DIM | bb7) },
             {
             // a:dim7
             // x 0     
@@ -78,7 +78,7 @@ const open_diagram_map& dim_open()
             D({ X, 0, 1, 2, 1, 2 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { Note::D, (TRIAD_DIM | bb7) },
+        { { NoteEnum::D, (TRIAD_DIM | bb7) },
             {
             // d:dim7
             // x x 0   0
@@ -89,7 +89,7 @@ const open_diagram_map& dim_open()
             D({ X, X, 0, 1, 0, 1 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { Note::E, (TRIAD_DIM | bb7) },
+        { { NoteEnum::E, (TRIAD_DIM | bb7) },
             {
             // e:dim7
             // 0     0 
@@ -100,7 +100,7 @@ const open_diagram_map& dim_open()
             D({ 0, 1, 2, 0, 2, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             }
         },
-        { { Note::G, (TRIAD_DIM | bb7) },
+        { { NoteEnum::G, (TRIAD_DIM | bb7) },
             {
             // g:dim7 
             //         x 0

@@ -57,6 +57,19 @@ const movable_diagram_map& min_movable()
                 // | |   | | |                        
                 D({ X, 2, BASE, 2, BASE, X }, GuitarStandardTuning::A, D::CAGED::C)
             }
+        },
+        // ========================================================
+        // MINOR 7 ADD11
+        // ========================================================
+        {
+            (TRIAD_MIN | (1ULL << 10) | (1ULL << 14)),
+            {          
+                // 1 1 1 1 1 1 
+                // | | | | | |
+                // 2 | 3 4 | | 
+                // | | | | | |                        
+                D({ 2, BASE, 2, 2, BASE, BASE }, GuitarStandardTuning::LOW_E, D::CAGED::G)
+            }
         }
     };
 

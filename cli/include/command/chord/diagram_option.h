@@ -4,10 +4,12 @@
 
 #include <Option.h>
 
-
 #include <musical/guitar_chord_database/Diagram.h>
-#include <musical/Core/chord/Chord.h>
 
+namespace musical::core::chord
+{
+    class Chord;
+}
 namespace cli::chord
 {
     class diagram_option : public command::Option

@@ -2,15 +2,12 @@
 #include <command/chord/diagram_layout.h>
 #include <command/chord/ChordCommand.h>
 
-
-#include <musical/analysis/chord/io.h>
+#include <musical/Core/chord/Chord.h>
+#include <musical/guitar_chord_database/open/queries.h>
+#include <musical/guitar_chord_database/movable/queries.h>
 #include <musical/io/guitar/unicode/DiagramRenderer.h>
 
-#include <musical/guitar_chord_database/open_queries.h>
-#include <musical/guitar_chord_database/movable_queries.h>
-#include <musical/io/guitar/stream.h>
-
-#include <musical/io/note/out/note_formatter.h>
+//#include <musical/io/note/out/note_formatter.h>
 
 #include <terminal.h>
 #include <iostream>
@@ -98,16 +95,10 @@ for(auto i : chord.type().intervals())
     std::cout << static_cast<int>(i) << " ";
 #endif
 
-    //analyser le chord.type() pour en tirer le nom
-    std::string type_name = 
-        musical::analysis::chord::find_name(chord.type());
-
-    std::string full_name =
-        musical::io::note::formatter::to_string(chord.root()) + ":" + type_name;        
-
     std::vector<::chord::database::Diagram> open_diagrams =
         ::chord::database::queries::open::find_all_positions(
-            full_name);   
+            chord.type().intervals_mask());
+
 
 #ifdef DEBUG
     std::cout << '[' << __func__ << "] chord name = " << full_name
@@ -119,7 +110,7 @@ for(auto i : chord.type().intervals())
 
     render(open_diagrams);  
     
-    auto movable_diagrams = ::chord::database::queries::movable::find_diagrams(type_name); 
+    auto movable_diagrams = ::chord::database::queries::movable::find_diagrams(chord.type().intervals_mask()); 
         
 #ifdef DEBUG
     std::cout << '[' << __func__ << ']';
@@ -136,21 +127,20 @@ diagram_option::find_caged(
     const musical::core::chord::Chord&chord,
     ::chord::database::Diagram::CAGED filter) const
 {
-    std::string name = 
-        musical::analysis::chord::find_name(chord.type());
 
+    ::chord::database::NoteEnum root = static_cast<::chord::database::NoteEnum>(chromatic_index(chord.root()));
 
     auto open_diagrams = 
         ::chord::database::queries::open::find_positions(
-            chord.root(),
-            name,
+            root,
+            chord.type().intervals_mask(),
             filter
         );            
 
     render(open_diagrams);        
 
     auto movable_diagrams = ::chord::database::queries::movable::find_diagrams(
-            name,
+            chord.type().intervals_mask(),
             filter);
 
     render(chord,movable_diagrams);                                

@@ -15,7 +15,7 @@ const open_diagram_map& aug_open()
         // AUGMENTED
         // ========================
 
-        { { Note::A, TRIAD_AUG },
+        { { NoteEnum::A, TRIAD_AUG },
             {
             // a:aug
             // x 0     
@@ -27,7 +27,7 @@ const open_diagram_map& aug_open()
             D({ X, 0, 3, 2, 2, 1 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { Note::C, TRIAD_AUG },
+        { { NoteEnum::C, TRIAD_AUG },
             {
             // c:aug
             // x         0
@@ -38,7 +38,7 @@ const open_diagram_map& aug_open()
             D({ X, 3, 2, 1, 1, 0 }, GuitarStandardTuning::A, D::CAGED::C),
             }
         },
-        { { Note::D, TRIAD_AUG },
+        { { NoteEnum::D, TRIAD_AUG },
             {
             // d:aug
             // x x 0 
@@ -49,7 +49,7 @@ const open_diagram_map& aug_open()
             D({ X, X, 0, 3, 3, 2 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { Note::E, TRIAD_AUG },
+        { { NoteEnum::E, TRIAD_AUG },
             {
             // e:aug
             // 0         0
@@ -60,7 +60,7 @@ const open_diagram_map& aug_open()
             D({ 0, 3, 2, 1, 1, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             }
         },
-        { { Note::G, TRIAD_AUG },
+        { { NoteEnum::G, TRIAD_AUG },
             {
             // g:aug
             //       0 0

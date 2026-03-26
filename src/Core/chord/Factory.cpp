@@ -59,5 +59,11 @@ Factory::create(
 
     return Chord(root, chordType);
 }
+Chord Factory::create(
+    const pitch_t& root,
+    ChordType::IntervalMask mask)
+{
+    return Chord(root, ChordType(mask));
+}
 
 } // namespace musical::core::chord

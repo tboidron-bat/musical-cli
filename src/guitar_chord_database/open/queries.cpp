@@ -17,29 +17,101 @@ static std::mt19937& rng()
 }
 
 // ------------------------------------------------------------
-// RANDOM CHORD NAME
+// FIND POSITIONS (root + mask)
 // ------------------------------------------------------------
-std::string get_random_chord_name()
+std::vector<Diagram>
+find_positions(
+    NoteEnum root,
+    IntervalMask mask)
 {
-    const auto& db = database_open();
+    const auto& db = data_open();
 
-    if (db.empty())
-        throw std::runtime_error("Empty open database");
+    key_t key{ root, mask };
 
-    std::uniform_int_distribution<size_t> dist(0, db.size() - 1);
+    auto it = db.find(key);
 
-    auto it = std::next(db.begin(), dist(rng()));
+    if (it == db.end())
+        return {};
 
-    return it->first;
+    return it->second;
 }
 
 // ------------------------------------------------------------
-// RANDOM DIAGRAM
+// FIND POSITIONS (root + mask + shape)
 // ------------------------------------------------------------
-std::pair<std::string, Diagram>
-get_random_diagram()
+std::vector<Diagram>
+find_positions(
+    NoteEnum root,
+    IntervalMask mask,
+    Diagram::CAGED shape)
 {
-    const auto& db = database_open();
+    std::vector<Diagram> result;
+
+    const auto& db = data_open();
+
+    key_t key{ root, mask };
+
+    auto it = db.find(key);
+
+    if (it == db.end())
+        return result;
+
+    for (const auto& d : it->second)
+    {
+        if (d.caged() == shape)
+            result.push_back(d);
+    }
+
+    return result;
+}
+
+// ------------------------------------------------------------
+// FIND ALL POSITIONS (mask only)
+// ------------------------------------------------------------
+std::vector<Diagram>
+find_all_positions(
+    IntervalMask mask)
+{
+    std::vector<Diagram> result;
+
+    const auto& db = data_open();
+
+    for (const auto& [key, diagrams] : db)
+    {
+        if (key._mask == mask)
+        {
+            result.insert(result.end(), diagrams.begin(), diagrams.end());
+        }
+    }
+
+    return result;
+}
+
+// ------------------------------------------------------------
+// FIND ALL DIAGRAMS
+// ------------------------------------------------------------
+std::vector<Diagram>
+find_all_diagrams()
+{
+    std::vector<Diagram> result;
+
+    const auto& db = data_open();
+
+    for (const auto& [key, diagrams] : db)
+    {
+        result.insert(result.end(), diagrams.begin(), diagrams.end());
+    }
+
+    return result;
+}
+
+// ------------------------------------------------------------
+// RANDOM CHORD
+// ------------------------------------------------------------
+std::pair<key_t, Diagram>
+get_random()
+{
+    const auto& db = data_open();
 
     if (db.empty())
         throw std::runtime_error("Empty open database");
@@ -58,81 +130,6 @@ get_random_diagram()
         chord_it->first,
         diagrams[diag_dist(rng())]
     };
-}
-
-// ------------------------------------------------------------
-// FIND POSITIONS (pitch + chord_name)
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_positions(
-    const musical::core::pitch_t& pitch,
-    const std::string& chord_name)
-{
-    return find_positions(pitch, chord_name, Diagram::CAGED::A); // fallback optionnel
-}
-
-// ------------------------------------------------------------
-// FIND POSITIONS (pitch + chord_name + shape)
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_positions(
-    const musical::core::pitch_t& pitch,
-    const std::string& chord_name,
-    Diagram::CAGED shape)
-{
-    std::vector<Diagram> result;
-
-    const auto& db = database_open();
-
-    auto it = db.find(chord_name);
-
-    if (it == db.end())
-        return result;
-
-    for (const auto& d : it->second)
-    {
-        // TODO : quand tu remettras root_pitch dans Diagram
-        // pour l'instant on filtre uniquement par shape
-
-        if (d.caged() == shape)
-            result.push_back(d);
-    }
-
-    return result;
-}
-
-// ------------------------------------------------------------
-// FIND ALL POSITIONS (pitch + chord_name)
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_all_positions(const std::string& chord_name)
-{
-    const auto& db = database_open();
-
-    auto it = db.find(chord_name);
-
-    if (it == db.end())
-        return {};
-
-    return it->second;
-}
-
-// ------------------------------------------------------------
-// FIND ALL DIAGRAMS
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_all_diagrams()
-{
-    std::vector<Diagram> result;
-
-    const auto& db = database_open();
-
-    for (const auto& [name, diagrams] : db)
-    {
-        result.insert(result.end(), diagrams.begin(), diagrams.end());
-    }
-
-    return result;
 }
 
 } // namespace chord::database::queries::open

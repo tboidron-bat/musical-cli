@@ -2,10 +2,8 @@
 #include <command/chord/diagram_layout.h>
 #include <terminal.h>
 
-#include <musical/io/guitar/stream.h>
-
-#include <musical/guitar_chord_database/open_queries.h>
-#include <musical/guitar_chord_database/movable_queries.h>
+#include <musical/guitar_chord_database/open/queries.h>
+#include <musical/guitar_chord_database/movable/queries.h>
 #include <musical/io/guitar/unicode/DiagramRenderer.h>
 
 #include <iostream>

@@ -4,19 +4,19 @@
 #include <terminal.h>
 
 #include <musical/guitar_chord_database/Diagram.h>
-#include <musical/guitar_chord_database/open_queries.h>
-#include <musical/guitar_chord_database/movable_queries.h>
+#include <musical/guitar_chord_database/open/queries.h>
+#include <musical/guitar_chord_database/movable/queries.h>
 
-#include <musical/io/note/out/note_formatter.h>
-#include <musical/io/chord/in/ChordLexer.h>
-#include <musical/io/chord/in/ChordParser.h>
+#include <musical/Core/chord/Factory.h>
+
+//#include <musical/io/note/out/note_formatter.h>
+//#include <musical/io/chord/in/ChordLexer.h>
+//#include <musical/io/chord/in/ChordParser.h>
 
 #include <musical/io/guitar/unicode/DiagramRenderer.h>
 
 #include <random>
 #include <iostream>
-
-#include <musical/io/chord/out/stream.h> //DEBUG
 
 namespace cli::chord
 {
@@ -54,21 +54,24 @@ int random_option::execute() const
 
         if(choose_open)
         {
-            auto [type, diagram] =            
-                ::chord::database::queries::open::get_random_diagram();
+            auto [key, diagram] =            
+                ::chord::database::queries::open::get_random();
 
-            auto tokens = musical::io::chord::ChordLexer::tokenize(type);
-            auto chord_opt = musical::io::chord::ChordParser::parse(tokens);
+            auto root = musical::core::pitch_from_chromatic_index(
+                    static_cast<uint8_t>(key._root));
 
-            if (chord_opt)
-                cmd.chords().push_back(*chord_opt);
+            auto chord = musical::core::chord::Factory::create(
+                    root,
+                    key._mask);
+
+            cmd.chords().push_back(chord);            
 
             blocks.push_back(io::guitar::unicode::DiagramRenderer::render(diagram));
                                         
         }
         else
         {
-            auto [type, diagram] =            
+            auto [intervals_mask, diagram] =            
                 ::chord::database::queries::movable::get_random_diagram();
 
             std::uniform_int_distribution<int> pitch_dist(0, 11);
@@ -76,15 +79,11 @@ int random_option::execute() const
             musical::core::pitch_t root =
                 musical::core::pitch_from_chromatic_index(pitch_dist(gen));
 
-            std::string symbol =
-                musical::io::note::formatter::to_string(root)
-                + type;
+            auto chord = musical::core::chord::Factory::create(
+                    root,
+                    intervals_mask);
 
-            auto tokens = musical::io::chord::ChordLexer::tokenize(symbol);
-            auto chord_opt = musical::io::chord::ChordParser::parse(tokens);
-
-            if (chord_opt)
-                cmd.chords().push_back(*chord_opt);            
+            cmd.chords().push_back(chord);            
             
             blocks.push_back(
                 io::guitar::unicode::DiagramRenderer::render(diagram));

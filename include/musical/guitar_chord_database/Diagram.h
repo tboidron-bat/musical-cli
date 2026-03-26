@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <array>
 #include <bitset>
+#include <ostream>
 
 // enum class GuitarChordStyle : uint16_t
 // {
@@ -70,4 +71,41 @@ public:
     GuitarStandardTuning root_string() const { return _root_string; }
     CAGED caged() const { return _caged; }
     };
-} //namespace chord::database
+
+
+inline std::ostream& operator<<(std::ostream& os,
+                                Diagram::CAGED shape)
+{
+    switch (shape)
+    {
+        case Diagram::CAGED::C: return os << "C";
+        case Diagram::CAGED::A: return os << "A";
+        case Diagram::CAGED::G: return os << "G";
+        case Diagram::CAGED::E: return os << "E";
+        case Diagram::CAGED::D: return os << "D";
+    }
+    return os;
+}
+
+
+
+} 
+//namespace chord::database
+
+
+// inline std::ostream& operator<<(std::ostream& os,
+//                                 Diagram::Style s)
+// {
+//     using Style = Diagram::Style;
+
+//     switch (s)
+//     {
+//         case Style::CLASSICAL: return os << "classical";
+//         case Style::FLAMENCO:  return os << "flamenco";
+//         case Style::ROCK:      return os << "rock";
+//         case Style::JAZZ:      return os << "jazz";
+//         case Style::BLUES:     return os << "blues";
+//         case Style::FUNK:      return os << "funk";
+//         default:               return os << "none";
+//     }
+// }

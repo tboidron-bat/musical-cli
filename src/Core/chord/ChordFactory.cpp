@@ -1,8 +1,6 @@
-#include <musical/Core/chord/Factory.h>
-
+#include <musical/Core/chord/ChordFactory.h>
 #include <musical/Core/chord/Chord.h>
-#include <musical/Core/chord/ChordTypeCatalog.h>
-#include <musical/Core/pitch_t.h>
+#include <musical/Core/scale/ScaleKeyed.h>
 
 #include <stdexcept>
 
@@ -12,8 +10,8 @@ namespace musical::core::chord {
 // Création depuis un type d'accord standard
 // -----------------------------------------------------------------------------
 Chord 
-Factory::create(
-    const pitch_t& root,
+ChordFactory::create(
+    const Pitch& root,
     ChordTypeCatalog::StandardChord type)
 {
     return Chord(
@@ -21,14 +19,12 @@ Factory::create(
         ChordTypeCatalog::get(type)
     );
 }
-
-
 // -----------------------------------------------------------------------------
 // Création depuis une gamme (empilement de tierces)
 // -----------------------------------------------------------------------------
 Chord
-Factory::create(
-    const pitch_t& root,
+ChordFactory::create(
+    const Pitch& root,
     const musical::core::scale::ScaleKeyed& scale,
     uint8_t nb_notes)
 {
@@ -39,7 +35,7 @@ Factory::create(
 
     ChordType chordType;
 
-    const int root_pc = static_cast<int>(chromatic_index(root));
+    const int root_pc = static_cast<int>(root.tone());
 
     for (uint8_t i = 1; i < nb_notes; ++i)
     {
@@ -47,9 +43,9 @@ Factory::create(
         const std::size_t degree =
             (i * 2) % scale.size();
 
-        const pitch_t& note = scale[degree];
+        const Pitch& note = scale[degree];
 
-        int pc = static_cast<int>(chromatic_index(note));
+        int pc = static_cast<int>(note.tone());
 
         int semitones = pc - root_pc;
         semitones = (semitones + 12) % 12;
@@ -59,8 +55,14 @@ Factory::create(
 
     return Chord(root, chordType);
 }
-Chord Factory::create(
-    const pitch_t& root,
+
+
+// -----------------------------------------------------------------------------
+// Création directe via mask
+// -----------------------------------------------------------------------------
+Chord 
+ChordFactory::create(
+    const Pitch& root,
     ChordType::IntervalMask mask)
 {
     return Chord(root, ChordType(mask));

@@ -1,74 +1,69 @@
 #pragma once
 
-#include <cstdint> 
+#include <cstdint>
 #include <ostream>
 
-#include <musical/Core/Figure.h> 
-#include <musical/Core/pitch_t.h> 
-
+#include <musical/Core/Tone.h>
+#include <musical/Core/Figure.h>
 
 namespace musical::core::note {
-    
     class Factory;
 }
 
 namespace musical::core {
 
-class Note {
+enum class Accidental
+{
+    NONE,
+    SHARP,
+    FLAT,
+    DOUBLE_SHARP,
+    DOUBLE_FLAT
+};
 
-public:
+class Pitch;
 
-    friend class note::Factory;
+class Note
+{
+    friend class note::Factory;    
+    friend std::ostream& operator<<(std::ostream&, const Note&);    
 
 private:
+    enum class Name : uint8_t
+    {
+        C, D, E, F, G, A, B
+    };
+private:
+    Name  _name;
+    Accidental _accidental;
+    int8_t     _octave;
+    Figure     _figure;
 
-
-    pitch_t _pitch;
-    Figure  _figure; 
-
-    //using X = std::pair<struct Pitch, Figure>;
-   
-    Note(NoteName n, Accidental a, uint8_t o, Figure f)
-        :
-        _pitch{n, a, o}, _figure(f)
-        {}
+    Note(Name name,
+         Accidental accidental,
+         int8_t octave,
+         Figure figure)
+        : _name(name)
+        , _accidental(accidental)
+        , _octave(octave)
+        , _figure(figure)
+    {}
 
 public:
-    Note(const Note&) = default;    
-
-	bool operator==(const Note& other) const noexcept;
-
-    /* --- Accesseurs --- */
-
-    //const Pitch& pitch() const { return _pitch;}
-
-    NoteName name() const noexcept { return _pitch._name; }
-    Accidental accidental() const noexcept { return _pitch._accidental; }
-    uint8_t octave() const noexcept { return _pitch._octave; }
-
+    // -------------------------
+    // Accesseurs
+    // -------------------------
+    Tone tone() const noexcept;
+    Accidental accidental() const noexcept { return _accidental; }
+    int8_t octave() const noexcept { return _octave; }
 
     const Figure& figure() const { return _figure; }
-    Figure& figure() { return _figure; }
 
-
-    /* --- Mutateurs --- */    
-
-    void set_figure(const Figure& f) { _figure = f; }   
-    
-    /*--- Others ---*/
-    std::size_t chromatic_index() const noexcept
-    {
-        return ::musical::core::chromatic_index(_pitch);
-    }
+    // -------------------------
+    Pitch to_pitch() const;
+    bool operator==(const Note& other) const noexcept;
 };
-inline std::ostream& operator<<(std::ostream& os, const Note& note)
-{
-    // on reconstruit un pitch_t depuis Note
-    pitch_t p;
-    p._name       = note.name();
-    p._accidental = note.accidental();
-    p._octave     = note.octave();
-    os << p;
-    return os;
-}
+
+std::ostream& operator<<(std::ostream& os, const Note& note);
+
 }

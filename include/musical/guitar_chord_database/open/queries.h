@@ -4,10 +4,13 @@
 #include <utility>
 
 #include <musical/guitar_chord_database/Diagram.h>
-#include <musical/guitar_chord_database/open/database.h> // NoteEnum, IntervalMask, key_t
+#include <musical/Core/Tone.h>
+#include <musical/guitar_chord_database/open/database.h> // IntervalMask, key_t
 
 namespace chord::database::queries::open
 {
+
+    using musical::core::Tone;
 
 // ============================================================
 // CORE API (TYPE SAFE)
@@ -18,7 +21,7 @@ namespace chord::database::queries::open
 // ------------------------------------------------------------
 std::vector<Diagram>
 find_positions(
-    NoteEnum root,
+    Tone root,
     IntervalMask mask
 );
 
@@ -27,7 +30,7 @@ find_positions(
 // ------------------------------------------------------------
 std::vector<Diagram>
 find_positions(
-    NoteEnum root,
+    Tone root,
     IntervalMask mask,
     Diagram::CAGED shape
 );

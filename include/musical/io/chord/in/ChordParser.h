@@ -1,14 +1,12 @@
 #pragma once
 
 #include <musical/Core/chord/Chord.h>
-#include <musical/io/chord/in/ChordLexer.h>
+#include <musical/io/chord/in/ChordLexer.h> //token_t
 
 #include <vector>
 #include <optional>
 
 namespace musical::io::chord {
-
-
 
 class ChordParser
 {

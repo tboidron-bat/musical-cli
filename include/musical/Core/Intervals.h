@@ -98,7 +98,7 @@ inline const char* to_symbol(Interval it)
         case I::MAJOR_SECOND:        return "2";
 
         case I::MINOR_THIRD:         return "b3";
-        case I::MAJOR_THIRD:         return "3";
+        case I::MAJOR_THIRD:         return "3M";
 
         case I::PERFECT_FOURTH:      return "4";
         case I::TRITONE:             return "b5";   // ou "#4"
@@ -109,7 +109,7 @@ inline const char* to_symbol(Interval it)
         case I::MAJOR_SIXTH:         return "6";
 
         case I::MINOR_SEVENTH:       return "b7";
-        case I::MAJOR_SEVENTH:       return "7";
+        case I::MAJOR_SEVENTH:       return "7M";
 
         case I::OCTAVE:              return "8";
 

@@ -4,6 +4,7 @@
 #include <string_view>
 #include <vector>
 #include <variant>
+#include <ostream>
 
 #include <musical/io/chord/in/lexemes.h>
 
@@ -41,15 +42,17 @@ class ChordLexer
 public:
 
     /**
-     * @brief Tokenize une chaîne d'accord.
+     * brief Tokenize une chaîne d'accord.
      *
      * L'entrée peut être en UTF-8 (♯, ♭, accents, etc.).
      * Elle sera normalisée avant analyse.
      *
-     * @param input Chaîne d'entrée (ex: "Cmaj7")
-     * @return Liste des tokens détectés
+     * param input Chaîne d'entrée (ex: "Cmaj7")
+     * return Liste des tokens détectés
      */
     static std::vector<token_t> tokenize(std::string_view input);
 };
+
+std::ostream& operator<<(std::ostream&, const token_t&);
 
 } // namespace musical::io::chord

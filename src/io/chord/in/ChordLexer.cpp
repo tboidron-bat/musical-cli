@@ -4,6 +4,9 @@
 
 #include <vector>
 #include <optional>
+#include <iostream>
+
+#define DEBUG
 
 namespace musical::io::chord
 {
@@ -75,6 +78,10 @@ ChordLexer::tokenize(std::string_view input)
                     root_token_t{ root }
                 });
 
+#ifdef DEBUG                
+    std::cerr << "[ChordLexer::]" << __func__ << std::endl; 
+#endif
+
                 view.remove_prefix(consumed);
                 continue;
             }
@@ -112,5 +119,32 @@ ChordLexer::tokenize(std::string_view input)
 
     return tokens;
 }
+std::ostream& operator<<(std::ostream& os, const token_t& tok)
+{
+    using TT = token_t::TokenType;
 
+    switch (tok.type)
+    {
+        case TT::ROOT:
+        {
+            const auto& v = std::get<root_token_t>(tok.value);
+            return os << "ROOT=[" << v.text << "]";
+        }
+
+        case TT::LEXEME:
+        {
+            const auto& v = std::get<lexeme_token_t>(tok.value);
+            return os << "LEXEME(" << static_cast<int>(v.category)
+                      << ")=[" << v.text << "]";
+        }
+
+        case TT::SLASH:
+            return os << "SLASH=[/]";
+
+        case TT::UNKNOWN:
+            return os << "UNKNOWN";
+    }
+
+    return os;
+}
 } // namespace musical::io::chord

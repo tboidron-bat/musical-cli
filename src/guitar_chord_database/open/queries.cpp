@@ -21,7 +21,7 @@ static std::mt19937& rng()
 // ------------------------------------------------------------
 std::vector<Diagram>
 find_positions(
-    NoteEnum root,
+    Tone root,
     IntervalMask mask)
 {
     const auto& db = data_open();
@@ -41,7 +41,7 @@ find_positions(
 // ------------------------------------------------------------
 std::vector<Diagram>
 find_positions(
-    NoteEnum root,
+    Tone root,
     IntervalMask mask,
     Diagram::CAGED shape)
 {

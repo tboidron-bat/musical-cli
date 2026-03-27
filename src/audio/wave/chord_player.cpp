@@ -1,5 +1,5 @@
 #include <musical/audio/wave/chord_player.h>
-#include <musical/Core/pitch_t.h>
+#include <musical/Core/Pitch.h>
 
 #include <cmath>
 #include <fstream>
@@ -17,12 +17,11 @@ namespace
     constexpr double DURATION = 3.0;
     constexpr double PI = 3.141592653589793;
 
-    double frequency_from_pitch(const musical::core::pitch_t& p)
+    double frequency_from_pitch(const musical::core::Pitch& p)
     {
-        int midi = (p.octave() + 1) * 12 + musical::core::chromatic_index(p);
+        int midi = p.value();
         return 440.0 * std::pow(2.0, (midi - 69) / 12.0);
     }
-
     // 🎸 Enveloppe type corde pincée (rapide attaque, decay exponentiel)
     double pluck_envelope(double t)
     {

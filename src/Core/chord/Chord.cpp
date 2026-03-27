@@ -1,5 +1,4 @@
 #include <musical/Core/chord/Chord.h>
-#include <musical/Core/pitch_t.h>
 
 namespace musical::core::chord {
 
@@ -7,38 +6,26 @@ std::size_t Chord::size() const
 {
     return 1 + _type.size();
 }
-std::vector<pitch_t> 
-Chord::notes(bool with_sharp) const
+std::vector<Pitch> 
+Chord::notes() const
 {
-    std::vector<pitch_t> result;
+    std::vector<Pitch> result;
 
-    int root_pc = static_cast<int>(chromatic_index(_tonic));
-    int base_octave = _tonic.octave();
+    result.push_back(_root);    
 
-    // Tonique
-    result.push_back(_tonic);
+    uint8_t root_value = _root.value();
+    uint64_t mask = _type.intervals_mask();
 
-    auto mask = _type.intervals_mask();
-
-    // Parcours des 64 bits
     for (uint8_t i = 0; i < 64; ++i)
     {
         if (!(mask & (1ULL << i)))
             continue;
 
-        int semitone = root_pc + i;
-
-        pitch_t p = pitch_from_chromatic_index(semitone, with_sharp);
-
-        // Gestion octave correcte
-        p._octave = base_octave + (semitone / 12);
-
-        result.push_back(p);
+        uint8_t value = static_cast<uint8_t>(root_value + i);
+        result.emplace_back(value);
     }
-
     return result;
 }
-
 std::ostream& operator<<(std::ostream& os, const Chord& chord)
 {
     os << chord.root()

@@ -4,8 +4,6 @@
 #include <array>
 #include <string_view>
 
-#include <musical/Core/pitch_t.h>
-
 namespace musical::io::note::formatter 
 {
 

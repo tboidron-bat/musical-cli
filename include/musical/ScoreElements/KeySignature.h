@@ -5,7 +5,7 @@
 #include <array>
 #include <cstdint>
 
-#include <musical/Core/pitch_t.h>
+#include <musical/Core/Pitch.h>
 #include <musical/common/musical_constants.h>
 
 namespace musical::score {
@@ -47,7 +47,7 @@ public:
 
     static std::string to_mei_string(
         KeyModeType,
-        const musical::core::pitch_t&
+        const musical::core::Pitch&
     );
 
     static std::string from_mei(
@@ -59,10 +59,10 @@ public:
     static std::string to_french(KeyModeType);
 
     static std::array<std::string, SHARP_KEY_COUNT>
-    circle_fifths(const musical::core::pitch_t&);
+    circle_fifths(const musical::core::Pitch&);
 
     static std::array<std::string, FLAT_KEY_COUNT>
-    circle_fourths(const musical::core::pitch_t&);
+    circle_fourths(const musical::core::Pitch&);
 };
 
 } // namespace musical::score

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cctype>
 
-//#define NOTE_LEXER_DEBUG
+#define DEBUG
 
 namespace musical::io::note
 {
@@ -92,13 +92,16 @@ NoteLexer::tokenize(std::string_view input)
         }
     }
 
+
+// #ifdef DEBUG
+//         std::cout << "\n#DEBUG NoteLexer::tokenize()\n input=[" << input
+//                   << "] norm=[" << norm
+//                   << "] -> (no match)\n";
+// #endif
+
+
     if (pos == 0)
     {
-#ifdef NOTE_LEXER_DEBUG
-        std::cout << "\n#DEBUG NoteLexer::tokenize(...) input=[" << input
-                  << "] norm=[" << norm
-                  << "] -> (no match)\n";
-#endif
         return tokens;
     }
 
@@ -120,22 +123,10 @@ NoteLexer::tokenize(std::string_view input)
         }
     }
 
-#ifdef NOTE_LEXER_DEBUG
-    std::cout << "\n#DEBUG NoteLexer::tokenize(...) input=[" << input
-              << "] norm=[" << norm << "]";
-
+#ifdef DEBUG
+    std::cout << "\n## class NoteLexer ## function ## tokenize(" << input << "):" << "\n";
     for (const auto& t : tokens)
-    {
-        std::cout << "  ";
-        if (t.kind == token_t::TokenKind::NAME)
-            std::cout << "NAME";
-        else
-            std::cout << "ACCIDENTAL";
-
-        std::cout << "=[" << t.text << "]";
-    }
-
-    std::cout << "\n";
+        std::cout << "Found token: " << t << "\n";
 #endif
 
     if(tokens.empty())
@@ -147,5 +138,26 @@ NoteLexer::tokenize(std::string_view input)
 
     return tokens;
 }
+
+
+std::ostream& operator<<(std::ostream& os, const token_t& tok)
+{
+    const char* kind_str = nullptr;
+
+    switch (tok.kind)
+    {
+        case token_t::TokenKind::NAME:
+            kind_str = "NAME";
+            break;
+
+        case token_t::TokenKind::ACCIDENTAL:
+            kind_str = "ACCIDENTAL";
+            break;
+    }
+
+    return os << "[" << kind_str << " : \"" << tok.text << "\"]";
+}
+
+
 
 } // namespace musical::io::note

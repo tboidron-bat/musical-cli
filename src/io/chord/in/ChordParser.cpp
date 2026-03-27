@@ -1,13 +1,13 @@
 #include <musical/io/chord/in/ChordParser.h>
 
 #include <musical/Core/chord/ChordType.h>
-#include <musical/Core/pitch_t.h>
+#include <musical/Core/Pitch.h>
 #include <musical/io/note/in/NoteLexer.h>
 #include <musical/io/note/in/NoteParser.h>
 
 #include <iostream>
 
-#define DEBUG
+//#define DEBUG
 
 namespace musical::io::chord
 {
@@ -48,7 +48,7 @@ ChordParser::parse(const std::vector<token_t>& tokens)
 {
 
 #ifdef DEBUG
-    std::cout << "######## DEBUG ChordParser ########\n";
+    std::cout << "## class ChordParser ##\n";
 #endif
 
     // --------------------------------------------------------
@@ -64,13 +64,13 @@ ChordParser::parse(const std::vector<token_t>& tokens)
     auto note_tokens =
         musical::io::note::NoteLexer::tokenize(root_text);
 
-    auto pitch_opt =
+    auto note_opt =
         musical::io::note::NoteParser::parse(note_tokens);
 
-    if (!pitch_opt)
+    if (!note_opt)
         return std::nullopt;
 
-    musical::core::pitch_t root_pitch = *pitch_opt;
+    musical::core::Pitch root_pitch = note_opt->to_pitch();
 
     // --------------------------------------------------------
     // 2️⃣ Default triad = major

@@ -1,5 +1,5 @@
 #include <musical/ScoreElements/KeySignature.h>
-#include <musical/Core/pitch_t.h>
+#include <musical/Core/Pitch.h>
 #include <musical/Core/scale/ScaleKeyedFactory.h>
 
 #include <algorithm>
@@ -20,23 +20,21 @@ static std::string to_lower(std::string s)
     return s;
 }
 
-// 🔥 nouveau helper (remplace note_formatter)
-static std::string pitch_to_string(const core::pitch_t& p)
+static std::string pitch_to_string(const core::Pitch& p)
 {
     std::ostringstream oss;
     oss << p;
     return oss.str();
 }
 
-static core::pitch_t base_pitch(KeyModeType mode)
+static core::Pitch base_pitch(KeyModeType mode)
 {
-    using core::NoteName;
-    using core::Accidental;
+    using core::Tone;
 
     if (mode == KeyModeType::AEOLIAN)
-        return { NoteName::A, Accidental::NONE, 4 };
+        return core::Pitch(Tone::A, 4);
 
-    return { NoteName::C, Accidental::NONE, 4 };
+    return core::Pitch(Tone::C, 4);
 }
 
 // ============================================================
@@ -106,7 +104,7 @@ std::string KeySignature::to_french(KeyModeType m)
 // ============================================================
 
 std::array<std::string, SHARP_KEY_COUNT>
-KeySignature::circle_fifths(const core::pitch_t& pitch)
+KeySignature::circle_fifths(const core::Pitch& pitch)
 {
     std::array<std::string, SHARP_KEY_COUNT> result{};
 
@@ -126,7 +124,7 @@ KeySignature::circle_fifths(const core::pitch_t& pitch)
 }
 
 std::array<std::string, FLAT_KEY_COUNT>
-KeySignature::circle_fourths(const core::pitch_t& pitch)
+KeySignature::circle_fourths(const core::Pitch& pitch)
 {
     std::array<std::string, FLAT_KEY_COUNT> result{};
 
@@ -183,7 +181,7 @@ std::string KeySignature::from_mei(
 
 std::string KeySignature::to_mei_string(
     KeyModeType mode,
-    const core::pitch_t& tonality)
+    const core::Pitch& tonality)
 {
     auto base = base_pitch(mode);
 

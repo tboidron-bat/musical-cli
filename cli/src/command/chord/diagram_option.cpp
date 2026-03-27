@@ -3,6 +3,7 @@
 #include <command/chord/ChordCommand.h>
 
 #include <musical/Core/chord/Chord.h>
+#include <musical/Core/Tone.h>
 #include <musical/guitar_chord_database/open/queries.h>
 #include <musical/guitar_chord_database/movable/queries.h>
 #include <musical/io/guitar/unicode/DiagramRenderer.h>
@@ -11,6 +12,7 @@
 
 #include <terminal.h>
 #include <iostream>
+#include <cstdint>
 
 //#define DEBUG
 
@@ -51,8 +53,7 @@ void diagram_option::render(
 
     for(auto diagram : diagrams)
     {
-        diagram.place_root(
-            chromatic_index(chord.root()) % 12);               
+        diagram.place_root(static_cast<uint8_t>(chord.tone()));
 
         //FILTRE CRUCIAL pour ne pas faire des diagram open avec 
         //des diagrams movable
@@ -127,12 +128,9 @@ diagram_option::find_caged(
     const musical::core::chord::Chord&chord,
     ::chord::database::Diagram::CAGED filter) const
 {
-
-    ::chord::database::NoteEnum root = static_cast<::chord::database::NoteEnum>(chromatic_index(chord.root()));
-
     auto open_diagrams = 
         ::chord::database::queries::open::find_positions(
-            root,
+            chord.tone(),
             chord.type().intervals_mask(),
             filter
         );            

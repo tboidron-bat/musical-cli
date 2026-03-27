@@ -1,5 +1,5 @@
 #include <musical/audio/karplus_strong/chord_player.h>
-#include <musical/Core/pitch_t.h>
+#include <musical/Core/Pitch.h>
 
 #include <cmath>
 #include <fstream>
@@ -17,12 +17,12 @@ namespace
     constexpr int SAMPLE_RATE = 44100;
     constexpr double DURATION = 3.0;
 
-    double frequency_from_pitch(const musical::core::pitch_t& p)
+    double frequency_from_pitch(const musical::core::Pitch& p)
     {
-        int midi = (p.octave() + 1) * 12 + musical::core::chromatic_index(p);
+        int midi = static_cast<int>(p.value());
         return 440.0 * std::pow(2.0, (midi - 69) / 12.0);
     }
-
+    
     void write_wav(const std::vector<int16_t>& samples)
     {
         std::ofstream file("chord.wav", std::ios::binary);

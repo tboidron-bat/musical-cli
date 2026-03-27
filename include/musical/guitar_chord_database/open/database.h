@@ -6,20 +6,15 @@
 
 #include <musical/guitar_chord_database/Diagram.h>
 
+#include <musical/Core/Tone.h>
+
 namespace chord::database
 {
     using IntervalMask = uint64_t;
 
-    enum class NoteEnum : uint8_t
-    {
-        C=0, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B
-    };
-
-    //using key_t = std::pair<Note, IntervalMask>;??
-
     struct key_t
     {        
-        NoteEnum _root; 
+        musical::core::Tone _root; 
         IntervalMask _mask;
 
         bool operator==(const key_t& other) const noexcept

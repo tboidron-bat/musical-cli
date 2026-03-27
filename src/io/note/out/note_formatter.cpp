@@ -1,7 +1,5 @@
 #include <musical/io/note/out/note_formatter.h>
 
-#include <musical/Core/pitch_t.h>
-
 #include <map>
 #include <stdexcept>
 #include <array>

@@ -18,13 +18,14 @@ set_target_properties(musical-core PROPERTIES
 target_sources(musical-core
     PRIVATE
 
+        #core
         src/Core/Cadence.cpp
         src/Core/Figure.cpp
-        src/Core/pitch_t.cpp        
+        #src/Core/Pitch.cpp        
         # src/Core/Mode.cpp   # désactivé pour l'instant        
 
         src/Core/note/Note.cpp
-        src/Core/note/Factory.cpp
+        src/Core/note/NoteFactory.cpp
 
         src/Core/note/Rest.cpp        
 
@@ -32,8 +33,8 @@ target_sources(musical-core
         src/Core/chord/ChordType.cpp        
         src/Core/chord/ChordTypeCatalog.cpp                
         src/Core/chord/Chord.cpp
-        src/Core/chord/Factory.cpp
-        src/Core/chord/Arpeggio.cpp        
+        src/Core/chord/ChordFactory.cpp
+        #src/Core/chord/Arpeggio.cpp        
 
         #core::Scale        
         src/Core/scale/ScaleKeyed.cpp

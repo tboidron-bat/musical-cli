@@ -6,6 +6,7 @@ namespace chord::database
 const open_diagram_map& aug_open()
 {
     using D = Diagram;
+    using musical::core::Tone;
 
     constexpr uint8_t X = D::MUTE;
 
@@ -15,7 +16,7 @@ const open_diagram_map& aug_open()
         // AUGMENTED
         // ========================
 
-        { { NoteEnum::A, TRIAD_AUG },
+        { { Tone::A, TRIAD_AUG },
             {
             // a:aug
             // x 0     
@@ -27,7 +28,7 @@ const open_diagram_map& aug_open()
             D({ X, 0, 3, 2, 2, 1 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { NoteEnum::C, TRIAD_AUG },
+        { { Tone::C, TRIAD_AUG },
             {
             // c:aug
             // x         0
@@ -38,7 +39,7 @@ const open_diagram_map& aug_open()
             D({ X, 3, 2, 1, 1, 0 }, GuitarStandardTuning::A, D::CAGED::C),
             }
         },
-        { { NoteEnum::D, TRIAD_AUG },
+        { { Tone::D, TRIAD_AUG },
             {
             // d:aug
             // x x 0 
@@ -49,7 +50,7 @@ const open_diagram_map& aug_open()
             D({ X, X, 0, 3, 3, 2 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { NoteEnum::E, TRIAD_AUG },
+        { { Tone::E, TRIAD_AUG },
             {
             // e:aug
             // 0         0
@@ -60,7 +61,7 @@ const open_diagram_map& aug_open()
             D({ 0, 3, 2, 1, 1, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             }
         },
-        { { NoteEnum::G, TRIAD_AUG },
+        { { Tone::G, TRIAD_AUG },
             {
             // g:aug
             //       0 0

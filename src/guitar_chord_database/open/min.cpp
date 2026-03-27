@@ -6,6 +6,7 @@ namespace chord::database
 const open_diagram_map& min_open()
 {
     using D = Diagram;
+    using musical::core::Tone;    
 
     constexpr uint8_t X = D::MUTE;
 
@@ -15,12 +16,12 @@ const open_diagram_map& min_open()
         // MINEUR
         // ========================
 
-        { { NoteEnum::A, TRIAD_MIN },
+        { { Tone::A, TRIAD_MIN },
             {
             D({ X, 0, 2, 2, 1, 0 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { NoteEnum::C, TRIAD_MIN },
+        { { Tone::C, TRIAD_MIN },
             {
             // x     0   x 
             // =========== 
@@ -30,17 +31,17 @@ const open_diagram_map& min_open()
             D({ X, 3, 1, 0, 1, X }, GuitarStandardTuning::A, D::CAGED::C),
             }
         },
-        { { NoteEnum::D, TRIAD_MIN },
+        { { Tone::D, TRIAD_MIN },
             {
             D({ X, X, 0, 2, 3, 1 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { NoteEnum::E, TRIAD_MIN },
+        { { Tone::E, TRIAD_MIN },
             {
             D({ 0, 2, 2, 0, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             }
         },
-        { { NoteEnum::G, TRIAD_MIN },
+        { { Tone::G, TRIAD_MIN },
             {
             // x   0 0 0
             // =========== 
@@ -55,22 +56,22 @@ const open_diagram_map& min_open()
         // MIN7
         // ========================
 
-        { { NoteEnum::A, (TRIAD_MIN | ( 1ULL << 10 )) },
+        { { Tone::A, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
             D({ X, 0, 2, 0, 1, 0 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { NoteEnum::D, (TRIAD_MIN | ( 1ULL << 10 )) },
+        { { Tone::D, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
             D({ X, X, 0, 2, 1, 1 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { { NoteEnum::E, (TRIAD_MIN | ( 1ULL << 10 )) },
+        { { Tone::E, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
             D({ 0, 2, 0, 0, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             }
         },
-        { { NoteEnum::G, (TRIAD_MIN | ( 1ULL << 10 )) },
+        { { Tone::G, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
             //     0 0 
             // =========== 

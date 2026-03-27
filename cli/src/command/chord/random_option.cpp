@@ -7,7 +7,7 @@
 #include <musical/guitar_chord_database/open/queries.h>
 #include <musical/guitar_chord_database/movable/queries.h>
 
-#include <musical/Core/chord/Factory.h>
+#include <musical/Core/chord/ChordFactory.h>
 
 //#include <musical/io/note/out/note_formatter.h>
 //#include <musical/io/chord/in/ChordLexer.h>
@@ -57,10 +57,10 @@ int random_option::execute() const
             auto [key, diagram] =            
                 ::chord::database::queries::open::get_random();
 
-            auto root = musical::core::pitch_from_chromatic_index(
+            auto root = musical::core::Pitch(
                     static_cast<uint8_t>(key._root));
 
-            auto chord = musical::core::chord::Factory::create(
+            auto chord = musical::core::chord::ChordFactory::create(
                     root,
                     key._mask);
 
@@ -76,10 +76,9 @@ int random_option::execute() const
 
             std::uniform_int_distribution<int> pitch_dist(0, 11);
 
-            musical::core::pitch_t root =
-                musical::core::pitch_from_chromatic_index(pitch_dist(gen));
+            musical::core::Pitch root(pitch_dist(gen));
 
-            auto chord = musical::core::chord::Factory::create(
+            auto chord = musical::core::chord::ChordFactory::create(
                     root,
                     intervals_mask);
 

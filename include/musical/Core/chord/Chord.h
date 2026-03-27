@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <musical/Core/pitch_t.h>
+#include <musical/Core/Pitch.h>
 #include <musical/Core/chord/ChordType.h>
 
 namespace musical::core::chord {
@@ -10,26 +10,27 @@ namespace musical::core::chord {
 class Chord
 {
 private:
-    pitch_t _tonic;
+    Pitch _root;
     ChordType _type;
 
 public:
 
-    Chord(pitch_t tonic, ChordType type)
-        : _tonic(std::move(tonic))
+    Chord(Pitch root, ChordType type)
+        : _root(root)
         , _type(std::move(type))
     {}
 
     // ------------------------------------------------------------
     // Accesseurs
     // ------------------------------------------------------------
-    const pitch_t& root() const noexcept { return _tonic; }
+    Tone tone() const noexcept { return _root.tone(); }
 
+    const Pitch& root() const noexcept { return _root; }    
     const ChordType& type() const noexcept { return _type; }
 
     std::size_t size() const;
 
-    std::vector<pitch_t> notes(bool with_sharp = true) const;
+    std::vector<Pitch> notes() const;
 };
 
 std::ostream& operator<<(std::ostream&, const Chord&);

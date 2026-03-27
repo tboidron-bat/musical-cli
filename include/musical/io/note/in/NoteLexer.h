@@ -4,6 +4,7 @@
 #include <string_view>
 #include <vector>
 #include <array>
+#include <ostream>
 
 namespace musical::io::note
 {
@@ -95,5 +96,7 @@ public:
     static std::vector<token_t>
     tokenize(std::string_view normalized_input);
 };
+
+std::ostream& operator<<(std::ostream&, const token_t&);
 
 } // namespace musical::io::note

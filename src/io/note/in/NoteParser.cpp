@@ -1,114 +1,98 @@
 #include <musical/io/note/in/NoteParser.h>
+#include <musical/Core/note/NoteFactory.h>
 
-#include <algorithm>
-#include <cctype>
-
-namespace musical::io::note {
-
-
-// ============================
-// Conversion NAME
-// ============================
-
-std::optional<musical::core::NoteName>
-NoteParser::to_name(std::string_view text)
+namespace musical::io::note
 {
-    using Name = musical::core::NoteName;
 
-    // Saxon
-    if (text == "c")  return Name::C;
-    if (text == "d")  return Name::D;
-    if (text == "e")  return Name::E;
-    if (text == "f")  return Name::F;
-    if (text == "g")  return Name::G;
-    if (text == "a")  return Name::A;
-    if (text == "b")  return Name::B;
+using musical::core::Accidental;
+using musical::core::note::Factory;
 
-    // Latin
-    if (text == "do")  return Name::C;
-    if (text == "re")  return Name::D;
-    if (text == "mi")  return Name::E;
-    if (text == "fa")  return Name::F;
-    if (text == "sol") return Name::G;
-    if (text == "la")  return Name::A;
-    if (text == "si")  return Name::B;
-
-    return std::nullopt;
-}
-
-
-// ============================
-// Conversion ACCIDENTAL
-// ============================
-
-std::optional<musical::core::Accidental>
-NoteParser::to_accidental(std::string_view text)
-{
-    using Acc = musical::core::Accidental;
-
-    if (text == "#"  || text == "♯")
-        return Acc::SHARP;
-
-    if (text == "##" || text == "𝄪")
-        return Acc::DOUBLE_SHARP;
-
-    if (text == "b"  || text == "♭")
-        return Acc::FLAT;
-
-    if (text == "bb" || text == "𝄫")
-        return Acc::DOUBLE_FLAT;
-
-    if (text == "n"  || text == "♮")
-        return Acc::NONE;
-
-    return std::nullopt;
-}
-
-
-// ============================
-// Parse principal
-// ============================
-
-std::optional<musical::core::pitch_t>
+// ------------------------------------------------------------
+// Parse
+// ------------------------------------------------------------
+std::optional<musical::core::Note>
 NoteParser::parse(const std::vector<token_t>& tokens)
 {
-    using musical::core::pitch_t;
-    using musical::core::Accidental;
-
-    if (tokens.empty())
+    if (tokens.empty() || tokens.size() > 2)
         return std::nullopt;
 
-    // 1️⃣ Le premier token doit être un NAME
+    // -------------------------
+    // NAME obligatoire
+    // -------------------------
     if (tokens[0].kind != token_t::TokenKind::NAME)
         return std::nullopt;
 
-    auto name = to_name(tokens[0].text);
-    if (!name)
+    auto name_opt = to_name(tokens[0].text);
+    if (!name_opt)
         return std::nullopt;
 
-    pitch_t result{};
-    result._name = *name;
-    result._accidental = Accidental::NONE;
-    result._octave = 4; // octave par défaut
+    char name = *name_opt;
 
-    // 2️⃣ Si un second token existe → ACCIDENTAL
-    if (tokens.size() == 2)
+    // -------------------------
+    // ACCIDENTAL optionnel
+    // -------------------------
+    Accidental acc = Accidental::NONE;
+
+    if (tokens.size() > 1)
     {
         if (tokens[1].kind != token_t::TokenKind::ACCIDENTAL)
             return std::nullopt;
 
-        auto acc = to_accidental(tokens[1].text);
-        if (!acc)
+        auto acc_opt = to_accidental(tokens[1].text);
+        if (!acc_opt)
             return std::nullopt;
 
-        result._accidental = *acc;
-    }
-    else if (tokens.size() > 2)
-    {
-        return std::nullopt; // trop de tokens
+        acc = *acc_opt;
     }
 
-    return result;
+    // 👉 octave par défaut
+    constexpr int8_t octave = 4;
+
+    // 👉 figure par défaut
+    musical::core::Figure fig(musical::core::Figure::Type::QUARTER);
+
+    return Factory::create(name, acc, octave, fig);
 }
 
-} // namespace musical::io::note
+// ------------------------------------------------------------
+// NAME
+// ------------------------------------------------------------
+std::optional<char>
+NoteParser::to_name(std::string_view text)
+{
+    // Saxon
+    if (text == "c") return 'c';
+    if (text == "d") return 'd';
+    if (text == "e") return 'e';
+    if (text == "f") return 'f';
+    if (text == "g") return 'g';
+    if (text == "a") return 'a';
+    if (text == "b") return 'b';
+
+    // Français
+    if (text == "do")  return 'c';
+    if (text == "re")  return 'd';
+    if (text == "mi")  return 'e';
+    if (text == "fa")  return 'f';
+    if (text == "sol") return 'g';
+    if (text == "la")  return 'a';
+    if (text == "si")  return 'b';
+
+    return std::nullopt;
+}
+
+
+// ------------------------------------------------------------
+// ACCIDENTAL
+// ------------------------------------------------------------
+std::optional<Accidental>
+NoteParser::to_accidental(std::string_view text)
+{
+    if (text == "#")  return Accidental::SHARP;
+    if (text == "b")  return Accidental::FLAT;
+    if (text == "##") return Accidental::DOUBLE_SHARP;
+    if (text == "bb") return Accidental::DOUBLE_FLAT;
+
+    return std::nullopt;
+}
+}

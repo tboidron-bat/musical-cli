@@ -1,5 +1,5 @@
 #include <musical/Core/scale/ScaleKeyedFactory.h>
-#include <musical/Core/pitch_t.h>
+#include <musical/Core/Pitch.h>
 
 #include <algorithm>
 #include <stdexcept>
@@ -17,26 +17,21 @@ static int normalize(int v)
 
 
 // ------------------------------------------------------------
-// Create from ScalePattern + pitch_t
+// Create from ScalePattern + Pitch
 // ------------------------------------------------------------
 ScaleKeyed ScaleKeyedFactory::create(
     const ScalePattern& scale,
-    const pitch_t& tonic,
-    bool with_sharp)
+    const Pitch& tonic,
+    bool /*with_sharp*/)
 {
     ScaleKeyed gamme;
 
-    int current = static_cast<int>(chromatic_index(tonic));
-    int octave  = tonic._octave;
+    uint8_t current = tonic.value();
 
     for (int interval : scale.get_intervals())
     {
-        pitch_t p = pitch_from_chromatic_index(current, with_sharp);
-        p._octave = octave;
-
-        gamme += p;
-
-        current = normalize(current + interval);
+        gamme += Pitch(current);
+        current = static_cast<uint8_t>(current + interval);
     }
 
     return gamme;
@@ -48,28 +43,24 @@ ScaleKeyed ScaleKeyedFactory::create(
 // ------------------------------------------------------------
 ScaleKeyed ScaleKeyedFactory::create(
     Interval interval,
-    const pitch_t& tonic,
-    bool with_sharp)
+    const Pitch& tonic,
+    bool /*with_sharp*/)
 {
     ScaleKeyed gamme;
 
     gamme += tonic;
 
-    int start   = static_cast<int>(chromatic_index(tonic));
-    int current = start;
-    int octave  = tonic._octave;
+    uint8_t start   = tonic.value();
+    uint8_t current = start;
 
     for (;;)
     {
-        current = normalize(current + static_cast<int>(interval));
+        current = static_cast<uint8_t>(current + static_cast<uint8_t>(interval));
 
-        if (current == start)
+        if ((current % 12) == (start % 12))
             break;
 
-        pitch_t p = pitch_from_chromatic_index(current, with_sharp);
-        p._octave = octave;
-
-        gamme += p;
+        gamme += Pitch(current);
     }
 
     return gamme;
@@ -82,7 +73,7 @@ ScaleKeyed ScaleKeyedFactory::create(
 std::array<std::string,12>
 ScaleKeyedFactory::get_chromatique_set(
     bool with_sharp,
-    const pitch_t& note_begin)
+    const Pitch& note_begin)
 {
     static std::array<std::string,12> sharp_set =
     { "c","c#","d","d#","e","f","f#","g","g#","a","a#","b" };
@@ -92,7 +83,7 @@ ScaleKeyedFactory::get_chromatique_set(
 
     auto set = with_sharp ? sharp_set : flat_set;
 
-    int pos = static_cast<int>(chromatic_index(note_begin));
+    int pos = static_cast<int>(note_begin.tone());
 
     std::rotate(set.begin(), set.begin() + pos, set.end());
 

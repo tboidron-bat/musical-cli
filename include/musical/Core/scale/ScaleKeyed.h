@@ -2,7 +2,8 @@
 
 #include <vector>
 #include <cstdint>
-#include <musical/Core/pitch_t.h>
+
+#include <musical/Core/Pitch.h>
 
 namespace musical::core::scale {
 
@@ -15,8 +16,8 @@ public:
     // ------------------------------------------------------------
     // Types d'itérateurs
     // ------------------------------------------------------------
-    using iterator = std::vector<pitch_t>::iterator;
-    using const_iterator = std::vector<pitch_t>::const_iterator;
+    using iterator = std::vector<Pitch>::iterator;
+    using const_iterator = std::vector<Pitch>::const_iterator;
 
     // ------------------------------------------------------------
     // Itérateurs
@@ -30,16 +31,20 @@ public:
     // ------------------------------------------------------------
     // Accès par index
     // ------------------------------------------------------------
-    pitch_t& operator[](std::size_t index) { return _pitches[index]; }
+    Pitch& operator[](std::size_t index) { return _pitches[index]; }
 
-    const pitch_t& operator[](std::size_t index) const { return _pitches[index]; }
+    const Pitch& operator[](std::size_t index) const { return _pitches[index]; }
 
     // ------------------------------------------------------------
     // Ajout d’un pitch
     // ------------------------------------------------------------
-    ScaleKeyed& operator+=(const pitch_t& pitch);
+    ScaleKeyed& operator+=(const Pitch& pitch)
+    {
+        _pitches.push_back(pitch);
+        return *this;
+    }
 
-    void add(const pitch_t& pitch)
+    void add(const Pitch& pitch)
     {
         _pitches.push_back(pitch);
     }
@@ -63,12 +68,12 @@ public:
 
     void truncate(std::size_t n)
     {
-        while (_pitches.size() > n)
-            _pitches.pop_back();
+        if (_pitches.size() > n)
+            _pitches.resize(n);
     }
 
 private:
-    std::vector<pitch_t> _pitches;
+    std::vector<Pitch> _pitches;
 };
 
 } // namespace musical::core::scale

@@ -3,8 +3,6 @@
 #include <musical/Core/chord/Chord.h>
 #include <musical/Core/scale/ScaleKeyed.h>
 
-#include <musical/Core/pitch_t.h>
-
 #include <algorithm>
 
 namespace musical::analysis
@@ -14,9 +12,6 @@ std::string ChordFunctionAnalyser::to_string(
     const musical::core::chord::Chord& chord,
     const musical::core::scale::ScaleKeyed& gamme)
 {
-    using musical::core::pitch_t;
-    using musical::core::chromatic_index;
-
     static const std::string romans_major[] =
         {"I","II","III","IV","V","VI","VII"};
 
@@ -26,15 +21,17 @@ std::string ChordFunctionAnalyser::to_string(
     if (chord.size() == 0)
         return "?";
 
-    pitch_t root = chord.root();
-    int root_val = static_cast<int>(chromatic_index(root));
+    // 👉 root en pitch
+    const auto& root = chord.root();
+    uint8_t root_pc = root.value() % 12;
 
+    // 👉 recherche dans la gamme
     auto it = std::find_if(
         gamme.begin(),
         gamme.end(),
-        [&](const pitch_t& p)
+        [&](const musical::core::Pitch& p)
         {
-            return chromatic_index(p) == root_val;
+            return (p.value() % 12) == root_pc;
         });
 
     if (it == gamme.end())

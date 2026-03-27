@@ -18,7 +18,7 @@ Option(cmd,"dump-db","","Dump all chord diagrams stored in the database")
 }
 int dumpdb_option::dump_open_diagrams(int width) const
 {
-    std::cout << "dump [Open chord database] \n\n";
+    std::cout << "dump-db [Open chord database] \n\n";
 
     const auto open_diagrams =
         ::chord::database::queries::open::find_all_diagrams();

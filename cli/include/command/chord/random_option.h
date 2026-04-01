@@ -10,6 +10,12 @@ namespace cli::chord
         random_option(cli::Command&);
 
         int execute() const override;
+    private:
+        
+        void add_open_diagram() const;
+        void add_movable_diagram() const;
+
+        void render();
     };
 
 }

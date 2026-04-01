@@ -1,11 +1,12 @@
 #pragma once
 
-#include <Command.h>
 #include <vector>
 #include <string>
 #include <iostream>
 
+#include <Command.h>
 #include <musical/core/chord/Chord.h>
+#include <musical/guitar_chord_database/Diagram.h>
 
 namespace cli::chord
 {
@@ -16,24 +17,39 @@ public:
     int run(int argc, char** argv) override;
 
 private:
-    std::vector<musical::core::chord::Chord> _chords;    
+    std::vector<std::string> _args;
+private:
+    //std::vector<musical::core::chord::Chord> _chords;    
+    
+    //utiliser par les differentes options 
+    struct diagram_entry_t
+    {
+        musical::core::Tone _root;
+        uint64_t _intervals_mask;
+        ::chord::database::Diagram _diagram;
+    };
+
+    std::vector<diagram_entry_t> _entries;        
 
 private:
     //nettoie la ligne de commande de tous ce qui ne st pas un accords
     //et renvoie la chainde de carartere correspondante
-    std::string clean(int argc, char**argv);
+    std::string chords_names_from_input() const;
 public:
-    int parse_chord(int, char**);
+    std::vector<musical::core::chord::Chord> 
+        parse_chord();
 
-    std::vector<musical::core::chord::Chord>& chords()
+    std::vector<diagram_entry_t>& entries()
     {
-        return _chords;
-    }
-    const std::vector<musical::core::chord::Chord>& chords() const
-    {
-        return _chords;
+        return _entries;
     }
 
+    const std::vector<diagram_entry_t>& entries() const
+    {
+        return _entries;
+    }
+public:    
+    void render() const;
 public:    
     void print_name() const override; 
     void print_usage() const override;

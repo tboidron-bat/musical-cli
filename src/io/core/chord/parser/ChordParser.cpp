@@ -1,6 +1,7 @@
 #include <musical/io/core/chord/parser/ChordParser.h>
 
 #include <musical/core/chord/ChordType.h>
+#include <musical/core/chord/ChordFactory.h>
 #include <musical/core/Pitch.h>
 #include <musical/io/core/note/in/NoteLexer.h>
 #include <musical/io/core/note/in/NoteParser.h>
@@ -189,9 +190,12 @@ ChordParser::parse(const std::vector<token_t>& tokens)
     // 4️⃣ Build chord
     // --------------------------------------------------------
 
-    return musical::core::chord::Chord(
-        root_pitch,
-        chord_type
+    using musical::core::Pitch;
+    using musical::core::chord::ChordFactory;
+
+    return ChordFactory::create(
+        Pitch(static_cast<uint8_t>(root_pitch.value())),
+        chord_type.intervals_mask()
     );
 }
 

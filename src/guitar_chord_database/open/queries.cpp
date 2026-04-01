@@ -73,28 +73,35 @@ find_all_diagrams(
 // ------------------------------------------------------------
 // RANDOM CHORD
 // ------------------------------------------------------------
-std::pair<key_t, Diagram>
-get_random()
+Diagram get_random()
 {
     const auto& db = data_open();
-
-    if (db.empty())
-        throw std::runtime_error("Empty open database");
 
     std::uniform_int_distribution<size_t> chord_dist(0, db.size() - 1);
     auto chord_it = std::next(db.begin(), chord_dist(rng()));
 
     const auto& diagrams = chord_it->second;
 
-    if (diagrams.empty())
-        throw std::runtime_error("No diagrams for selected chord");
-
     std::uniform_int_distribution<size_t> diag_dist(0, diagrams.size() - 1);
 
-    return {
-        chord_it->first,
-        diagrams[diag_dist(rng())]
-    };
+    return diagrams[diag_dist(rng())];
 }
+// std::pair<key_t, Diagram>
+// get_random()
+// {
+//     const auto& db = data_open();
+
+//     std::uniform_int_distribution<size_t> chord_dist(0, db.size() - 1);
+//     auto chord_it = std::next(db.begin(), chord_dist(rng()));
+
+//     const auto& diagrams = chord_it->second;
+
+//     std::uniform_int_distribution<size_t> diag_dist(0, diagrams.size() - 1);
+
+//     return {
+//         chord_it->first,
+//         diagrams[diag_dist(rng())]
+//     };
+// }
 
 } // namespace chord::database::queries::open

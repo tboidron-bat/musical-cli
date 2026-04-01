@@ -27,7 +27,9 @@ find_all_diagrams(std::optional<IntervalMask> mask = std::nullopt);
 // ============================================================
 // RANDOM (TYPE SAFE)
 // ============================================================
+Diagram get_random();
+
 //TODO REFACTOR: std::pair<Tone, Diagram> ?
-std::pair<key_t, Diagram>
-get_random();
+// std::pair<key_t, Diagram>
+// get_random();
 } // namespace chord::database::queries::open

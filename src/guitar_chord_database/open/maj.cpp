@@ -18,25 +18,38 @@ const open_diagram_map& maj_open()
         { { Tone::A, TRIAD_MAJ},
             {
             //"a:maj",                 
+            // x 0       0
+            // =========== 
+            // | | | | | |
+            // | | 1 2 3 |
+            // | | | | | |
             D({ X, 0, 2, 2, 2, 0 }, GuitarStandardTuning::A, D::CAGED::A),
+        }},
+        { {Tone::C, TRIAD_MAJ},
+            //"c:maj"
             // x     0   0
             // =========== 
             // | | | | 1 |
             // | | 2 | | |
             // | 3 | | | |
-        }},
-        { {Tone::C, TRIAD_MAJ},//"c:maj"
             {
             D({ X, 3, 2, 0, 1, 0 }, GuitarStandardTuning::A, D::CAGED::C),
             }
         },
-        { {Tone::D, TRIAD_MAJ}, //"d:maj"
+        { {Tone::D, TRIAD_MAJ}, 
+            //"d:maj"
+            // x x 0 
+            // =========== 
+            // | | | | | |
+            // | | | 1 | 2
+            // | | | | 3 |
             {
             D({ X, X, 0, 2, 3, 2 }, GuitarStandardTuning::D, D::CAGED::D),
             }
         },
-        { {Tone::E, TRIAD_MAJ}, //"e:maj", 
+        { {Tone::E, TRIAD_MAJ}, 
             {
+            //"e:maj",                 
             D({ 0, 2, 2, 1, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
             //     0 0 0
             // =========== 
@@ -45,8 +58,9 @@ const open_diagram_map& maj_open()
             // 2 | | | | 4
             }
         },
-        { {Tone::G, TRIAD_MAJ}, //"g:maj", 
+        { {Tone::G, TRIAD_MAJ}, 
             {
+            //"g:maj",                 
             D({ 3, 2, 0, 0, 0, 3 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
             }
         },
@@ -138,7 +152,20 @@ const open_diagram_map& maj_open()
             D({ 3, 2, 0, 0, 0, 2 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
             }
         },
-
+        // ========================
+        // Renversement
+        // ========================
+        { { Tone::C, TRIAD_MAJ },
+            {
+            //"c/e                
+            // 0     0   0 
+            // =========== 
+            // | | | | 1 | 
+            // | | 2 | | |
+            // | 3 | | | |
+            D({ 0, 3, 2, 0, 1, 0 }, GuitarStandardTuning::A, D::CAGED::A),
+            }
+        },
 
         // ========================
         // 7ᵇ5

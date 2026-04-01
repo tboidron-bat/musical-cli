@@ -199,6 +199,6 @@ void DiagramRenderer::write_fret(
 }
 void DiagramRenderer::write_name(GridCore& grid, const std::string& name)
 {
-    grid.insert_row_top(GridCore::make_centered_row(name, grid.width()));
+    grid.add_title_row(name);
 }
 } // namespace

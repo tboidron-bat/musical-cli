@@ -2,6 +2,8 @@
 #include <Option.h>
 #include <stream_option.h>
 
+#include <command/chord/diagram_layout.h>
+
 #include <command/chord/version_option.h>
 #include <command/chord/help_option.h>
 #include <command/chord/diagram_option.h>
@@ -14,11 +16,14 @@
 #include <musical/io/core/chord/parser/ChordLexer.h>
 #include <musical/io/core/chord/parser/ChordParser.h>
 #include <musical/io/core/chord/ChordIO.h>
+#include <musical/io/core/chord/out/naming.h>
+
+#include <musical/io/guitar/unicode/DiagramRenderer.h>
 
 #include <sstream>
 #include <regex>
 
-//#define CHORD_COMMAND_DEBUG
+//#define DEBUG
 
 namespace cli::chord
 {
@@ -40,6 +45,12 @@ int ChordCommand::run(int argc, char** argv)
         print_usage();
         return 1;
     }
+
+    _args.clear();
+
+    for(int i = 0; i < argc; ++i)
+        _args.emplace_back(argv[i]);
+
     for (auto& opt : _options)
         opt->parse(argc, argv);
 
@@ -58,34 +69,32 @@ int ChordCommand::run(int argc, char** argv)
     }        
     else
     {
-        parse_chord(argc,argv);
-    }
+        std::vector<musical::core::chord::Chord> chords = parse_chord();
 
-    if(_chords.empty())    
-    {
-        std::cerr << "Chord symbol required\n";        
-        return 0;
-    }            
+        if(chords.empty())    
+        {
+            std::cerr << "Chord symbol required\n";        
+            return 0;
+        }            
+    }
 
     if(get_option<diagram_option>()->enabled())        
         get_option<diagram_option>()->execute();
-    else
-    {
-        for(const auto& c : _chords)
-            std::cout << c << "\n";           
-    }            
+
     if(get_option<play_option>()->enabled())        
         get_option<play_option>()->execute();
 
+    render();
+
     return EXIT_SUCCESS;
 }
-std::string ChordCommand::clean(int argc, char**argv)
+std::string ChordCommand::chords_names_from_input() const
 {
     std::string cmd_line;
 
-    for(int i = 1; i < argc; ++i)
+    for(int i = 1; i < _args.size(); ++i)
     {
-        cmd_line += argv[i];
+        cmd_line += _args[i];
         cmd_line += ' ';
     }
 
@@ -131,14 +140,17 @@ std::string ChordCommand::clean(int argc, char**argv)
     cmd_line = std::regex_replace(cmd_line, std::regex("\\s+"), " ");
     return cmd_line;
 }
-int ChordCommand::parse_chord(int argc, char**argv)
+std::vector<musical::core::chord::Chord> 
+ChordCommand::parse_chord()
 {
+    std::vector<musical::core::chord::Chord> chords;
+
     using musical::io::chord::ChordLexer;
     using musical::io::chord::ChordParser;
 
-    _chords.clear();    
+    chords.clear();    
 
-    std::string cleaned = clean(argc, argv);
+    std::string cleaned = chords_names_from_input();
 
     std::istringstream iss(cleaned);
     std::string token;
@@ -149,12 +161,44 @@ int ChordCommand::parse_chord(int argc, char**argv)
         auto chord_opt = ChordParser::parse(tokens);    
 
         if(chord_opt)
-            _chords.push_back(*chord_opt);
+            chords.push_back(*chord_opt);
         else
             std::cerr << "Invalid chord symbol\n";
 
     }
-    return 1;
+    return chords;
+}
+static std::string make_name(
+    musical::core::Tone tone,
+    uint64_t mask)
+{
+    std::ostringstream oss;
+
+    oss << tone;
+
+    musical::core::chord::ChordType type(mask);
+
+    return oss.str() + musical::io::chord::to_string(type);
+}
+void ChordCommand::render() const
+{
+    if(_entries.empty())
+    {
+        std::cerr << "No diagrams to display\n";
+        return;
+    }
+
+    Layout layout(terminal::get_width());
+
+    for(const auto& d : _entries)
+    {
+        std::string name = make_name(d._root, d._intervals_mask);
+        layout.add_block(
+            io::guitar::unicode::DiagramRenderer::render(d._diagram,name)
+        );
+    }
+
+    std::cout << layout.render();
 }
 void ChordCommand::print_name() const
 {

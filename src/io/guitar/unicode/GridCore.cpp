@@ -5,8 +5,6 @@
 namespace io::guitar::unicode
 {
 
-static constexpr std::size_t RIGHT_SPACING = 4;
-
 // │ │ │ │ │ │
 void GridCore::add_strings_row()
 {
@@ -142,8 +140,29 @@ void GridCore::write_right(std::size_t row, const std::string& txt)
         r[start + i] = std::string(1, txt[i]);
     }
 }
+void GridCore::add_title_row(const std::string& text)
+{
+    std::size_t total_w = width();
 
+    std::size_t usable_w =
+        _extended_right ? total_w - RIGHT_SPACING
+                        : total_w;
 
+    row_t row(total_w, " ");
+
+    std::size_t start =
+        (text.size() < usable_w)
+        ? (usable_w - text.size()) / 2
+        : 0;
+
+    for (std::size_t i = 0;
+         i < text.size() && (start + i) < usable_w;
+         ++i)
+    {
+        row[start + i] = std::string(1, text[i]);
+    }
+    insert_row_top(std::move(row));
+}
 std::string GridCore::render() const
 {
     std::ostringstream oss;

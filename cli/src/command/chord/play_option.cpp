@@ -2,13 +2,15 @@
 #include <command/chord/ChordCommand.h>
 
 #include <musical/audio/karplus_strong/chord_player.h>
+#include <musical/core/chord/Chord.h>
+#include <musical/core/chord/ChordFactory.h>
 
 #include <iostream>
 
-
 namespace cli::chord
 {
-play_option::play_option(cli::Command&cmd)
+
+play_option::play_option(cli::Command& cmd)
 :
 command::Option(
     cmd,
@@ -21,28 +23,19 @@ command::Option(
         "delay",
         "<delay_ms>",
         command::option::parameter_t::Requirement::OPTIONAL
-        });
+    });
 
     add_parameter({
         cli::command::option::parameter_t::Type::BOOL,
         "downstroke",
         "<downstroke>",
         command::option::parameter_t::Requirement::OPTIONAL
-        });
-
-        //  "Examples:\n"
-        //  "  --play\n"
-        //  "  --play 15\n"
-        //  "  --play 20 false\n",
-        //     "--play",
-        //     "",
-        //     "Play the chord using Karplus-Strong guitar synthesis.\n"
-        //     "Usage:\n"
-        //     "  --play                 (simultaneous attack)\n"
-        //     "  --play <delay_ms>\n"
-        //     "  --play <delay_ms> <downstroke>\n"
-        //     "\n"
+    });
 }
+
+// ============================================================
+// EXECUTE
+// ============================================================
 int play_option::execute() const
 {
     if(!_enabled)
@@ -51,36 +44,45 @@ int play_option::execute() const
     double strum_delay_ms = 0.0;
     bool downstroke = true;
 
-    //DELAY
+    // delay
     if(parameter(0)._provided)
-    {
-        strum_delay_ms = std::stoi(parameter(0)._value);
+        strum_delay_ms = std::stod(parameter(0)._value);
 
-    }
-    //DOWNSTROKE
+    // direction
     if(parameter(1)._provided)
-    {
-        downstroke = parameter(1)._value == "true";
-    }
-
+        downstroke = (parameter(1)._value == "true");
 
     auto& cmd = static_cast<ChordCommand&>(_command_ref);
 
-    if(cmd.chords().empty())
+    if(cmd.entries().empty())
     {
-        std::cerr << "Chord required\n";
-        return 1;
+        std::cerr << "No chord to play\n";
+        return EXIT_FAILURE;
     }
 
-    const auto& chord = cmd.chords().front();
+    using musical::core::chord::Chord;
+    using musical::core::chord::ChordType;
+    using musical::audio::karplus_strong::ChordPlayer;
 
-    musical::audio::karplus_strong::ChordPlayer::play(
-        chord,
-        strum_delay_ms,
-        downstroke
-    );
+    for(const auto& e : cmd.entries())
+    {
+        // reconstruction propre
+        using musical::core::Pitch;
+        using musical::core::chord::ChordFactory;
 
-    return 1;
+        auto chord = ChordFactory::create(
+            Pitch(static_cast<uint8_t>(e._root)),
+            e._intervals_mask
+        );
+                
+        ChordPlayer::play(
+            chord,
+            strum_delay_ms,
+            downstroke
+        );
+    }
+
+    return EXIT_SUCCESS;
 }
-}
 
+} // namespace cli::chord

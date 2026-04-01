@@ -77,6 +77,8 @@ public:
 
     void push_row(row_t r) { _grid.push_back(std::move(r)); }
 
+    static constexpr std::size_t RIGHT_SPACING = 4;    
+
     bool _extended_right = false;
 
     void extend_right();
@@ -111,29 +113,10 @@ public:
     {
         return _grid.size();
     }
+    void add_title_row(
+        const std::string&);
+
+
     virtual std::string render() const;  
-    
-    
-    static GridCore::row_t make_centered_row(
-        const std::string& text,
-        std::size_t width)
-    {
-        GridCore::row_t row(width, " ");
-
-        std::size_t start =
-            (text.size() < width)
-            ? (width - text.size()) / 2
-            : 0;
-
-        for (std::size_t i = 0;
-            i < text.size() && (start + i) < width;
-            ++i)
-        {
-            row[start + i] = std::string(1, text[i]);
-        }
-
-        return row;
-    }
-
 };
 }

@@ -4,6 +4,7 @@
 #include <musical/io/guitar/unicode/DottedGrid.h>
 
 #include <iostream> //DEBUG
+#include <memory>
 
 //#define DEBUG
 
@@ -47,42 +48,39 @@ static std::size_t compute_total_cases(
     return missing_before + visible + padding_after;
 }
 std::string DiagramRenderer::render(
-    const chord::database::Diagram& diagram)
+    const chord::database::Diagram& diagram,
+    const std::string&name)
 {
     //Diagram d'accord ouvert?
     if(diagram.is_open())
     {
         std::size_t first = diagram.first_case();
 
+        std::unique_ptr<OpenGrid> grid;
+
         if(first < 5)
-        {
-            OpenGrid grid(
+            grid = std::make_unique<OpenGrid>(
                 chord::database::Diagram::STRING_COUNT,
                 compute_total_cases(diagram));    
-
-            fill_grid(grid,diagram);    
-            return grid.render();
-
-        }            
         else
-        {
-            DottedGrid grid(
+            grid = std::make_unique<DottedGrid>(
                 chord::database::Diagram::STRING_COUNT,
-                compute_total_cases(diagram));    
+                compute_total_cases(diagram));
 
-            fill_grid(grid,diagram);    
-            return grid.render();
+        fill_grid(*grid, diagram);
+        write_name(grid->core(), name);
 
-        }        
+        return grid->render();
     }
     else
     {
-            GridCore grid(
-                chord::database::Diagram::STRING_COUNT,
-                compute_total_cases(diagram));    
-
-            fill_grid(grid,diagram);    
-            return grid.render();
+        GridCore grid(
+            chord::database::Diagram::STRING_COUNT,
+            compute_total_cases(diagram));    
+            
+        fill_grid(grid,diagram);   
+        write_name(grid,name); 
+        return grid.render();
     }
 }
 void DiagramRenderer::fill_grid(
@@ -193,12 +191,14 @@ void DiagramRenderer::write_fret(
 {
     if (diagram.base_case() > 0)
     {
-        grid.extend_right();
-
         std::size_t pos = diagram.base_case();
         std::size_t row = 1; // première ligne utile
 
         grid.write_right(row, to_roman(pos));
     }       
+}
+void DiagramRenderer::write_name(GridCore& grid, const std::string& name)
+{
+    grid.insert_row_top(GridCore::make_centered_row(name, grid.width()));
 }
 } // namespace

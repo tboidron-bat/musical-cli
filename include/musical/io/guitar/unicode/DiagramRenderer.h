@@ -17,7 +17,8 @@ class DiagramRenderer
 public:
 
     static std::string render(
-        const chord::database::Diagram& diagram);
+        const chord::database::Diagram&,
+        const std::string&name="");
 
 private:
     static void fill_grid(
@@ -35,6 +36,10 @@ private:
     static void write_fret(
         GridCore& grid,
         const chord::database::Diagram& diagram);
+
+    static void write_name(
+         GridCore& grid,
+         const std::string&);
 
 };
 

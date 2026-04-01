@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <sstream>
 #include <vector>
 
 #include <musical/io/guitar/unicode/GridCore.h>
@@ -31,16 +30,20 @@ private:
 public:    
     OpenGrid(std::size_t nb_strings, std::size_t nb_cases);
 
+    GridCore& core() { return _grid; }
+    const GridCore& core() const { return _grid; }    
+
     void set_finger(GridCore::STRING,std::size_t,GridCore::DOIGT);
     void set_finger(GridCore::STRING,std::size_t);    
 
     void set_open_string(GridCore::STRING);
     void set_muted_string(GridCore::STRING);
 
-    std::size_t height() const
-    {
-        return _grid.height() + 2;
-    }
+    // hauteur finale avec open strings + nut
+    std::size_t height() const;
+    std::size_t width() const;
+
+    void write_right(std::size_t,const std::string&);
 
     std::string render() const;
 };

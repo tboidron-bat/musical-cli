@@ -6,11 +6,12 @@
 
 #include <musical/guitar_chord_database/Diagram.h>
 
-#include <musical/Core/Tone.h>
+#include <musical/core/Tone.h>
+#include <musical/core/chord/ChordType.h>
 
 namespace chord::database
 {
-    using IntervalMask = uint64_t;
+    using IntervalMask = musical::core::chord::ChordType::IntervalMask;
 
     struct key_t
     {        

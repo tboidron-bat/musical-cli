@@ -139,7 +139,9 @@ const movable_diagram_map& maj_movable()
             }                
         },
 
-
+        // ========================================================
+        // ▲7ᵇ5
+        // ========================================================
         { 
             (TRIAD_MAJ_NO5 | (1ULL<<6) | (1ULL<<11)),                        
             {
@@ -155,7 +157,6 @@ const movable_diagram_map& maj_movable()
             // | | | | 3 4 
             // | | | | | |         
             D({ X, X, BASE, 1, 2, 2 }, GuitarStandardTuning::D, D::CAGED::D),
-
             //maj:7M:no5:#4:/#4
             //sound flamenco
             // x         x
@@ -164,9 +165,16 @@ const movable_diagram_map& maj_movable()
             // | | | | | |
             // | | | | | |            
             // | 3 4 | | | 
-            D({ X, 4, 4, BASE, BASE, X }, GuitarStandardTuning::G, D::CAGED::G) // CAGED::G & E
-
-
+            D({ X, 4, 4, BASE, BASE, X }, GuitarStandardTuning::G, D::CAGED::G), // CAGED::G & E
+            //sound mysterious
+            //maj:7M:b5/3M                            
+            // x         x
+            // | | | 1 | |
+            // | | | | | |
+            // | 2 | | 3 |
+            // | | | | | |            
+            // | | 4 | | |
+            D({ X, 2, 4, BASE, 2, X }, GuitarStandardTuning::G, D::CAGED::G) // et un petit peu de CAGED::E
             }
         },
 

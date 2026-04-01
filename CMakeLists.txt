@@ -19,28 +19,28 @@ target_sources(musical-core
     PRIVATE
 
         #core
-        src/Core/Cadence.cpp
-        src/Core/Figure.cpp
+        src/core/Cadence.cpp
+        src/core/Figure.cpp
         #src/Core/Pitch.cpp        
         # src/Core/Mode.cpp   # désactivé pour l'instant        
 
-        src/Core/note/Note.cpp
-        src/Core/note/NoteFactory.cpp
+        src/core/note/Note.cpp
+        src/core/note/NoteFactory.cpp
 
-        src/Core/note/Rest.cpp        
+        src/core/note/Rest.cpp        
 
         #core::Chord
-        src/Core/chord/ChordType.cpp        
-        src/Core/chord/ChordTypeCatalog.cpp                
-        src/Core/chord/Chord.cpp
-        src/Core/chord/ChordFactory.cpp
+        src/core/chord/ChordType.cpp        
+        src/core/chord/ChordTypeCatalog.cpp                
+        src/core/chord/Chord.cpp
+        src/core/chord/ChordFactory.cpp
         #src/Core/chord/Arpeggio.cpp        
 
         #core::Scale        
-        src/Core/scale/ScaleKeyed.cpp
-        src/Core/scale/ScaleKeyedFactory.cpp
-        src/Core/scale/ScalePattern.cpp
-        src/Core/scale/ScalePatternFactory.cpp
+        src/core/scale/ScaleKeyed.cpp
+        src/core/scale/ScaleKeyedFactory.cpp
+        src/core/scale/ScalePattern.cpp
+        src/core/scale/ScalePatternFactory.cpp
 
         # ScoreElements
         src/ScoreElements/KeySignature.cpp
@@ -74,24 +74,24 @@ target_sources(musical-core
         src/io/guitar/unicode/DottedGrid.cpp                                  
         src/io/guitar/unicode/DiagramRenderer.cpp                                                
 
-        #         
+        #io      
         src/io/utils/in/normalize_to_ascii.cpp                
-        src/io/note/in/NoteLexer.cpp                
-        src/io/note/in/NoteParser.cpp        
-        src/io/note/out/note_formatter.cpp
-        src/io/note/out/mei_adapter.cpp        
+        src/io/core/note/in/NoteLexer.cpp                
+        src/io/core/note/in/NoteParser.cpp        
+        src/io/core/note/out/note_formatter.cpp
+        src/io/core/note/out/mei_adapter.cpp        
 
 
-        src/io/chord/in/ChordLexer.cpp          
-        src/io/chord/in/ChordParser.cpp        
+        src/io/core/chord/parser/ChordLexer.cpp          
+        src/io/core/chord/parser/ChordParser.cpp   
+        src/io/core/chord/out/naming.cpp             
                 
-        src/io/scale/scalepattern_formatter.cpp
+        src/io/core/scale/scalepattern_formatter.cpp
 
 
         # analysis
         src/analysis/ChordAnalysis.cpp
         src/analysis/ChordFunctionAnalyser.cpp
-        src/analysis/chord/io.cpp
         #src/analysis/Harmonizer.cpp
         # src/analysis/Harmony.cpp # désactivé pour l'instant        
 

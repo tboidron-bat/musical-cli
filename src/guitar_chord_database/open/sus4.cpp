@@ -82,14 +82,15 @@ const open_diagram_map& sus4_open()
             D({ X, 0, 2, 0, 3, 0 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
-        { { Tone::C, TRIAD_SUS4_NO5 | (1ULL << 10)},
+        { { Tone::C, TRIAD_SUS4 | (1ULL << 10)},
             {
-            // x     
+            // x     0
             // =========== 
-            // | 1 1 1 1 1
+            // | 1 | | | | 3fr 
             // | | | | | | 
-            // | 3 3 3 | |
-            D({ X, 3, 3, 3, 1, 1 }, GuitarStandardTuning::A, D::CAGED::C),
+            // | | 2 | | | 
+            // | | | | 4 4 
+            D({ X, 3, 5, 0, 6, 6 }, GuitarStandardTuning::A, D::CAGED::C),
             }
         },
         { { Tone::D, TRIAD_SUS4 | (1ULL << 10)},
@@ -130,7 +131,22 @@ const open_diagram_map& sus4_open()
             // 3 4 | | | |
             D({ 3, 3, 0, 0, 1, 1 }, GuitarStandardTuning::LOW_E, D::CAGED::G)
             }
+        },
+
+        // ========================
+        // 7sus4add13
+        // ========================
+        { { Tone::A, TRIAD_SUS4 | (1ULL << 10) | (1ULL << 21) },
+            {
+            // x 0   0 
+            // =========== 
+            // | | | | | | 
+            // | | 1 | | 2 
+            // | | | | 3 | 
+            D({ X, 0, 2, 0, 3, 2 }, GuitarStandardTuning::A, D::CAGED::A)
+            }
         }
+
     };
 
     return db;

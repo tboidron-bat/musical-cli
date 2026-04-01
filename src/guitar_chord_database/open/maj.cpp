@@ -139,10 +139,11 @@ const open_diagram_map& maj_open()
             }
         },
 
-        // ========================
-        // ========================
 
-        { { Tone::A, (TRIAD_MAJ | (1ULL << 6) | (1ULL << 10) ) },
+        // ========================
+        // 7ᵇ5
+        // ========================
+        { { Tone::A, (TRIAD_MAJ_NO5 | (1ULL << 6) | (1ULL << 10) ) },
             {
             //"a:maj:7:b5", 
             // x 0       x
@@ -154,6 +155,27 @@ const open_diagram_map& maj_open()
             D({ X, 0, 1, 1, 2, X }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },
+        // ========================
+        // ▲7ᵇ5
+        // ========================
+        { { Tone::Gs, (TRIAD_MAJ_NO5 | (1ULL << 6) | (1ULL << 11) ) },
+            {
+            //G#▲7ᵇ5/G
+            //     0   x x
+            // ===========
+            // | | | 1 | |
+            // | | | | | |
+            // 3 4 | | | |
+            // | | | | | |
+            D({ 3, 3, 0, 1, X, X }, GuitarStandardTuning::G, D::CAGED::G),
+            }
+        },
+
+
+        // ========================
+        // add11
+        // ========================
+
         { { Tone::D, (TRIAD_MAJ_NO5 | (1ULL << 5)) },
             
             {
@@ -168,6 +190,10 @@ const open_diagram_map& maj_open()
             D({ 10, 9, 0, 0, X, X }, GuitarStandardTuning::LOW_E, D::CAGED::G),
             }
         },
+        // ========================
+        // 
+        // ========================
+
         { { Tone::C, (TRIAD_MAJ | (1ULL << 11) | (1ULL << 18)) },
             {           
             //"c:maj:7M:#11"
@@ -179,6 +205,10 @@ const open_diagram_map& maj_open()
             D({ X, 3, 2, 0, 0, 2 }, GuitarStandardTuning::A, D::CAGED::C),
             }
         },
+        // ========================
+        // 
+        // ========================
+
         {   { Tone::C, (TRIAD_MAJ_NO5 | (1ULL << 11) | (1ULL << 9) | (1ULL << 14)) }, 
             {           
             //"c:maj:7M:6:9:no5"                

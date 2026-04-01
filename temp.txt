@@ -1,49 +1,271 @@
-____ _                     _    ____ _     ___ 
-  / ___| |__   ___  _ __ __ _| |  / ___| |   |_ _|
- | |   | '_ \ / _ \| '__/ _` | | | |   | |    | | 
- | |___| | | | (_) | | | (_| | | | |___| |___ | | 
-  \____|_| |_|\___/|_|  \__,_|_|  \____|_____|___|
 
-            Chord CLI — version 0.3.0
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C)
+OK: C
 
-    
-Usage:
-  chord [options] <symbol>
-Try:
-  chord --help
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(c)
+OK: c
 
-Options:
-    -h, --help
-      Show help message
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Ré)
+OK: Ré
 
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(ré)
+OK: ré
 
-    -d, --diagram <position>
-      Show chord diagram
-      position: CAGED position (1–5)
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Fa♯)
+OK: Fa♯
 
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Sol𝄪)
+OK: Sol𝄪
 
-    -r, --random <count>
-      Show a completely random chord
-      count: number of chord to generate
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Bb)
+OK: Bb
 
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(bb)
+OK: bb
 
-    --play <delay> <downstroke>
-      Play the chord using Karplus-Strong guitar synthesis
-      delay: <delay_ms>
-      downstroke: <downstroke>
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmajor)
+OK: Cmajor
 
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cminor)
+OK: Cminor
 
-    --dump-db
-      Dump all chord diagrams stored in the database
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cdim)
+OK: Cdim
 
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Caug)
+OK: Caug
 
-    --difficulty <level>
-      Filter diagrams by difficulty level (1–3)
-      level: 1, 2, 3
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Csus2)
+OK: Csus2
 
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Csus4)
+OK: Csus4
 
-    --tuning <>
-      Guitar tuning to use for diagram rendering
-      : standard, dropd
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C7sus4)
+OK: C7sus4
 
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C7)
+OK: C7
 
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cdim7)
+OK: Cdim7
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Caug7)
+OK: Caug7
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C6)
+OK: C6
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C69)
+OK: C69
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C7b5)
+OK: C7b5
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C7#9)
+OK: C7#9
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C7b9)
+OK: C7b9
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C9)
+OK: C9
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C9b5)
+OK: C9b5
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Caug9)
+OK: Caug9
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C11)
+OK: C11
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C9#11)
+OK: C9#11
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C13)
+OK: C13
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmaj7)
+OK: Cmaj7
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmaj7b5)
+OK: Cmaj7b5
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmaj7#5)
+OK: Cmaj7#5
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmaj9)
+OK: Cmaj9
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmaj11)
+OK: Cmaj11
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmaj13)
+OK: Cmaj13
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cm6)
+OK: Cm6
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cm7)
+OK: Cm7
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cm7b5)
+OK: Cm7b5
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cm9)
+OK: Cm9
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cm69)
+OK: Cm69
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cm11)
+OK: Cm11
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmmaj7)
+OK: Cmmaj7
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmmaj7b5)
+OK: Cmmaj7b5
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmmaj9)
+OK: Cmmaj9
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmmaj11)
+OK: Cmmaj11
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cadd9)
+OK: Cadd9
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmadd9)
+OK: Cmadd9
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Calt)
+OK: Calt
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C/E)
+OK: C/E
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C/F)
+OK: C/F
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C/G)
+OK: C/G
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(cm7)
+OK: cm7
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(cM7)
+OK: cM7
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmaj7M)
+
+All lexer tests passed.

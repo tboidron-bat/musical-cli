@@ -1,6 +1,6 @@
 #include <musical/analysis/ChordAnalysis.h>
-#include <musical/Core/chord/Chord.h>
-#include <musical/Core/Intervals.h>
+#include <musical/core/chord/Chord.h>
+#include <musical/core/Intervals.h>
 
 namespace musical::analysis::chord
 {

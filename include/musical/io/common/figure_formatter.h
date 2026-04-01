@@ -1,4 +1,4 @@
-#include <musical/Core/Figure.h>
+#include <musical/core/Figure.h>
 
 #include <string>
 

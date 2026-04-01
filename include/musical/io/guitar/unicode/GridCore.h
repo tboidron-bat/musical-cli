@@ -7,6 +7,8 @@
 
 #include <musical/io/guitar/unicode/symbols.h>
 
+//TODO: draw_barre :●═══● 
+
 // 
 // ├─┼─┼─┼─┼─┼
 // │ │ │ │ │ │
@@ -39,7 +41,7 @@ public:
         SI,
         MI_AIGU
     };
-    using row_t = std::vector<const char*>;    
+    using row_t = std::vector<std::string>;    
 protected:        
     std::size_t _nb_strings = 0;
 
@@ -75,6 +77,8 @@ public:
 
     void push_row(row_t r) { _grid.push_back(std::move(r)); }
 
+    bool _extended_right = false;
+
     void extend_right();
     void write_right(std::size_t, const std::string&);
 
@@ -107,6 +111,29 @@ public:
     {
         return _grid.size();
     }
-    virtual std::string render() const;         
+    virtual std::string render() const;  
+    
+    
+    static GridCore::row_t make_centered_row(
+        const std::string& text,
+        std::size_t width)
+    {
+        GridCore::row_t row(width, " ");
+
+        std::size_t start =
+            (text.size() < width)
+            ? (width - text.size()) / 2
+            : 0;
+
+        for (std::size_t i = 0;
+            i < text.size() && (start + i) < width;
+            ++i)
+        {
+            row[start + i] = std::string(1, text[i]);
+        }
+
+        return row;
+    }
+
 };
 }

@@ -53,11 +53,25 @@ const open_diagram_map& min_open()
         },
 
         // ========================
-        // MIN7
+        // 7
         // ========================
-
+        { { Tone::C, (TRIAD_MIN | ( 1ULL << 10 )) },
+            {
+            // x     0
+            // =========== 
+            // | | 1 | 2 |
+            // | | | | | |
+            // | 3 | | | 4
+            D({ X, 3, 1, 0, 1, 3 }, GuitarStandardTuning::A, D::CAGED::C),
+            }
+        },
         { { Tone::A, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
+            // x 0   0   0
+            // =========== 
+            // | | | | 1 |
+            // | | 2 | | |
+            // | | | | | |
             D({ X, 0, 2, 0, 1, 0 }, GuitarStandardTuning::A, D::CAGED::A),
             }
         },

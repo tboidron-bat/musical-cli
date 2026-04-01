@@ -16,12 +16,11 @@ static std::mt19937& rng()
     static std::mt19937 gen(std::random_device{}());
     return gen;
 }
-
-// ------------------------------------------------------------
-// FIND BY MASK
-// ------------------------------------------------------------
+// ============================================================
 std::vector<Diagram>
-find_diagrams(IntervalMask mask)
+find_diagrams(
+    IntervalMask mask,
+    std::optional<Diagram::CAGED> shape)
 {
     const auto& db = data_movable();
 
@@ -30,40 +29,27 @@ find_diagrams(IntervalMask mask)
     if (it == db.end())
         return {};
 
-    return it->second;
-}
+    const auto& diagrams = it->second;
 
-// ------------------------------------------------------------
-// FIND BY MASK + CAGED
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_diagrams(
-    IntervalMask mask,
-    Diagram::CAGED shape)
-{
+    // 🚀 pas de filtre → retour direct
+    if(!shape)
+        return diagrams;
+
+    // 🔍 filtre CAGED
     std::vector<Diagram> result;
+    result.reserve(diagrams.size());
 
-    const auto& db = data_movable();
-
-    auto it = db.find(mask);
-
-    if (it == db.end())
-        return result;
-
-    for (const auto& d : it->second)
+    for (const auto& d : diagrams)
     {
-        if (d.caged() == shape)
+        if (d.caged() == *shape)
             result.push_back(d);
     }
 
     return result;
 }
-
-// ------------------------------------------------------------
-// FIND ALL
-// ------------------------------------------------------------
+// ============================================================
 std::vector<Diagram>
-find_all_diagrams()
+find_all_diagrams(std::optional<Diagram::CAGED> shape)
 {
     std::vector<Diagram> result;
 
@@ -71,38 +57,27 @@ find_all_diagrams()
 
     for (const auto& [mask, diagrams] : db)
     {
-        result.insert(
-            result.end(),
-            diagrams.begin(),
-            diagrams.end()
-        );
-    }
+        // 🚀 pas de filtre → insertion directe
+        if(!shape)
+        {
+            result.insert(
+                result.end(),
+                diagrams.begin(),
+                diagrams.end()
+            );
+            continue;
+        }
 
-    return result;
-}
-
-// ------------------------------------------------------------
-// FIND ALL BY SHAPE
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_all_diagrams(Diagram::CAGED shape)
-{
-    std::vector<Diagram> result;
-
-    const auto& db = data_movable();
-
-    for (const auto& [mask, diagrams] : db)
-    {
+        // 🔍 filtre
         for (const auto& d : diagrams)
         {
-            if (d.caged() == shape)
+            if (d.caged() == *shape)
                 result.push_back(d);
         }
     }
 
     return result;
 }
-
 // ------------------------------------------------------------
 // RANDOM DIAGRAM
 // ------------------------------------------------------------

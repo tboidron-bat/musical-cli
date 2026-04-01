@@ -1,6 +1,6 @@
 #pragma once
 
-#include <musical/Core/chord/Chord.h>
+#include <musical/core/chord/Chord.h>
 
 namespace musical::audio::wave
 {

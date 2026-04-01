@@ -2,8 +2,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include <musical/Core/Mode.h>
-#include <musical/Core/chord/Factory.h>
+#include <musical/core/Mode.h>
+#include <musical/core/chord/Factory.h>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;

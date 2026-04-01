@@ -1,6 +1,8 @@
 #include <musical/ScoreElements/KeySignature.h>
-#include <musical/Core/Pitch.h>
-#include <musical/Core/scale/ScaleKeyedFactory.h>
+#include <musical/core/Pitch.h>
+#include <musical/core/scale/ScaleKeyedFactory.h>
+
+#include <musical/io/core/PitchIO.h>
 
 #include <algorithm>
 #include <unordered_map>

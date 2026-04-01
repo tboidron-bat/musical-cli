@@ -5,7 +5,7 @@
 #include <array>
 #include <cstdint>
 
-#include <musical/Core/Pitch.h>
+#include <musical/core/Pitch.h>
 #include <musical/common/musical_constants.h>
 
 namespace musical::score {

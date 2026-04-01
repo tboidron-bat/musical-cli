@@ -11,8 +11,9 @@
 #include <command/chord/difficulty_option.h>
 #include <command/chord/tuning_option.h>
 
-#include <musical/io/chord/in/ChordLexer.h>
-#include <musical/io/chord/in/ChordParser.h>
+#include <musical/io/core/chord/parser/ChordLexer.h>
+#include <musical/io/core/chord/parser/ChordParser.h>
+#include <musical/io/core/chord/ChordIO.h>
 
 #include <sstream>
 #include <regex>

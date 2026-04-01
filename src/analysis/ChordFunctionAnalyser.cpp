@@ -1,7 +1,7 @@
 #include <musical/analysis/ChordFunctionAnalyser.h>
 #include <musical/analysis/ChordAnalysis.h>
-#include <musical/Core/chord/Chord.h>
-#include <musical/Core/scale/ScaleKeyed.h>
+#include <musical/core/chord/Chord.h>
+#include <musical/core/scale/ScaleKeyed.h>
 
 #include <algorithm>
 

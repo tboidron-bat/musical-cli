@@ -2,62 +2,32 @@
 
 #include <vector>
 #include <utility>
+#include <optional>
 
 #include <musical/guitar_chord_database/Diagram.h>
-#include <musical/Core/Tone.h>
-#include <musical/guitar_chord_database/open/database.h> // IntervalMask, key_t
+#include <musical/core/Tone.h>
+#include <musical/core/chord/ChordType.h>
+#include <musical/guitar_chord_database/open/database.h> // key_t
 
 namespace chord::database::queries::open
 {
+    using IntervalMask = musical::core::chord::ChordType::IntervalMask;
 
     using musical::core::Tone;
 
 // ============================================================
-// CORE API (TYPE SAFE)
-// ============================================================
-
-// ------------------------------------------------------------
-// FIND POSITIONS (root + mask)
-// ------------------------------------------------------------
 std::vector<Diagram>
-find_positions(
-    Tone root,
-    IntervalMask mask
-);
-
-// ------------------------------------------------------------
-// FIND POSITIONS (root + mask + shape)
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_positions(
+find_diagrams(
     Tone root,
     IntervalMask mask,
-    Diagram::CAGED shape
-);
-
-// ------------------------------------------------------------
-// FIND ALL POSITIONS (mask only)
-// ------------------------------------------------------------
+    std::optional<Diagram::CAGED> shape = std::nullopt);
+// ============================================================
 std::vector<Diagram>
-find_all_positions(
-    IntervalMask mask
-);
-
-// ------------------------------------------------------------
-// FIND ALL DIAGRAMS
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_all_diagrams();
-
-
+find_all_diagrams(std::optional<IntervalMask> mask = std::nullopt);
 // ============================================================
 // RANDOM (TYPE SAFE)
 // ============================================================
-
-// ------------------------------------------------------------
-// RANDOM CHORD
-// ------------------------------------------------------------
+//TODO REFACTOR: std::pair<Tone, Diagram> ?
 std::pair<key_t, Diagram>
 get_random();
-
 } // namespace chord::database::queries::open

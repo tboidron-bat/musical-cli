@@ -1,5 +1,5 @@
-#include <musical/Core/note/Note.h>
-#include <musical/Core/note/NoteFactory.h>
+#include <musical/core/note/Note.h>
+#include <musical/core/note/NoteFactory.h>
 
 
 int main()

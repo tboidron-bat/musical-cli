@@ -7,11 +7,11 @@
 #include <musical/guitar_chord_database/open/queries.h>
 #include <musical/guitar_chord_database/movable/queries.h>
 
-#include <musical/Core/chord/ChordFactory.h>
+#include <musical/core/chord/ChordFactory.h>
 
-//#include <musical/io/note/out/note_formatter.h>
-//#include <musical/io/chord/in/ChordLexer.h>
-//#include <musical/io/chord/in/ChordParser.h>
+//#include <musical/io/core/note/out/note_formatter.h>
+//#include <musical/io/core/chord/parser/ChordLexer.h>
+//#include <musical/io/core/chord/parser/ChordParser.h>
 
 #include <musical/io/guitar/unicode/DiagramRenderer.h>
 

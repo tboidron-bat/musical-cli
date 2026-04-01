@@ -1,5 +1,5 @@
 #include <musical/audio/wave/chord_player.h>
-#include <musical/Core/Pitch.h>
+#include <musical/core/Pitch.h>
 
 #include <cmath>
 #include <fstream>

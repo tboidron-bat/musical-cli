@@ -1,250 +1,74 @@
-.
-├── arch.txt
-├── chord.wav
-├── cli
-│   ├── CLI_SPEC.md
-│   ├── CMakeLists.txt
-│   ├── idea.txt
-│   ├── include
-│   │   ├── Ansi.h
-│   │   ├── command
-│   │   │   ├── cadence
-│   │   │   │   └── idea.txt
-│   │   │   ├── chord
-│   │   │   │   ├── ChordCommand.h
-│   │   │   │   ├── diagram_layout.h
-│   │   │   │   ├── diagram_option.h
-│   │   │   │   ├── difficulty_option.h
-│   │   │   │   ├── dumpdb_option.h
-│   │   │   │   ├── help_option.h
-│   │   │   │   ├── play_option.h
-│   │   │   │   ├── random_option.h
-│   │   │   │   ├── tuning_option.h
-│   │   │   │   └── version_option.h
-│   │   │   └── scale
-│   │   ├── Command.h
-│   │   ├── Option.h
-│   │   ├── option_parameter_t.h
-│   │   ├── parser
-│   │   ├── stream_option.h
-│   │   └── terminal.h
-│   └── src
-│       ├── command
-│       │   ├── cadence
-│       │   ├── chord
-│       │   │   ├── ChordCommand.cpp
-│       │   │   ├── diagram_layout.cpp
-│       │   │   ├── diagram_option.cpp
-│       │   │   ├── difficulty_option.cpp
-│       │   │   ├── dumpdb_option.cpp
-│       │   │   ├── help_option.cpp
-│       │   │   ├── play_option.cpp
-│       │   │   ├── random_option.cpp
-│       │   │   ├── tuning_option.cpp
-│       │   │   ├── usage.cpp
-│       │   │   └── version_option.cpp
-│       │   └── scale
-│       │       └── scale_cmd.cpp
-│       ├── main.cpp
-│       ├── Option.cpp
-│       └── option_parameter_t.cpp
-├── CMakeLists.txt
-├── include
-│   └── musical
-│       ├── analysis
-│       │   ├── chord
-│       │   │   └── io.h
-│       │   ├── ChordAnalysis.h
-│       │   ├── ChordFunctionAnalyser.h
-│       │   ├── Harmonizer.h
-│       │   └── Harmony.h
-│       ├── audio
-│       │   ├── karplus_strong
-│       │   │   └── chord_player.h
-│       │   └── wave
-│       │       └── chord_player.h
-│       ├── common
-│       │   └── musical_constants.h
-│       ├── Core
-│       │   ├── Cadence.h
-│       │   ├── chord
-│       │   │   ├── Arpeggio.h
-│       │   │   ├── ChordFactory.h
-│       │   │   ├── Chord.h
-│       │   │   ├── ChordTypeCatalog.h
-│       │   │   └── ChordType.h
-│       │   ├── Figure.h
-│       │   ├── Intervals.h
-│       │   ├── Mode.h
-│       │   ├── note
-│       │   │   ├── NoteFactory.h
-│       │   │   ├── Note.h
-│       │   │   └── Rest.h
-│       │   ├── Pitch.h
-│       │   ├── pitch_t.h
-│       │   ├── scale
-│       │   │   ├── scale_defs.h
-│       │   │   ├── ScaleKeyedFactory.h
-│       │   │   ├── ScaleKeyed.h
-│       │   │   ├── ScalePatternFactory.h
-│       │   │   └── ScalePattern.h
-│       │   ├── Series.h
-│       │   └── Tone.h
-│       ├── guitar_chord_database
-│       │   ├── Diagram.h
-│       │   ├── movable
-│       │   │   ├── aug.h
-│       │   │   ├── database.h
-│       │   │   ├── dim.h
-│       │   │   ├── maj.h
-│       │   │   ├── min.h
-│       │   │   ├── queries.h
-│       │   │   ├── sus2.h
-│       │   │   └── sus4.h
-│       │   ├── open
-│       │   │   ├── aug.h
-│       │   │   ├── database.h
-│       │   │   ├── dim.h
-│       │   │   ├── maj.h
-│       │   │   ├── min.h
-│       │   │   ├── queries.h
-│       │   │   ├── sus2.h
-│       │   │   └── sus4.h
-│       │   └── Tuning.h
-│       ├── io
-│       │   ├── chord
-│       │   │   └── in
-│       │   │       ├── ChordLexer.h
-│       │   │       ├── ChordParser.h
-│       │   │       └── lexemes.h
-│       │   ├── common
-│       │   │   ├── figure_formatter.h
-│       │   │   └── figure_mei_adapter.h
-│       │   ├── guitar
-│       │   │   ├── ascii
-│       │   │   │   ├── MovableDiagram.h
-│       │   │   │   ├── OpenDiagram2.h
-│       │   │   │   └── OpenDiagram.h
-│       │   │   └── unicode
-│       │   │       ├── DiagramRenderer.h
-│       │   │       ├── DottedGrid.h
-│       │   │       ├── FrettedGrid.h
-│       │   │       ├── GridCore.h
-│       │   │       ├── MovableDiagram.h
-│       │   │       ├── OpenGrid.h
-│       │   │       └── symbols.h
-│       │   ├── note
-│       │   │   ├── in
-│       │   │   │   ├── NoteLexer.h
-│       │   │   │   └── NoteParser.h
-│       │   │   ├── out
-│       │   │   │   ├── mei_adapter.h
-│       │   │   │   └── note_formatter.h
-│       │   │   ├── README.md
-│       │   │   └── rest_formatter.h
-│       │   ├── scale
-│       │   │   ├── scalepattern_formatter.h
-│       │   │   └── ScalePatternRepository.h
-│       │   └── utils
-│       │       └── in
-│       │           └── normalize_to_ascii.h
-│       └── ScoreElements
-│           ├── KeySignature.h
-│           ├── Measure.h
-│           └── TimeSignature.h
-├── out.txt
-├── README.md
-├── src
-│   ├── analysis
-│   │   ├── chord
-│   │   │   └── io.cpp
-│   │   ├── ChordAnalysis.cpp
-│   │   ├── ChordFunctionAnalyser.cpp
-│   │   ├── Harmonizer.cpp
-│   │   └── Harmony.cpp
-│   ├── audio
-│   │   ├── karplus_strong
-│   │   │   └── chord_player.cpp
-│   │   └── wave
-│   │       └── chord_player.cpp
-│   ├── Core
-│   │   ├── Cadence.cpp
-│   │   ├── chord
-│   │   │   ├── Arpeggio.cpp
-│   │   │   ├── Chord.cpp
-│   │   │   ├── ChordFactory.cpp
-│   │   │   ├── ChordTypeCatalog.cpp
-│   │   │   └── ChordType.cpp
-│   │   ├── Figure.cpp
-│   │   ├── Mode.cpp
-│   │   ├── note
-│   │   │   ├── Note.cpp
-│   │   │   ├── NoteFactory.cpp
-│   │   │   └── Rest.cpp
-│   │   ├── pitch_t.cpp
-│   │   └── scale
-│   │       ├── ScaleKeyed.cpp
-│   │       ├── ScaleKeyedFactory.cpp
-│   │       ├── ScalePattern.cpp
-│   │       └── ScalePatternFactory.cpp
-│   ├── guitar_chord_database
-│   │   ├── Diagram.cpp
-│   │   ├── movable
-│   │   │   ├── aug.cpp
-│   │   │   ├── database.cpp
-│   │   │   ├── dim.cpp
-│   │   │   ├── maj.cpp
-│   │   │   ├── min.cpp
-│   │   │   ├── queries.cpp
-│   │   │   ├── sus2.cpp
-│   │   │   └── sus4.cpp
-│   │   └── open
-│   │       ├── aug.cpp
-│   │       ├── database.cpp
-│   │       ├── dim.cpp
-│   │       ├── maj.cpp
-│   │       ├── min.cpp
-│   │       ├── queries.cpp
-│   │       ├── sus2.cpp
-│   │       ├── sus4.cpp
-│   │       └── todo.txt
-│   ├── io
-│   │   ├── chord
-│   │   │   └── in
-│   │   │       ├── ChordLexer.cpp
-│   │   │       └── ChordParser.cpp
-│   │   ├── guitar
-│   │   │   ├── ascii
-│   │   │   │   ├── MovableDiagram.cpp
-│   │   │   │   ├── OpenDiagram.cpp
-│   │   │   │   └── stream_diagram2.cpp
-│   │   │   └── unicode
-│   │   │       ├── DiagramRenderer.cpp
-│   │   │       ├── DottedGrid.cpp
-│   │   │       ├── GridCore.cpp
-│   │   │       ├── MovableDiagram.cpp
-│   │   │       └── OpenGrid.cpp
-│   │   ├── note
-│   │   │   ├── in
-│   │   │   │   ├── NoteLexer.cpp
-│   │   │   │   └── NoteParser.cpp
-│   │   │   └── out
-│   │   │       ├── mei_adapter.cpp
-│   │   │       └── note_formatter.cpp
-│   │   ├── scale
-│   │   │   ├── scalepattern_formatter.cpp
-│   │   │   └── ScalePatternRepository.cpp
-│   │   └── utils
-│   │       └── in
-│   │           └── normalize_to_ascii.cpp
-│   └── ScoreElements
-│       ├── KeySignature.cpp
-│       ├── Measure.cpp
-│       └── TimeSignature.cpp
-├── temp.txt
-└── tests
-    ├── CMakeLists.txt
-    ├── test_chord_lexer.cpp
-    └── test_note.cpp
 
-69 directories, 179 files
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C)
+OK: C
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(c)
+OK: c
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Ré)
+OK: Ré
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(ré)
+OK: ré
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Fa♯)
+OK: Fa♯
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Sol𝄪)
+OK: Sol𝄪
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Bb)
+OK: Bb
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(bb)
+OK: bb
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cmajor)
+OK: Cmajor
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cminor)
+OK: Cminor
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Cdim)
+OK: Cdim
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Caug)
+OK: Caug
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Csus2)
+OK: Csus2
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(Csus4)
+OK: Csus4
+
+DEBUG:
+#-class ChordLexer-#
+calling:tokenize(C7sus4)

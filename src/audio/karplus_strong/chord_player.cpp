@@ -1,5 +1,5 @@
 #include <musical/audio/karplus_strong/chord_player.h>
-#include <musical/Core/Pitch.h>
+#include <musical/core/Pitch.h>
 
 #include <cmath>
 #include <fstream>
@@ -17,12 +17,18 @@ namespace
     constexpr int SAMPLE_RATE = 44100;
     constexpr double DURATION = 3.0;
 
+    // ------------------------------------------------------------
+    // Pitch → fréquence
+    // ------------------------------------------------------------
     double frequency_from_pitch(const musical::core::Pitch& p)
     {
         int midi = static_cast<int>(p.value());
         return 440.0 * std::pow(2.0, (midi - 69) / 12.0);
     }
-    
+
+    // ------------------------------------------------------------
+    // WAV writer
+    // ------------------------------------------------------------
     void write_wav(const std::vector<int16_t>& samples)
     {
         std::ofstream file("chord.wav", std::ios::binary);
@@ -55,39 +61,56 @@ namespace
         file.write(reinterpret_cast<const char*>(samples.data()), data_size);
     }
 
-    // 🎸 Générateur Karplus-Strong pour une fréquence
+    // ------------------------------------------------------------
+    // 🎸 Karplus-Strong (VERSION STABLE)
+    // ------------------------------------------------------------
     std::vector<double> generate_string(double frequency, int total_samples)
     {
-        int buffer_size = static_cast<int>(SAMPLE_RATE / frequency);
+        int buffer_size = std::max(2, static_cast<int>(SAMPLE_RATE / frequency));
         std::vector<double> buffer(buffer_size);
 
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dist(-1.0, 1.0);
+        std::mt19937 gen(std::random_device{}());
+        std::uniform_real_distribution<> dist(-0.5, 0.5); // bruit réduit
 
-        // Initialisation bruit blanc
         for (auto& s : buffer)
             s = dist(gen);
 
         std::vector<double> output(total_samples);
 
-        double decay = 0.996; // contrôle sustain
+        double decay = 0.996;
+        int idx = 0;
+        double last = 0.0;
 
         for (int i = 0; i < total_samples; ++i)
         {
-            double current = buffer[0];
-            double next = decay * 0.5 * (buffer[0] + buffer[1]);
+            double current = buffer[idx];
+
+            // filtre + damping
+            double next = 0.5 * (buffer[idx] + buffer[(idx + 1) % buffer_size]);
+            next = decay * next + (1.0 - decay) * last;
+
+            last = next;
 
             output[i] = current;
 
-            buffer.erase(buffer.begin());
-            buffer.push_back(next);
+            buffer[idx] = next;
+            idx = (idx + 1) % buffer_size;
+        }
+
+        // attaque douce
+        int attack = SAMPLE_RATE * 0.005;
+        for (int i = 0; i < attack && i < total_samples; ++i)
+        {
+            output[i] *= (double)i / attack;
         }
 
         return output;
     }
 }
 
+// ------------------------------------------------------------
+// 🎵 PLAY CHORD
+// ------------------------------------------------------------
 void ChordPlayer::play(const core::chord::Chord& chord,
                        double strum_delay_ms,
                        bool downstroke)
@@ -102,7 +125,7 @@ void ChordPlayer::play(const core::chord::Chord& chord,
     int total_samples = static_cast<int>(SAMPLE_RATE * DURATION);
     std::vector<double> mix(total_samples, 0.0);
 
-    // Récupération des fréquences
+    // fréquences
     std::vector<double> freqs;
     for (const auto& pitch : chord.notes())
         freqs.push_back(frequency_from_pitch(pitch));
@@ -110,14 +133,13 @@ void ChordPlayer::play(const core::chord::Chord& chord,
     if (!downstroke)
         std::reverse(freqs.begin(), freqs.end());
 
-    // Conversion ms -> samples
     int delay_samples =
         static_cast<int>((strum_delay_ms / 1000.0) * SAMPLE_RATE);
 
+    // mix des cordes
     for (size_t s = 0; s < freqs.size(); ++s)
     {
-        double freq = freqs[s];
-        auto string_sound = generate_string(freq, total_samples);
+        auto string_sound = generate_string(freqs[s], total_samples);
 
         int offset = delay_samples * static_cast<int>(s);
 
@@ -125,17 +147,27 @@ void ChordPlayer::play(const core::chord::Chord& chord,
         {
             int target = i + offset;
             if (target < total_samples)
-                mix[target] += string_sound[i];
+                mix[target] += string_sound[i] * 0.2; // gain réduit
         }
     }
 
-    // Normalisation + saturation douce
+    // normalisation
+    double max_val = 0.0;
+    for (double v : mix)
+        max_val = std::max(max_val, std::abs(v));
+
+    if (max_val > 0.0)
+    {
+        for (auto& v : mix)
+            v /= max_val;
+    }
+
+    // conversion + soft clip
     std::vector<int16_t> samples(total_samples);
 
     for (int i = 0; i < total_samples; ++i)
     {
-        double v = mix[i] / freqs.size();
-        v = std::tanh(v);
+        double v = std::tanh(mix[i]);
         samples[i] = static_cast<int16_t>(v * 30000);
     }
 
@@ -144,4 +176,5 @@ void ChordPlayer::play(const core::chord::Chord& chord,
     std::cout << "[AUDIO] Playing...\n";
     std::system("aplay chord.wav > /dev/null 2>&1");
 }
-} // namespace
+
+} // namespace musical::audio::karplus_strong

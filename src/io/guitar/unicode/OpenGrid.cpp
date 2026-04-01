@@ -1,6 +1,5 @@
 #include <musical/io/guitar/unicode/OpenGrid.h>
 
-#include <sstream>
 //#include <iostream> //DEBUG
 
 namespace io::guitar::unicode
@@ -10,10 +9,6 @@ namespace io::guitar::unicode
 void OpenGrid::add_open_strings_row()
 {
     GridCore::row_t row(_grid.width(), EMPTY_CELL);
-
-    for (std::size_t col = 0; col < _grid.width(); col += 2)
-        row[col] = " ";
-
     _grid.insert_row_top(std::move(row));
 }
 // ╒═════════╕
@@ -61,8 +56,20 @@ void OpenGrid::set_muted_string(GridCore::STRING string)
     std::size_t col = static_cast<std::size_t>(string) * 2;
     _grid.row(0)[col] = MUTED_CHAR;
 }
+std::size_t OpenGrid::height() const
+{
+    return _grid.height() + 2;
+}
+std::size_t OpenGrid::width() const
+{
+    return _grid.width();
+}    
 std::string OpenGrid::render() const
 {
     return _grid.render();
+}
+void OpenGrid::write_right(std::size_t row, const std::string& txt)
+{
+    _grid.write_right(row, txt);
 }
 }

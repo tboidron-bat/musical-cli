@@ -1,9 +1,9 @@
 #pragma once
 
-#include <musical/Core/chord/Chord.h>
-#include <musical/Core/chord/ChordType.h>
-#include <musical/Core/scale/ScaleKeyed.h>
-#include <musical/Core/chord/Factory.h>
+#include <musical/core/chord/Chord.h>
+#include <musical/core/chord/ChordType.h>
+#include <musical/core/scale/ScaleKeyed.h>
+#include <musical/core/chord/Factory.h>
 
 #include <vector>
 #include <cstdint>

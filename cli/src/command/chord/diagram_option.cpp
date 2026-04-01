@@ -2,17 +2,20 @@
 #include <command/chord/diagram_layout.h>
 #include <command/chord/ChordCommand.h>
 
-#include <musical/Core/chord/Chord.h>
-#include <musical/Core/Tone.h>
+#include <musical/core/chord/Chord.h>
+#include <musical/core/Tone.h>
 #include <musical/guitar_chord_database/open/queries.h>
 #include <musical/guitar_chord_database/movable/queries.h>
+#include <musical/io/core/chord/out/naming.h>
+#include <musical/io/core/ToneIO.h>
+//#include <musical/io/core/chord/ChordIO.h>
 #include <musical/io/guitar/unicode/DiagramRenderer.h>
 
-//#include <musical/io/note/out/note_formatter.h>
-
 #include <terminal.h>
-#include <iostream>
+//#include <iostream>
+#include <sstream>
 #include <cstdint>
+#include <optional>
 
 //#define DEBUG
 
@@ -45,41 +48,59 @@ cli::command::Option(
     //  });
 
 }
-void diagram_option::render(
-    const musical::core::chord::Chord& chord,    
-    const std::vector<::chord::database::Diagram>& diagrams) const
+// ============================================================
+static std::string make_name(const musical::core::chord::Chord& chord)
 {
-    std::vector<std::string> blocks;       
+    std::ostringstream oss;
+    oss << chord.tone();
+    return oss.str() + musical::io::chord::to_string(chord.type());
+}
+// ============================================================
+std::vector<::chord::database::Diagram>
+diagram_option::fetch_diagrams(
+    const musical::core::chord::Chord& chord,
+    DiagramSource source,
+    std::optional<::chord::database::Diagram::CAGED> caged) const
+{
+    using namespace ::chord::database;
 
-    for(auto diagram : diagrams)
+    if(source == DiagramSource::Open)
     {
-        diagram.place_root(static_cast<uint8_t>(chord.tone()));
-
-        //FILTRE CRUCIAL pour ne pas faire des diagram open avec 
-        //des diagrams movable
-        if (diagram.base_case() == 0)
-            continue;            
-
-        blocks.push_back(
-             io::guitar::unicode::DiagramRenderer::render(diagram)
+        return queries::open::find_diagrams(
+            chord.tone(),
+            chord.type().intervals_mask(),
+            caged
         );
     }
 
-    Layout layout(terminal::get_width());
-
-    for(const auto& b : blocks)
-        layout.add_block(b);
-
-    std::cout << layout.render();
+    return queries::movable::find_diagrams(
+        chord.type().intervals_mask(),
+        caged
+    );
 }
+// ============================================================
 void diagram_option::render(
-    const std::vector<::chord::database::Diagram>& diagrams) const
+    const std::vector<::chord::database::Diagram>& diagrams,
+    const musical::core::chord::Chord& chord,
+    DiagramSource source) const
 {
     std::vector<std::string> blocks;   
 
-    for (const auto& diagram : diagrams)
+    std::string name = make_name(chord);
+
+    for (auto diagram : diagrams)
+    {
+        if(source == DiagramSource::Movable)
+        {
+            diagram.place_root(static_cast<uint8_t>(chord.tone()));
+            //FILTRE CRUCIAL pour ne pas faire des diagram open avec 
+            //des diagrams movable
+            if(diagram.base_case() == 0)
+                continue;            
+        }            
         blocks.push_back(
-            io::guitar::unicode::DiagramRenderer::render(diagram));
+            io::guitar::unicode::DiagramRenderer::render(diagram,name));
+    }            
 
     Layout layout(terminal::get_width());
 
@@ -88,61 +109,7 @@ void diagram_option::render(
 
     std::cout << layout.render();
 }
-void
-diagram_option::find_all(const musical::core::chord::Chord&chord) const
-{
-#ifdef DEBUG
-for(auto i : chord.type().intervals())
-    std::cout << static_cast<int>(i) << " ";
-#endif
-
-    std::vector<::chord::database::Diagram> open_diagrams =
-        ::chord::database::queries::open::find_all_positions(
-            chord.type().intervals_mask());
-
-
-#ifdef DEBUG
-    std::cout << '[' << __func__ << "] chord name = " << full_name
-        << "find " << open_diagrams.size() << " open(s) diagram(s)."
-        << std::endl;
-#endif
-
-    std::cout << "Open diagram:\n";
-
-    render(open_diagrams);  
-    
-    auto movable_diagrams = ::chord::database::queries::movable::find_diagrams(chord.type().intervals_mask()); 
-        
-#ifdef DEBUG
-    std::cout << '[' << __func__ << ']';
-#endif
-
-    std::cout 
-        << "Movable diagram:"
-        << std::endl;
-
-    render(chord, movable_diagrams);                    
-}
-void
-diagram_option::find_caged(
-    const musical::core::chord::Chord&chord,
-    ::chord::database::Diagram::CAGED filter) const
-{
-    auto open_diagrams = 
-        ::chord::database::queries::open::find_positions(
-            chord.tone(),
-            chord.type().intervals_mask(),
-            filter
-        );            
-
-    render(open_diagrams);        
-
-    auto movable_diagrams = ::chord::database::queries::movable::find_diagrams(
-            chord.type().intervals_mask(),
-            filter);
-
-    render(chord,movable_diagrams);                                
-}
+// ============================================================
 //TODO GERER LES ACCORDS MULTIPLES
 int diagram_option::execute() const 
 {
@@ -157,7 +124,9 @@ int diagram_option::execute() const
         std::cerr << "At least one chord formula is required\n";
         return EXIT_FAILURE;
     }    
-    const auto& chord = chords.front();    
+    const auto& chord = chords.front();  
+    
+    std::optional<::chord::database::Diagram::CAGED> caged;    
 
     if(parameter(0)._provided)
     {
@@ -165,11 +134,22 @@ int diagram_option::execute() const
 #ifdef DEBUG
         std::cout << "parameter(0)._provided" << std::endl;
 #endif
-        int caged = std::stoi(parameter(0)._value);
-        find_caged(chord,static_cast<::chord::database::Diagram::CAGED>(caged));
+        int v = std::stoi(parameter(0)._value);
+        caged = static_cast<::chord::database::Diagram::CAGED>(v);
     }
-    else
-        find_all(chord);
+
+    auto open_diagrams = fetch_diagrams(
+        chord,
+        DiagramSource::Open,
+        caged);
+
+    auto movable_diagrams = fetch_diagrams(
+        chord,
+        DiagramSource::Movable,
+        caged);
+
+    render(open_diagrams, chord, DiagramSource::Open);
+    render(movable_diagrams, chord, DiagramSource::Movable);
     
     return EXIT_SUCCESS;
 }

@@ -4,25 +4,25 @@
 #include <random>
 #include <stdexcept>
 
+//#include <iostream> 
+//#define DEBUG
+
 namespace chord::database::queries::open
 {
-
-// ------------------------------------------------------------
+// ============================================================
 // RNG
-// ------------------------------------------------------------
+// ============================================================
 static std::mt19937& rng()
 {
     static std::mt19937 gen(std::random_device{}());
     return gen;
 }
-
-// ------------------------------------------------------------
-// FIND POSITIONS (root + mask)
-// ------------------------------------------------------------
+// ============================================================
 std::vector<Diagram>
-find_positions(
+find_diagrams(
     Tone root,
-    IntervalMask mask)
+    IntervalMask mask,
+    std::optional<Diagram::CAGED> shape)
 {
     const auto& db = data_open();
 
@@ -33,44 +33,28 @@ find_positions(
     if (it == db.end())
         return {};
 
-    return it->second;
-}
+    const auto& diagrams = it->second;
 
-// ------------------------------------------------------------
-// FIND POSITIONS (root + mask + shape)
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_positions(
-    Tone root,
-    IntervalMask mask,
-    Diagram::CAGED shape)
-{
+    // 🚀 cas sans filtre → retour direct (zero copie inutile si NRVO/move)
+    if(!shape)
+        return diagrams;
+
+  // 🔍 cas avec filtre
     std::vector<Diagram> result;
+    result.reserve(diagrams.size()); // micro-opt
 
-    const auto& db = data_open();
-
-    key_t key{ root, mask };
-
-    auto it = db.find(key);
-
-    if (it == db.end())
-        return result;
-
-    for (const auto& d : it->second)
+    for (const auto& d : diagrams)
     {
-        if (d.caged() == shape)
+        if (d.caged() == *shape)
             result.push_back(d);
     }
 
     return result;
 }
-
-// ------------------------------------------------------------
-// FIND ALL POSITIONS (mask only)
-// ------------------------------------------------------------
+// ============================================================
 std::vector<Diagram>
-find_all_positions(
-    IntervalMask mask)
+find_all_diagrams(
+    std::optional<IntervalMask> mask)
 {
     std::vector<Diagram> result;
 
@@ -78,33 +62,14 @@ find_all_positions(
 
     for (const auto& [key, diagrams] : db)
     {
-        if (key._mask == mask)
-        {
-            result.insert(result.end(), diagrams.begin(), diagrams.end());
-        }
-    }
+        if(mask && key._mask != *mask)
+            continue;
 
-    return result;
-}
-
-// ------------------------------------------------------------
-// FIND ALL DIAGRAMS
-// ------------------------------------------------------------
-std::vector<Diagram>
-find_all_diagrams()
-{
-    std::vector<Diagram> result;
-
-    const auto& db = data_open();
-
-    for (const auto& [key, diagrams] : db)
-    {
         result.insert(result.end(), diagrams.begin(), diagrams.end());
     }
 
     return result;
 }
-
 // ------------------------------------------------------------
 // RANDOM CHORD
 // ------------------------------------------------------------

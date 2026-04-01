@@ -1,12 +1,11 @@
 #include <musical/io/guitar/unicode/GridCore.h>
 
 #include <sstream>
-#include <cstring>
 
 namespace io::guitar::unicode
 {
 
-static constexpr std::size_t RIGHT_SPACING = 4;    
+static constexpr std::size_t RIGHT_SPACING = 4;
 
 // │ │ │ │ │ │
 void GridCore::add_strings_row()
@@ -49,6 +48,8 @@ void GridCore::add_fret_row()
 
     push_row(std::move(row));
 }
+
+
 // ├─┼─┼─┼─┼─┤
 // │ │ │ │ │ │
 void GridCore::add_case_row()
@@ -56,17 +57,20 @@ void GridCore::add_case_row()
     add_fret_row();
     add_strings_row();
 }
+
+
 GridCore::GridCore(
     const std::size_t nb_strings,
     const std::size_t nb_cases)
-:
-_nb_strings(nb_strings)
+    : _nb_strings(nb_strings)
 {
     for (std::size_t f = 0; f < nb_cases; ++f)
     {
         add_case_row();
     }
 }
+
+
 void GridCore::set_finger(
     STRING string,
     std::size_t case_number,
@@ -84,9 +88,11 @@ void GridCore::set_finger(
         case DOIGT::MAJEUR:      _grid[r][c] = "2"; break;
         case DOIGT::ANNULAIRE:   _grid[r][c] = "3"; break;
         case DOIGT::AURICULAIRE: _grid[r][c] = "4"; break;
-        default:                 _grid[r][c] = DOT;
+        default:                 _grid[r][c] = BIG_DOT;
     }
 }
+
+
 void GridCore::set_finger(
     STRING string,
     std::size_t case_number)
@@ -97,17 +103,28 @@ void GridCore::set_finger(
     if (r >= _grid.size() || c >= width())
         return;
 
-    _grid[r][c] = "●"; // ou DOT si déjà défini
+    _grid[r][c] = BIG_DOT;
 }
+
+
 void GridCore::extend_right()
 {
+    if (_extended_right)
+        return;
+
     for (auto& r : _grid)
     {
         r.resize(r.size() + RIGHT_SPACING, EMPTY_CELL);
     }
+
+    _extended_right = true;    
 }
+
+
 void GridCore::write_right(std::size_t row, const std::string& txt)
 {
+    extend_right(); // toujours safe
+    
     if (row >= _grid.size())
         return;
 
@@ -118,19 +135,23 @@ void GridCore::write_right(std::size_t row, const std::string& txt)
 
     std::size_t start = r.size() - RIGHT_SPACING + 1;
 
-    for (std::size_t i = 0; i < txt.size() && i < RIGHT_SPACING; ++i)
+    for (std::size_t i = 0;
+         i < txt.size() && i < RIGHT_SPACING;
+         ++i)
     {
-        r[start + i] = strdup(std::string(1, txt[i]).c_str());    
+        r[start + i] = std::string(1, txt[i]);
     }
 }
+
+
 std::string GridCore::render() const
 {
     std::ostringstream oss;
 
     for (const auto& row : _grid)
     {
-        for (const char* c : row)
-            oss << c;
+        for (const std::string& cell : row)
+            oss << cell;
 
         oss << '\n';
     }
@@ -138,4 +159,4 @@ std::string GridCore::render() const
     return oss.str();
 }
 
-}
+} // namespace

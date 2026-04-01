@@ -1,11 +1,16 @@
 #pragma once
 
 #include <vector>
+#include <optional>
 
 #include <Option.h>
 
 #include <musical/guitar_chord_database/Diagram.h>
 
+namespace musical::core
+{
+    enum class Tone : uint8_t;
+}
 namespace musical::core::chord
 {
     class Chord;
@@ -20,17 +25,22 @@ namespace cli::chord
         int execute() const override;
 
     private:
-        void find_caged(
-            const musical::core::chord::Chord&,
-            ::chord::database::Diagram::CAGED) const;
+        enum class DiagramSource
+        {
+            Open,
+            Movable
+        };
 
-        void find_all(
-            const musical::core::chord::Chord&) const;
+        std::vector<::chord::database::Diagram>
+            fetch_diagrams(
+                const musical::core::chord::Chord&,
+                DiagramSource,
+                std::optional<::chord::database::Diagram::CAGED> caged = std::nullopt) const;                                
 
-        void render(const std::vector<::chord::database::Diagram>&) const;
         void render(
+            const std::vector<::chord::database::Diagram>& diagrams,
             const musical::core::chord::Chord& chord,
-            const std::vector<::chord::database::Diagram>&) const;         
+            DiagramSource source) const;
     };
 
 }

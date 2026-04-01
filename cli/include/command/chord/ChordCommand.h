@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 
-#include <musical/Core/chord/Chord.h>
+#include <musical/core/chord/Chord.h>
 
 namespace cli::chord
 {

@@ -1,5 +1,5 @@
-#include <musical/Core/scale/ScalePatternFactory.h>
-#include <musical/io/scale/scalepattern_formatter.h>
+#include <musical/core/scale/ScalePatternFactory.h>
+#include <musical/io/core/scale/scalepattern_formatter.h>
 
 #include <iostream>
 #include <string>

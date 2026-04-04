@@ -6,7 +6,7 @@
 
 #include <Command.h>
 #include <musical/core/chord/Chord.h>
-#include <musical/guitar_chord_database/Diagram.h>
+#include <musical/chord_db/Diagram.h>
 
 namespace cli::chord
 {
@@ -26,7 +26,7 @@ private:
     {
         musical::core::Tone _root;
         uint64_t _intervals_mask;
-        ::chord::database::Diagram _diagram;
+        ::chord::db::Diagram _diagram;
     };
 
     std::vector<diagram_entry_t> _entries;        

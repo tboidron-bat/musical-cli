@@ -5,7 +5,7 @@
 
 #include <Option.h>
 
-#include <musical/guitar_chord_database/Diagram.h>
+#include <musical/chord_db/Diagram.h>
 
 namespace musical::core
 {
@@ -31,14 +31,14 @@ namespace cli::chord
             Movable
         };
 
-        std::vector<::chord::database::Diagram>
+        std::vector<::chord::db::Diagram>
             fetch_diagrams(
                 const musical::core::chord::Chord&,
                 DiagramSource,
-                std::optional<::chord::database::Diagram::CAGED> caged = std::nullopt) const;                                
+                std::optional<::chord::db::Diagram::CAGED> caged = std::nullopt) const;                                
 
         void render(
-            const std::vector<::chord::database::Diagram>& diagrams,
+            const std::vector<::chord::db::Diagram>& diagrams,
             const musical::core::chord::Chord& chord,
             DiagramSource source) const;
     };

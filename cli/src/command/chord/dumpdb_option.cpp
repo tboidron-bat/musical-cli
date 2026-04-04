@@ -2,9 +2,9 @@
 #include <command/chord/diagram_layout.h>
 #include <terminal.h>
 
-#include <musical/guitar_chord_database/open/queries.h>
-#include <musical/guitar_chord_database/movable/queries.h>
-#include <musical/io/guitar/unicode/DiagramRenderer.h>
+#include <musical/chord_db/open/queries.h>
+#include <musical/chord_db/movable/queries.h>
+#include <musical/io/chord_db/unicode/DiagramRenderer.h>
 
 #include <iostream>
 
@@ -21,14 +21,14 @@ int dumpdb_option::dump_open_diagrams(int width) const
     std::cout << "dump-db [Open chord database] \n\n";
 
     const auto open_diagrams =
-        ::chord::database::queries::open::find_all_diagrams();
+        ::chord::db::queries::open::find_all_diagrams();
 
     Layout layout(cli::terminal::get_width());        
 	
     for (const auto& diagram : open_diagrams)
     {
         layout.add_block(
-            io::guitar::unicode::DiagramRenderer::render(diagram));
+            io::chord::db::unicode::DiagramRenderer::render(diagram));
     }
 
     std::cout << layout.render();
@@ -44,15 +44,15 @@ int dumpdb_option::dump_movable_diagrams(int width) const
     for (int s = 0; s < 5; ++s)
     {
         auto shape =
-            static_cast<::chord::database::Diagram::CAGED>(s);
+            static_cast<::chord::db::Diagram::CAGED>(s);
 
         const auto movable_diagrams =
-            ::chord::database::queries::movable::find_all_diagrams(shape);
+            ::chord::db::queries::movable::find_all_diagrams(shape);
 
         for (const auto& diagram : movable_diagrams)
         {
             blocks.push_back(
-                io::guitar::unicode::DiagramRenderer::render(diagram)
+                io::chord::db::unicode::DiagramRenderer::render(diagram)
             );
         }
     }

@@ -3,8 +3,8 @@
 
 #include <musical/core/chord/Chord.h>
 #include <musical/core/Tone.h>
-#include <musical/guitar_chord_database/open/queries.h>
-#include <musical/guitar_chord_database/movable/queries.h>
+#include <musical/chord_db/open/queries.h>
+#include <musical/chord_db/movable/queries.h>
 
 #include <sstream>
 #include <cstdint>
@@ -36,9 +36,9 @@ cli::command::Option(
 static void add_open_diagrams(
     ChordCommand& cmd,
     const musical::core::chord::Chord& chord,
-    std::optional<::chord::database::Diagram::CAGED> caged)
+    std::optional<::chord::db::Diagram::CAGED> caged)
 {
-    using namespace ::chord::database;
+    using namespace ::chord::db;
 
     auto diagrams = queries::open::find_diagrams(
         chord.tone(),
@@ -61,9 +61,9 @@ static void add_open_diagrams(
 static void add_movable_diagrams(
     ChordCommand& cmd,
     const musical::core::chord::Chord& chord,
-    std::optional<::chord::database::Diagram::CAGED> caged)
+    std::optional<::chord::db::Diagram::CAGED> caged)
 {
-    using namespace ::chord::database;
+    using namespace ::chord::db;
 
     auto diagrams = queries::movable::find_diagrams(
         chord.type().intervals_mask(),
@@ -104,12 +104,12 @@ int diagram_option::execute() const
 
     const auto& chord = chords.front();  
 
-    std::optional<::chord::database::Diagram::CAGED> caged;
+    std::optional<::chord::db::Diagram::CAGED> caged;
 
     if(parameter(0)._provided)
     {
         int v = std::stoi(parameter(0)._value);
-        caged = static_cast<::chord::database::Diagram::CAGED>(v);
+        caged = static_cast<::chord::db::Diagram::CAGED>(v);
     }
 
     cmd.entries().clear();
@@ -128,8 +128,8 @@ int diagram_option::execute() const
 
 // #include <musical/core/chord/Chord.h>
 // #include <musical/core/Tone.h>
-// #include <musical/guitar_chord_database/open/queries.h>
-// #include <musical/guitar_chord_database/movable/queries.h>
+// #include <musical/chord_db/open/queries.h>
+// #include <musical/chord_db/movable/queries.h>
 
 // #include <musical/io/core/ToneIO.h>
 
@@ -170,13 +170,13 @@ int diagram_option::execute() const
 
 // }
 // // ============================================================
-// std::vector<::chord::database::Diagram>
+// std::vector<::chord::db::Diagram>
 // diagram_option::fetch_diagrams(
 //     const musical::core::chord::Chord& chord,
 //     DiagramSource source,
-//     std::optional<::chord::database::Diagram::CAGED> caged) const
+//     std::optional<::chord::db::Diagram::CAGED> caged) const
 // {
-//     using namespace ::chord::database;
+//     using namespace ::chord::db;
 
 //     if(source == DiagramSource::Open)
 //     {
@@ -190,7 +190,7 @@ int diagram_option::execute() const
 //         chord.type().intervals_mask(),
 //         caged);
 
-//     std::vector<::chord::database::Diagram> result;
+//     std::vector<::chord::db::Diagram> result;
 
 //     for (auto diagram : diagrams)
 //     {
@@ -222,7 +222,7 @@ int diagram_option::execute() const
 //     }    
 //     const auto& chord = chords.front();  
     
-//     std::optional<::chord::database::Diagram::CAGED> caged;    
+//     std::optional<::chord::db::Diagram::CAGED> caged;    
 
 //     if(parameter(0)._provided)
 //     {
@@ -231,7 +231,7 @@ int diagram_option::execute() const
 //         std::cout << "parameter(0)._provided" << std::endl;
 // #endif
 //         int v = std::stoi(parameter(0)._value);
-//         caged = static_cast<::chord::database::Diagram::CAGED>(v);
+//         caged = static_cast<::chord::db::Diagram::CAGED>(v);
 //     }
     
 //     cmd.diagrams().clear();                

@@ -48,31 +48,31 @@ target_sources(musical-core
         src/ScoreElements/TimeSignature.cpp
 
         # guitar chord database
-        src/guitar_chord_database/Diagram.cpp        
+        src/chord_db/Diagram.cpp        
             #open
-        src/guitar_chord_database/open/database.cpp 
-        src/guitar_chord_database/open/queries.cpp
-        src/guitar_chord_database/open/maj.cpp                 
-        src/guitar_chord_database/open/min.cpp                 
-        src/guitar_chord_database/open/dim.cpp                 
-        src/guitar_chord_database/open/aug.cpp                 
-        src/guitar_chord_database/open/sus2.cpp                 
-        src/guitar_chord_database/open/sus4.cpp                 
+        src/chord_db/open/database.cpp 
+        src/chord_db/open/queries.cpp
+        src/chord_db/open/maj.cpp                 
+        src/chord_db/open/min.cpp                 
+        src/chord_db/open/dim.cpp                 
+        src/chord_db/open/aug.cpp                 
+        src/chord_db/open/sus2.cpp                 
+        src/chord_db/open/sus4.cpp                 
             #movable
-        src/guitar_chord_database/movable/database.cpp         
-        src/guitar_chord_database/movable/queries.cpp        
-        src/guitar_chord_database/movable/maj.cpp                 
-        src/guitar_chord_database/movable/min.cpp                 
-        src/guitar_chord_database/movable/dim.cpp                 
-        src/guitar_chord_database/movable/aug.cpp                 
-        src/guitar_chord_database/movable/sus2.cpp                 
-        src/guitar_chord_database/movable/sus4.cpp                 
+        src/chord_db/movable/database.cpp         
+        src/chord_db/movable/queries.cpp        
+        src/chord_db/movable/maj.cpp                 
+        src/chord_db/movable/min.cpp                 
+        src/chord_db/movable/dim.cpp                 
+        src/chord_db/movable/aug.cpp                 
+        src/chord_db/movable/sus2.cpp                 
+        src/chord_db/movable/sus4.cpp                 
 
         # guitar chord diagram        
-        src/io/guitar/unicode/GridCore.cpp                 
-        src/io/guitar/unicode/OpenGrid.cpp                  
-        src/io/guitar/unicode/DottedGrid.cpp                                  
-        src/io/guitar/unicode/DiagramRenderer.cpp                                                
+        src/io/chord_db/unicode/GridCore.cpp                 
+        src/io/chord_db/unicode/OpenGrid.cpp                  
+        src/io/chord_db/unicode/DottedGrid.cpp                                  
+        src/io/chord_db/unicode/DiagramRenderer.cpp                                                
 
         #io      
         src/io/utils/in/normalize_to_ascii.cpp                

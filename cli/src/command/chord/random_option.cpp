@@ -1,8 +1,8 @@
 #include <command/chord/random_option.h>
 #include <command/chord/ChordCommand.h>
 
-#include <musical/guitar_chord_database/open/queries.h>
-#include <musical/guitar_chord_database/movable/queries.h>
+#include <musical/chord_db/open/queries.h>
+#include <musical/chord_db/movable/queries.h>
 
 #include <musical/core/Pitch.h>
 
@@ -32,7 +32,7 @@ void random_option::add_open_diagram() const
     auto& cmd = static_cast<ChordCommand&>(_command_ref);                          
 
     // ⚠️ ici tu récupères seulement le diagram → il faut aussi root + mask
-    const auto& db = ::chord::database::data_open();
+    const auto& db = ::chord::db::data_open();
 
     static std::mt19937 gen(std::random_device{}());
 
@@ -60,7 +60,7 @@ void random_option::add_movable_diagram() const
     auto& cmd = static_cast<ChordCommand&>(_command_ref);      
 
     auto [mask, diagram] =
-        ::chord::database::queries::movable::get_random_diagram();
+        ::chord::db::queries::movable::get_random_diagram();
 
     static std::mt19937 gen(std::random_device{}());        
     std::uniform_int_distribution<int> pitch_dist(0, 11);

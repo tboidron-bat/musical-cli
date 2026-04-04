@@ -18,7 +18,7 @@
 #include <musical/io/core/chord/ChordIO.h>
 #include <musical/io/core/chord/out/naming.h>
 
-#include <musical/io/guitar/unicode/DiagramRenderer.h>
+#include <musical/io/chord_db/unicode/DiagramRenderer.h>
 
 #include <sstream>
 #include <regex>
@@ -194,7 +194,7 @@ void ChordCommand::render() const
     {
         std::string name = make_name(d._root, d._intervals_mask);
         layout.add_block(
-            io::guitar::unicode::DiagramRenderer::render(d._diagram,name)
+            io::chord::db::unicode::DiagramRenderer::render(d._diagram,name)
         );
     }
 

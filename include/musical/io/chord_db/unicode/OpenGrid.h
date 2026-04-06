@@ -4,6 +4,7 @@
 #include <vector>
 
 #include <musical/io/chord_db/unicode/GridCore.h>
+#include <musical/core/guitar/Fingers.h>
 
 // 
 // x 0 x 0 
@@ -33,8 +34,11 @@ public:
     GridCore& core() { return _grid; }
     const GridCore& core() const { return _grid; }    
 
-    void set_finger(GridCore::STRING,std::size_t,GridCore::DOIGT);
-    void set_finger(GridCore::STRING,std::size_t);    
+    using Finger = musical::core::guitar::Finger;
+
+    void set_finger(
+        GridCore::STRING,std::size_t,
+        Finger = Finger::NONE);
 
     void set_open_string(GridCore::STRING);
     void set_muted_string(GridCore::STRING);

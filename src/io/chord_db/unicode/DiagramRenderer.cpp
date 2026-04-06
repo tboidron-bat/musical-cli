@@ -103,6 +103,8 @@ void DiagramRenderer::fill_grid(
     const std::size_t first = diagram.first_case();
     const std::size_t missing = (first > 1) ? first - 1 : 0;
 
+    uint8_t finger_index = 0;
+
     for (std::size_t s = 0; s < Diagram::STRING_COUNT; ++s)
     {
         uint8_t value = strings[s];
@@ -133,11 +135,20 @@ void DiagramRenderer::fill_grid(
         std::size_t case_number =
             (fret - first) + missing;
 
+        auto finger = musical::core::guitar::Finger::NONE;
+
+        const auto& fingers = diagram.fingers();
+
+        // mapping implicite : doigts assignés dans l'ordre des cordes frettées (grave → aigu)        
+        if(finger_index < fingers.size())
+        { 
+            finger = fingers[finger_index++];
+        }
+
         grid.set_finger(
             string,
-            case_number);
-            //,GridCore::DOIGT::INDEX // ⚠️ temporaire (pas d’info doigt)
-     
+            case_number,
+            finger);     
     }
 }
 void DiagramRenderer::fill_grid(

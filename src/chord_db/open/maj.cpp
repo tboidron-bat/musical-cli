@@ -1,12 +1,14 @@
 #include <musical/chord_db/open/maj.h>
 
+#include <musical/core/guitar/Fingers.h>
+
 namespace chord::db
 {
 
 const open_diagram_map& maj_open()
 {
     using D = Diagram;
-    using F = Diagram::Finger;
+    using F = musical::core::guitar::Finger;
 
     using musical::core::Tone;
 

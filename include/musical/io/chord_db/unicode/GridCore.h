@@ -6,32 +6,15 @@
 #include <limits>
 
 #include <musical/io/chord_db/unicode/symbols.h>
+#include <musical/core/guitar/Fingers.h>
 
 //TODO: draw_barre :●═══● 
-
-// 
-// ├─┼─┼─┼─┼─┼
-// │ │ │ │ │ │
-// ├─┼─┼─┼─┼─┼
-// │ │ │ │ │ │
-// ├─┼─┼─┼─┼─┼
-// │ │ │ │ │ │
-// ├─┼─┼─┼─┼─┼
-// │ │ │ │ │ │
 
 namespace io::chord::db::unicode
 {
 class GridCore
 {
 public:
-    enum class DOIGT
-    {
-        POUCE = 0,
-        INDEX = 1,
-        MAJEUR = 2,
-        ANNULAIRE = 3,
-        AURICULAIRE = 4
-    };    
     enum class STRING
     {
         MI_GRAVE = 0,
@@ -63,17 +46,8 @@ public:
 
     const row_t& row(std::size_t r) const { return _grid[r]; }    
 
-    void insert_row_top(row_t row)
-    {
-        _grid.insert(_grid.begin(), std::move(row));
-    }    
-    void insert_row(std::size_t index, row_t row)
-    {
-        if (index > _grid.size())
-            index = _grid.size();
-
-        _grid.insert(_grid.begin() + index, std::move(row));
-    }    
+    void insert_row_top(row_t);
+    void insert_row(std::size_t, row_t);
 
     void push_row(row_t r) { _grid.push_back(std::move(r)); }
 
@@ -84,26 +58,18 @@ public:
     void extend_right();
     void write_right(std::size_t, const std::string&);
 
-
-// │ │ │ │ │ │
-// ├─┼─┼─┼─┼─┼
-// │ - - - │ │
-// ├─┼─┼─┼─┼─┼
-// │ │ │ │ │ │
-    virtual void set_finger(
-        STRING string,
-        std::size_t case_number);    
-
 // │ │ │ │ │ │
 // ├─┼─┼─┼─┼─┼
 // │ 1 2 3 │ │
 // ├─┼─┼─┼─┼─┼
 // │ │ │ │ 4 │
 // ├─┼─┼─┼─┼─┼
+    using Finger = musical::core::guitar::Finger;
+
     virtual void set_finger(
         STRING,
         std::size_t,
-        DOIGT);
+        Finger=Finger::NONE);
 
     virtual std::size_t width() const
     {

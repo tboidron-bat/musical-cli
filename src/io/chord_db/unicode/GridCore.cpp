@@ -67,12 +67,21 @@ GridCore::GridCore(
         add_case_row();
     }
 }
-
+void GridCore::insert_row_top(row_t row)
+{
+   _grid.insert(_grid.begin(), std::move(row));
+}    
+void GridCore::insert_row(std::size_t index, row_t row)
+{
+    if (index > _grid.size())
+        index = _grid.size();
+    _grid.insert(_grid.begin() + index, std::move(row));
+}    
 
 void GridCore::set_finger(
     STRING string,
     std::size_t case_number,
-    DOIGT doigt)
+    Finger finger)
 {
     const std::size_t r = case_number * 2 + 1;
     const std::size_t c = static_cast<std::size_t>(string) * 2;
@@ -80,31 +89,35 @@ void GridCore::set_finger(
     if (r >= _grid.size() || c >= width())
         return;
 
-    switch (doigt)
+    switch (finger)
     {
-        case DOIGT::INDEX:       _grid[r][c] = "1"; break;
-        case DOIGT::MAJEUR:      _grid[r][c] = "2"; break;
-        case DOIGT::ANNULAIRE:   _grid[r][c] = "3"; break;
-        case DOIGT::AURICULAIRE: _grid[r][c] = "4"; break;
-        default:                 _grid[r][c] = BIG_DOT;
+        case Finger::NONE:   _grid[r][c] = BIG_DOT; 
+            break;
+        case Finger::INDEX:  _grid[r][c] = "1"; 
+            break;
+        case Finger::MIDDLE: _grid[r][c] = "2"; 
+            break;
+        case Finger::RING:   _grid[r][c] = "3"; 
+            break;
+        case Finger::PINKY:  _grid[r][c] = "4"; 
+            break;
+        case Finger::THUMB:  _grid[r][c] = "p"; 
+            break;
+        default:             _grid[r][c] = BIG_DOT;
     }
 }
+// void GridCore::set_finger(
+//     STRING string,
+//     std::size_t case_number)
+// {
+//     const std::size_t r = case_number * 2 + 1;
+//     const std::size_t c = static_cast<std::size_t>(string) * 2;
 
+//     if (r >= _grid.size() || c >= width())
+//         return;
 
-void GridCore::set_finger(
-    STRING string,
-    std::size_t case_number)
-{
-    const std::size_t r = case_number * 2 + 1;
-    const std::size_t c = static_cast<std::size_t>(string) * 2;
-
-    if (r >= _grid.size() || c >= width())
-        return;
-
-    _grid[r][c] = BIG_DOT;
-}
-
-
+//     _grid[r][c] = BIG_DOT;
+// }
 void GridCore::extend_right()
 {
     if (_extended_right)
@@ -114,11 +127,8 @@ void GridCore::extend_right()
     {
         r.resize(r.size() + RIGHT_SPACING, EMPTY_CELL);
     }
-
     _extended_right = true;    
 }
-
-
 void GridCore::write_right(std::size_t row, const std::string& txt)
 {
     extend_right(); // toujours safe

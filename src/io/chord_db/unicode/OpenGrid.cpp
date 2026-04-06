@@ -36,15 +36,9 @@ OpenGrid::OpenGrid(std::size_t nb_strings,
 void OpenGrid::set_finger(
     GridCore::STRING string,
     std::size_t case_number,
-    GridCore::DOIGT doigt)
+    Finger finger)
 {
-    _grid.set_finger(string, case_number + 1, doigt);
-}
-void OpenGrid::set_finger(
-    GridCore::STRING string,
-    std::size_t case_number)
-{
-    _grid.set_finger(string, case_number + 1);
+    _grid.set_finger(string, case_number + 1, finger);
 }
 // o 
 void OpenGrid::set_open_string(GridCore::STRING string)

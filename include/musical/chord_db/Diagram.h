@@ -6,6 +6,7 @@
 #include <ostream>
 #include <vector>
 
+#include <musical/core/guitar/Fingers.h>
 
 enum class GuitarStandardTuning : uint8_t { LOW_E  = 0, A = 1, D = 2, G = 3, B = 4, HIGH_E = 5 };
 
@@ -22,21 +23,23 @@ public:
     static constexpr uint8_t MUTE = 0xFF; //x
     static constexpr uint8_t UNUSED = 0xFF -1; //- 
     
-    enum class Finger : uint8_t 
-    { 
-        INDEX = 1, 
-        MIDDLE = 2, 
-        RING = 3, 
-        PINKY = 4,
-        THUMB = 5
-    };
-
 private:
     uint8_t _base_case = 0; //== 0 --> Accord ouvert.
 
-    std::array<uint8_t,STRING_COUNT> _strings{}; //Ex: [-x0232].
+    /* 
+     0 = corde à vide, 
+     MUTE = x, 
+     corde inutilisée = UNUSED, 
+     1..n = numéro de case
+     Ex: [-x0232].     
+    */
+    std::array<uint8_t,STRING_COUNT> _strings{}; 
 
-    //les doigts sont assignés dans l’ordre des cordes frettées (grave → aigu)
+    /*
+        les doigts sont assignés dans l’ordre des cordes frettées (grave → aigu)
+    */
+    using Finger = musical::core::guitar::Finger;
+
     std::vector<Finger> _fingers;    //Ex: 1, 2, 3 
 
     GuitarStandardTuning _root_string; // index de la corde ou se trouve la tonique            

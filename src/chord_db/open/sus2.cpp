@@ -7,6 +7,7 @@ const open_diagram_map& sus2_open()
 {
     using D = Diagram;
     using musical::core::Tone;    
+    using F = musical::core::guitar::Finger;            
 
     constexpr uint8_t X = D::MUTE;
 
@@ -23,7 +24,9 @@ const open_diagram_map& sus2_open()
             // | | | | | |
             // | | 1 2 | | 
             // | | | | | |
-            D({ X, 0, 2, 2, 0, 0 }, GuitarStandardTuning::A, D::CAGED::A),
+            D({ X, 0, 2, 2, 0, 0 }, GuitarStandardTuning::A, D::CAGED::A,
+                0,
+                { F::INDEX, F::MIDDLE })
             }
         },
         { { Tone::C, TRIAD_SUS2 },
@@ -34,7 +37,9 @@ const open_diagram_map& sus2_open()
             // | | | | 1 |
             // | | | | | | 
             // | 3 | | | 4
-            D({ X, 3, 0, 0, 1, 3 }, GuitarStandardTuning::A, D::CAGED::C),
+            D({ X, 3, 0, 0, 1, 3 }, GuitarStandardTuning::A, D::CAGED::C,
+                0,
+                { F::RING, F::INDEX, F::PINKY })
             }
         },
         { { Tone::D, TRIAD_SUS2 },
@@ -44,7 +49,9 @@ const open_diagram_map& sus2_open()
             // | | | | | |
             // | | | 2 | | 
             // | | | | 3 |
-            D({ X, X, 0, 2, 3, 0 }, GuitarStandardTuning::D, D::CAGED::D),
+            D({ X, X, 0, 2, 3, 0 }, GuitarStandardTuning::D, D::CAGED::D,
+                0,
+                { F::MIDDLE, F::RING }),
             }
         },
         { { Tone::E, TRIAD_SUS2 },
@@ -52,10 +59,12 @@ const open_diagram_map& sus2_open()
             // 0       0 0
             // =========== 
             // | | | | | |
-            // | 2 | | | | 
+            // | 1 | | | | 
             // | | | | | |
-            // | | 4 4 | |
-            D({ 0, 2, 4, 4, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
+            // | | 3 4 | |
+            D({ 0, 2, 4, 4, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E,
+                0,
+                { F::INDEX, F::RING, F::PINKY })
             }
         },
         { { Tone::G, TRIAD_SUS2 },
@@ -64,8 +73,10 @@ const open_diagram_map& sus2_open()
             // =========== 
             // | | | | | |
             // | | | | | | 
-            // 3 | | | 3 3
-            D({ 3, 0, 0, 0, 3, 3 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
+            // 1 | | | 3 4
+            D({ 3, 0, 0, 0, 3, 3 }, GuitarStandardTuning::LOW_E, D::CAGED::G,
+                0,
+                { F::INDEX, F::RING, F::PINKY })
             }
         },
 
@@ -79,12 +90,14 @@ const open_diagram_map& sus2_open()
         { { Tone::A, (TRIAD_SUS2 | (1ULL << 10)) },
             {
             // a:sus2:7
-            // x 0   0  0 0
+            // x 0   0 0 0
             // =========== 
             // | | | | | |
             // | | 1 | | | 
             // | | | | | |
-            D({ X, 0, 2, 0, 0, 0 }, GuitarStandardTuning::A, D::CAGED::A),
+            D({ X, 0, 2, 0, 0, 0 }, GuitarStandardTuning::A, D::CAGED::A,
+                0,
+                { F::INDEX })
             }
         },
         { { Tone::C, (TRIAD_SUS2 | (1ULL << 10)) },
@@ -95,7 +108,9 @@ const open_diagram_map& sus2_open()
             // | | | | 1 |
             // | | | | | | 
             // | 2 | 3 | 4
-            D({ X, 3, 0, 3, 1, 3 }, GuitarStandardTuning::A, D::CAGED::C),
+            D({ X, 3, 0, 3, 1, 3 }, GuitarStandardTuning::A, D::CAGED::C,
+                0,
+                { F::MIDDLE, F::RING, F::INDEX, F::PINKY })
             }
         },
         { { Tone::D, (TRIAD_SUS2 | (1ULL << 10)) },
@@ -106,19 +121,23 @@ const open_diagram_map& sus2_open()
             // | | | | 1 |
             // | | | 2 | | 
             // | | | | | |
-            D({ X, X, 0, 2, 1, 0 }, GuitarStandardTuning::D, D::CAGED::D),
+            D({ X, X, 0, 2, 1, 0 }, GuitarStandardTuning::D, D::CAGED::D,
+                0,
+                { F::MIDDLE, F::INDEX })
             }
         },
         { { Tone::E, (TRIAD_SUS2 | (1ULL << 10)) },
             {
             // e:sus2:7
-            // 0       0 0
+            // 0         0
             // =========== 
             // | | | | | |
-            // | 2 | | | | 
-            // | | | | | |
-            // | | | | | |
-            D({ 0, 2, 4, 4, 3, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
+            // | 1 | | | | 
+            // | | | | 2 |
+            // | | 3 4 | |
+            D({ 0, 2, 4, 4, 3, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E,
+                0,
+                { F::INDEX, F::RING, F::PINKY, F::MIDDLE })
             }
         },
         { { Tone::G, (TRIAD_SUS2 | (1ULL << 10)) },
@@ -128,8 +147,10 @@ const open_diagram_map& sus2_open()
             // =========== 
             // | | | | | 1
             // | | | | | | 
-            // 3 | | | 3 |
-            D({ 3, 0, 0, 0, 3, 1 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
+            // 3 | | | 4 |
+            D({ 3, 0, 0, 0, 3, 1 }, GuitarStandardTuning::LOW_E, D::CAGED::G,
+                0,
+                { F::RING, F::PINKY, F::INDEX })
             }
         },
 
@@ -146,7 +167,9 @@ const open_diagram_map& sus2_open()
                 // | | | 1 | |
                 // | | 2 | | | 
                 // | | | | | |
-                D({ X, 0, 2, 1, 0, 0 }, GuitarStandardTuning::A, D::CAGED::A),
+                D({ X, 0, 2, 1, 0, 0 }, GuitarStandardTuning::A, D::CAGED::A,
+                    0,
+                    { F::MIDDLE , F::INDEX  })    
             }
         },
         { { Tone::D, (TRIAD_SUS2 | (1ULL << 11)) },
@@ -157,7 +180,9 @@ const open_diagram_map& sus2_open()
                 // | | | | | |
                 // | | | 1 2 | 
                 // | | | | | |
-                D({ X, X, 0, 2, 2, 0 }, GuitarStandardTuning::D, D::CAGED::D),
+                D({ X, X, 0, 2, 2, 0 }, GuitarStandardTuning::D, D::CAGED::D,
+                    0,
+                    { F::INDEX, F::MIDDLE })
             }
         },
         { { Tone::G, (TRIAD_SUS2 | (1ULL << 11)) },
@@ -168,7 +193,9 @@ const open_diagram_map& sus2_open()
                 // | | | | | |
                 // | | | | | 1
                 // 2 | | | 3 |
-                D({ 3, 0, 0, 0, 3, 2 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
+                D({ 3, 0, 0, 0, 3, 2 }, GuitarStandardTuning::LOW_E, D::CAGED::G,
+                    0,
+                    { F::MIDDLE, F::RING, F::INDEX })
         }
     }                       
                 

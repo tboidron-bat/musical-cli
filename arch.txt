@@ -1,74 +1,89 @@
+src/
+├── analysis
+│   ├── chord
+│   ├── ChordAnalysis.cpp
+│   ├── ChordFunctionAnalyser.cpp
+│   ├── Harmonizer.cpp
+│   └── Harmony.cpp
+├── audio
+│   ├── karplus_strong
+│   │   └── chord_player.cpp
+│   └── wave
+│       └── chord_player.cpp
+├── chord_db
+│   ├── Diagram.cpp
+│   ├── movable
+│   │   ├── aug.cpp
+│   │   ├── database.cpp
+│   │   ├── dim.cpp
+│   │   ├── maj.cpp
+│   │   ├── min.cpp
+│   │   ├── queries.cpp
+│   │   ├── sus2.cpp
+│   │   └── sus4.cpp
+│   └── open
+│       ├── aug.cpp
+│       ├── database.cpp
+│       ├── dim.cpp
+│       ├── maj.cpp
+│       ├── min.cpp
+│       ├── queries.cpp
+│       ├── sus2.cpp
+│       ├── sus4.cpp
+│       └── todo.txt
+├── core
+│   ├── Cadence.cpp
+│   ├── chord
+│   │   ├── Arpeggio.cpp
+│   │   ├── Chord.cpp
+│   │   ├── ChordFactory.cpp
+│   │   ├── ChordTypeCatalog.cpp
+│   │   └── ChordType.cpp
+│   ├── Figure.cpp
+│   ├── Mode.cpp
+│   ├── note
+│   │   ├── Note.cpp
+│   │   ├── NoteFactory.cpp
+│   │   └── Rest.cpp
+│   └── scale
+│       ├── ScaleKeyed.cpp
+│       ├── ScaleKeyedFactory.cpp
+│       ├── ScalePattern.cpp
+│       └── ScalePatternFactory.cpp
+├── io
+│   ├── chord_db
+│   │   ├── ascii
+│   │   │   ├── MovableDiagram.cpp
+│   │   │   ├── OpenDiagram.cpp
+│   │   │   └── stream_diagram2.cpp
+│   │   └── unicode
+│   │       ├── DiagramRenderer.cpp
+│   │       ├── DottedGrid.cpp
+│   │       ├── GridCore.cpp
+│   │       └── OpenGrid.cpp
+│   ├── core
+│   │   ├── chord
+│   │   │   ├── out
+│   │   │   │   └── naming.cpp
+│   │   │   └── parser
+│   │   │       ├── ChordLexer.cpp
+│   │   │       └── ChordParser.cpp
+│   │   ├── note
+│   │   │   ├── in
+│   │   │   │   ├── NoteLexer.cpp
+│   │   │   │   └── NoteParser.cpp
+│   │   │   └── out
+│   │   │       ├── mei_adapter.cpp
+│   │   │       └── note_formatter.cpp
+│   │   └── scale
+│   │       ├── scalepattern_formatter.cpp
+│   │       └── ScalePatternRepository.cpp
+│   └── utils
+│       └── in
+│           └── normalize_to_ascii.cpp
+└── ScoreElements
+    ├── KeySignature.cpp
+    ├── Measure.cpp
+    └── TimeSignature.cpp
 
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(C)
-OK: C
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(c)
-OK: c
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Ré)
-OK: Ré
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(ré)
-OK: ré
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Fa♯)
-OK: Fa♯
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Sol𝄪)
-OK: Sol𝄪
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Bb)
-OK: Bb
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(bb)
-OK: bb
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Cmajor)
-OK: Cmajor
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Cminor)
-OK: Cminor
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Cdim)
-OK: Cdim
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Caug)
-OK: Caug
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Csus2)
-OK: Csus2
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(Csus4)
-OK: Csus4
-
-DEBUG:
-#-class ChordLexer-#
-calling:tokenize(C7sus4)
+28 directories, 59 files

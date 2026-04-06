@@ -7,6 +7,7 @@ const open_diagram_map& dim_open()
 {
     using D = Diagram;
     using musical::core::Tone;    
+    using F = musical::core::guitar::Finger;        
 
     constexpr uint8_t X = D::MUTE;
 
@@ -29,7 +30,11 @@ const open_diagram_map& dim_open()
             // | | 1 | 2 |
             // | | | 3 | |
             // | | | | | |
-            D({ X, 0, 1, 2, 1, X }, GuitarStandardTuning::A, D::CAGED::A),
+            D({ X, 0, 1, 2, 1, X }, GuitarStandardTuning::A, D::CAGED::A,
+                0,
+                { F::INDEX, F::RING, F::MIDDLE })
+            ,
+
             // x 0            
             // =========== 
             // | | 1 1 1 1
@@ -37,7 +42,9 @@ const open_diagram_map& dim_open()
             // | | | | | |
             // | | | | | |
             // | | | | | 4                        
-            D({ X, 0, 1, 2, 1, 5 }, GuitarStandardTuning::A, D::CAGED::A)
+            D({ X, 0, 1, 2, 1, 5 }, GuitarStandardTuning::A, D::CAGED::A,
+                0,
+                { F::INDEX, F::MIDDLE, F::INDEX, F::PINKY })
             }
         },
         { { Tone::D, TRIAD_DIM },
@@ -48,8 +55,10 @@ const open_diagram_map& dim_open()
             // | | | 1 | 2
             // | | | | | |
             // | | | | 4 |
-            D({ X, X, 0, 1, 3, 1 }, GuitarStandardTuning::D, D::CAGED::D),
-            }
+            D({ X, X, 0, 1, 3, 1 }, GuitarStandardTuning::D, D::CAGED::D,
+                0,
+                { F::INDEX, F::PINKY, F::MIDDLE })
+             }
         },
         { { Tone::E, TRIAD_DIM },
             {
@@ -61,8 +70,10 @@ const open_diagram_map& dim_open()
             // | | | | | |
             // | | | | | |
             // | | | | 4 |
-            D({ 0, 1, 2, 0, 5, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
-            }
+            D({ 0, 1, 2, 0, 5, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E,
+                0,
+                { F::INDEX, F::MIDDLE, F::PINKY })
+             }
         },
         // ========================
         // DIM7 ou rond barré 
@@ -76,7 +87,9 @@ const open_diagram_map& dim_open()
             // | | 1 | 3 |
             // | | | 2 | 4
             // | | | | | |
-            D({ X, 0, 1, 2, 1, 2 }, GuitarStandardTuning::A, D::CAGED::A),
+            D({ X, 0, 1, 2, 1, 2 }, GuitarStandardTuning::A, D::CAGED::A,
+                0,
+                { F::INDEX, F::MIDDLE, F::RING, F::PINKY })
             }
         },
         { { Tone::D, (TRIAD_DIM | bb7) },
@@ -87,7 +100,9 @@ const open_diagram_map& dim_open()
             // | | | 1 | 2
             // | | | | | |
             // | | | | | |
-            D({ X, X, 0, 1, 0, 1 }, GuitarStandardTuning::D, D::CAGED::D),
+            D({ X, X, 0, 1, 0, 1 }, GuitarStandardTuning::D, D::CAGED::D,
+                0,
+                { F::INDEX, F::MIDDLE })
             }
         },
         { { Tone::E, (TRIAD_DIM | bb7) },
@@ -98,7 +113,9 @@ const open_diagram_map& dim_open()
             // | 1 | | | |
             // | | 2 | 3 |
             // | | | | | |
-            D({ 0, 1, 2, 0, 2, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
+            D({ 0, 1, 2, 0, 2, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E,
+                0,
+                { F::INDEX, F::MIDDLE, F::RING })
             }
         },
         { { Tone::G, (TRIAD_DIM | bb7) },
@@ -110,7 +127,9 @@ const open_diagram_map& dim_open()
             // | | 1 | | |
             // 2 | | 3 | |
             // | 4 | | | |
-            D({ 3, 4, 2, 3, X, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
+            D({ 3, 4, 2, 3, X, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::G,
+                0,
+                { F::MIDDLE, F::PINKY, F::INDEX, F::RING })
             }
         }
     };

@@ -17,9 +17,11 @@ std::vector<Diagram>
 find_diagrams(
     IntervalMask mask,
     std::optional<Diagram::CAGED> shape = std::nullopt);
-// ============================================================    
-std::vector<Diagram>
-find_all_diagrams(std::optional<Diagram::CAGED> shape = std::nullopt);
+// ============================================================   
+// FIND ALL MOVABLE DIAGRAMS
+// ============================================================   
+std::vector<std::pair<IntervalMask, Diagram>> 
+find_all_diagrams(std::optional<Diagram::CAGED> shape = std::nullopt); 
 // ============================================================
 // RANDOM DIAGRAM
 // ============================================================

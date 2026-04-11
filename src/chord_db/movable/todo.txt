@@ -1,0 +1,3 @@
+
+
+X, BASE, 3, BASE, 1, BASE = min7(b13) ou  //x14121 

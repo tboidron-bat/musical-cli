@@ -52,14 +52,25 @@ public:
     size_t parse(int argc, char** argv);    
 
 public:
-    //getters
+
     std::string name() { return _name; }
-    std::string short_name(){ return _short_name; }
+    std::string short_name(){ return _short_name; }    
+
+    const std::string& name() const { return _name; }
+    const std::string& short_name() const { return _short_name; }
+
+
+
+
+
+
     const option::parameter_t& parameter(int index) const;    
 
     std::size_t parameter_count() const { return _parameters.size(); } 
 
-    cli::Command& command() const;
+    cli::Command& command() { return _command_ref; }
+    const cli::Command& command() const { return _command_ref; }
+    
     bool enabled() const;
 
     std::string print_usage() const;

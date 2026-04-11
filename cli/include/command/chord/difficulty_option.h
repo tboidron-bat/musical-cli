@@ -4,7 +4,7 @@
 
 namespace cli::chord
 {
-    class difficulty_option : public command::Option
+    class difficulty_option : public cli::command::Option
     {
     public:
         difficulty_option(cli::Command&);

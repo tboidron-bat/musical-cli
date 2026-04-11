@@ -3,14 +3,10 @@
 #include <stdexcept>
 #include <iostream>
 
-//#define DEBUG_COMMAND_OPTION
+//#define DEBUG
 
 namespace cli::command
 {
-cli::Command& Option::command() const 
-{
-   return _command_ref;
-}
 bool Option::enabled() const 
 {
     return _enabled;

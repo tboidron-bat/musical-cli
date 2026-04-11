@@ -4,7 +4,7 @@
 
 namespace cli::chord
 {
-    class play_option : public command::Option
+    class play_option : public cli::command::Option
     {
     public:
         play_option(cli::Command&);

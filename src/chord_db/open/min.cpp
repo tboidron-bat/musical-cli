@@ -36,7 +36,7 @@ const open_diagram_map& min_open()
             // | | 1 | 2 | 
             // | | | | | |
             // | 3 | | | 4 
-            D({ X, 3, 1, 0, 1, X }, GuitarStandardTuning::A, D::CAGED::C,
+            D({ X, 3, 1, 0, 1, 3 }, GuitarStandardTuning::A, D::CAGED::C,
                 0,
                 { F::RING, F::INDEX, F::MIDDLE, F::PINKY   }),
             }
@@ -56,13 +56,15 @@ const open_diagram_map& min_open()
         },
         { { Tone::E, TRIAD_MIN },
             {
-            // x 0    
+            // 0     0 0 0    
             // =========== 
             // | | | | | |
-            // | | | | | |
+            // | 2 3 | | |
             // | | | | | |
 
-            D({ 0, 2, 2, 0, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
+            D({ 0, 2, 2, 0, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E,
+                0,
+                { F::MIDDLE, F::RING    }),
             }
         },
         { { Tone::G, TRIAD_MIN },
@@ -72,7 +74,9 @@ const open_diagram_map& min_open()
             // | 1 | | | |
             // | | | | | |
             // 2 | | | 3 4
-            D({ 3, 1, 0, 0, 3, 3 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
+            D({ 3, 1, 0, 0, 3, 3 }, GuitarStandardTuning::LOW_E, D::CAGED::G,
+                0,
+                { F::MIDDLE, F::INDEX, F::RING, F::PINKY   }),
             }
         },
 
@@ -81,12 +85,15 @@ const open_diagram_map& min_open()
         // ========================
         { { Tone::C, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
+            // cmin7/Bb
             // x     0
             // =========== 
-            // | | 1 | 2 |
+            // | 1 2 | 3 |
             // | | | | | |
-            // | 3 | | | 4
-            D({ X, 3, 1, 0, 1, 3 }, GuitarStandardTuning::A, D::CAGED::C),
+            // | | | | | 4
+            D({ X, 1, 1, 0, 1, 3 }, GuitarStandardTuning::B, D::CAGED::C,
+                0,
+                { F::INDEX, F::MIDDLE, F::RING, F::PINKY   }),
             }
         },
         { { Tone::A, (TRIAD_MIN | ( 1ULL << 10 )) },
@@ -96,39 +103,47 @@ const open_diagram_map& min_open()
             // | | | | 1 |
             // | | 2 | | |
             // | | | | | |
-            D({ X, 0, 2, 0, 1, 0 }, GuitarStandardTuning::A, D::CAGED::A),
+            D({ X, 0, 2, 0, 1, 0 }, GuitarStandardTuning::A, D::CAGED::A,
+                0,
+                { F::MIDDLE, F::INDEX    }),
             }
         },
         { { Tone::D, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
-            // x 0    
+            // x x 0    
             // =========== 
-            // | | | | | |
-            // | | | | | |
+            // | | | | 1 2
+            // | | | 3 | |
             // | | | | | |
 
-            D({ X, X, 0, 2, 1, 1 }, GuitarStandardTuning::D, D::CAGED::D),
+            D({ X, X, 0, 2, 1, 1 }, GuitarStandardTuning::D, D::CAGED::D,
+                0,
+                { F::RING, F::INDEX, F::MIDDLE }),
             }
         },
         { { Tone::E, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
-            // x 0    
+            // 0   0 0 0 0  
             // =========== 
             // | | | | | |
-            // | | | | | |
+            // | 2 | | | |
             // | | | | | |
 
-            D({ 0, 2, 0, 0, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E),
+            D({ 0, 2, 0, 0, 0, 0 }, GuitarStandardTuning::LOW_E, D::CAGED::E,
+                0,
+                { F::MIDDLE    }),
             }
         },
         { { Tone::G, (TRIAD_MIN | ( 1ULL << 10 )) },
             {
             //     0 0 
             // =========== 
-            // | 1 | | | 2
+            // | 2 | | | 1
             // | | | | | |
             // 3 | | | 4 |
-            D({ 3, 1, 0, 0, 3, 1 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
+            D({ 3, 1, 0, 0, 3, 1 }, GuitarStandardTuning::LOW_E, D::CAGED::G,
+                0,
+                { F::RING, F::MIDDLE, F::PINKY, F::INDEX   }),
             }
         }
     };

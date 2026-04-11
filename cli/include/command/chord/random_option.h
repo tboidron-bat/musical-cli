@@ -4,7 +4,7 @@
 
 namespace cli::chord
 {
-    class random_option : public command::Option
+    class random_option : public cli::command::Option
     {
     public:
         random_option(cli::Command&);

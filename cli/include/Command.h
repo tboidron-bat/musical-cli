@@ -32,21 +32,8 @@ public:
         return nullptr;
     }
 
-
-    // cli::command::Option& add_short_option(
-    //     uint8_t id,
-    //     std::string name,
-    //     std::string short_name,
-    //     std::string description)
-    // {
-    //     _options.emplace_back(
-    //         id,
-    //         std::move(name),
-    //         std::move(short_name),
-    //         std::move(description));
-
-    //     return _options.back();
-    // }    
+    std::vector<std::unique_ptr<cli::command::Option>>& options() { return _options; }
+    const std::vector<std::unique_ptr<cli::command::Option>>& options() const { return _options; }      
 
 public:
     virtual void print_usage() const = 0;        

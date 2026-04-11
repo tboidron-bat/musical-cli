@@ -4,7 +4,7 @@
 
 namespace cli::chord
 {
-    class version_option : public command::Option
+    class version_option : public cli::command::Option
     {
     public:
         version_option(cli::Command&);

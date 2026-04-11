@@ -82,7 +82,7 @@ void random_option::add_movable_diagram() const
 int random_option::execute() const
 {
     if(!_enabled)
-        return 0;
+        return EXIT_FAILURE;
 
     auto& cmd = static_cast<ChordCommand&>(_command_ref);    
     

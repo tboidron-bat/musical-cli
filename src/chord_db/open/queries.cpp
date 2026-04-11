@@ -52,20 +52,24 @@ find_diagrams(
     return result;
 }
 // ============================================================
-std::vector<Diagram>
-find_all_diagrams(
-    std::optional<IntervalMask> mask)
+std::vector<std::pair<IntervalMask, Diagram>> 
+find_all_diagrams(std::optional<Diagram::CAGED> shape)
 {
-    std::vector<Diagram> result;
+    std::vector<std::pair<IntervalMask, Diagram>> result;
 
-    const auto& db = data_open();
+    const auto& db = data_open();                                           
 
     for (const auto& [key, diagrams] : db)
     {
-        if(mask && key._mask != *mask)
-            continue;
+        for (const auto& d : diagrams)
+        {
+            if (shape && d.caged() != *shape)
+                continue;
 
-        result.insert(result.end(), diagrams.begin(), diagrams.end());
+            result.emplace_back(
+                static_cast<IntervalMask>(key._mask), 
+                d);
+        }
     }
 
     return result;

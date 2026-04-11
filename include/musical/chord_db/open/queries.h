@@ -21,9 +21,11 @@ find_diagrams(
     Tone root,
     IntervalMask mask,
     std::optional<Diagram::CAGED> shape = std::nullopt);
-// ============================================================
-std::vector<Diagram>
-find_all_diagrams(std::optional<IntervalMask> mask = std::nullopt);
+// ============================================================   
+// FIND ALL OPEN DIAGRAMS
+// ============================================================   
+std::vector<std::pair<IntervalMask, Diagram>> 
+find_all_diagrams(std::optional<Diagram::CAGED> shape = std::nullopt);
 // ============================================================
 // RANDOM (TYPE SAFE)
 // ============================================================

@@ -2,6 +2,7 @@
 #include <command/chord/ChordCommand.h>
 
 #include <musical/audio/karplus_strong/chord_player.h>
+#include <musical/audio/alsa_test.h>
 #include <musical/core/chord/Chord.h>
 #include <musical/core/chord/ChordFactory.h>
 
@@ -39,7 +40,12 @@ command::Option(
 int play_option::execute() const
 {
     if(!_enabled)
-        return 0;
+        return EXIT_FAILURE;
+
+    std::cout << "Playing chord...\n";
+
+    musical::audio::alsa_test();
+    return EXIT_SUCCESS;        
 
     double strum_delay_ms = 0.0;
     bool downstroke = true;
@@ -70,8 +76,16 @@ int play_option::execute() const
         using musical::core::Pitch;
         using musical::core::chord::ChordFactory;
 
+        if(!e._root)
+        {
+            std::cerr << "Cannot play diagram without root note\n";
+            continue;
+        }
+
+        auto tone = *e._root;
+
         auto chord = ChordFactory::create(
-            Pitch(static_cast<uint8_t>(e._root)),
+            Pitch(static_cast<uint8_t>(tone)),
             e._intervals_mask
         );
                 

@@ -13,7 +13,7 @@ command::Option(cmd, "version", "v", "Show program version")
 int version_option::execute() const
 {
     if(!_enabled)
-        return 0;
+        return EXIT_FAILURE;
 
 
 std::cout << R"(

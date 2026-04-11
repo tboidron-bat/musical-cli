@@ -4,7 +4,7 @@
 
 namespace cli::chord
 {
-    class tuning_option : public command::Option
+    class tuning_option : public cli::command::Option
     {
     public:
         tuning_option(cli::Command&);

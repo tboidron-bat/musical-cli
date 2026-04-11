@@ -95,9 +95,10 @@ target_sources(musical-core
         #src/analysis/Harmonizer.cpp
         # src/analysis/Harmony.cpp # désactivé pour l'instant        
 
-
-        src/audio/wave/chord_player.cpp
-        src/audio/karplus_strong/chord_player.cpp        
+        # audio
+        src/audio/synthesis/KarplusStrong.cpp
+        src/audio/players/ChordPlayer.cpp
+        src/audio/engine/AlsaEngine.cpp        
 )
 
 target_include_directories(musical-core

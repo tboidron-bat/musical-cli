@@ -34,17 +34,17 @@ add_executable(chord
     src/command/chord/help_option.cpp    
     src/command/chord/diagram_option.cpp
     src/command/chord/difficulty_option.cpp
-    src/command/chord/dumpdb_option.cpp
+    src/command/chord/dumpdb.cpp
     src/command/chord/play_option.cpp
     src/command/chord/random_option.cpp                
     src/command/chord/tuning_option.cpp         
     
-    #src/parser/CommandParser.cpp            
-    #src/parser/ChordCommandParser.cpp                
+    src/command/chord/chord_parser.cpp            
 )
 
 target_link_libraries(chord
     PRIVATE musical-core
+    asound
 )
 
 target_include_directories(chord

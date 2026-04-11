@@ -48,23 +48,22 @@ find_diagrams(
     return result;
 }
 // ============================================================
-std::vector<Diagram>
+std::vector<std::pair<IntervalMask, Diagram>> 
 find_all_diagrams(std::optional<Diagram::CAGED> shape)
 {
-    std::vector<Diagram> result;
+    std::vector<std::pair<IntervalMask, Diagram>> result;
 
     const auto& db = data_movable();
 
     for (const auto& [mask, diagrams] : db)
     {
         // 🚀 pas de filtre → insertion directe
-        if(!shape)
+        if (!shape)
         {
-            result.insert(
-                result.end(),
-                diagrams.begin(),
-                diagrams.end()
-            );
+            for (const auto& d : diagrams)
+            {
+                result.emplace_back(mask, d);
+            }
             continue;
         }
 
@@ -72,13 +71,12 @@ find_all_diagrams(std::optional<Diagram::CAGED> shape)
         for (const auto& d : diagrams)
         {
             if (d.caged() == *shape)
-                result.push_back(d);
+                result.emplace_back(mask, d);
         }
     }
 
     return result;
-}
-// ------------------------------------------------------------
+}// ------------------------------------------------------------
 // RANDOM DIAGRAM
 // ------------------------------------------------------------
 std::pair<IntervalMask, Diagram>

@@ -8,31 +8,19 @@ namespace musical::audio::engine
 
 constexpr int SAMPLE_RATE = 44100;
 
-// ------------------------------------------------------------
-// Impl interne (ALSA caché)
-// ------------------------------------------------------------
-struct AlsaEngine::Impl
-{
-    snd_pcm_t* handle = nullptr;
-};
-
-// ------------------------------------------------------------
-// CTOR / DTOR
-// ------------------------------------------------------------
 AlsaEngine::AlsaEngine()
+    : _handle(nullptr)
 {
-    impl = new Impl();
 }
 
 AlsaEngine::~AlsaEngine()
 {
-    if (impl->handle)
+    if (_handle)
     {
-        snd_pcm_drain(impl->handle);
-        snd_pcm_close(impl->handle);
+        snd_pcm_drain(_handle);
+        snd_pcm_close(_handle);
+        _handle = nullptr;
     }
-
-    delete impl;
 }
 
 // ------------------------------------------------------------
@@ -40,7 +28,10 @@ AlsaEngine::~AlsaEngine()
 // ------------------------------------------------------------
 bool AlsaEngine::init()
 {
-    if (snd_pcm_open(&impl->handle, "pulse",
+    if(_handle)
+        return true;
+
+    if (snd_pcm_open(&_handle, "pulse",
                      SND_PCM_STREAM_PLAYBACK, 0) < 0)
     {
         std::cerr << "ALSA open error\n";
@@ -48,7 +39,7 @@ bool AlsaEngine::init()
     }
 
     if (snd_pcm_set_params(
-            impl->handle,
+            _handle,
             SND_PCM_FORMAT_S16_LE,
             SND_PCM_ACCESS_RW_INTERLEAVED,
             1,
@@ -58,6 +49,8 @@ bool AlsaEngine::init()
         ) < 0)
     {
         std::cerr << "ALSA config error\n";
+        snd_pcm_close(_handle);
+        _handle = nullptr;        
         return false;
     }
 
@@ -69,7 +62,7 @@ bool AlsaEngine::init()
 // ------------------------------------------------------------
 void AlsaEngine::play(const std::vector<int16_t>& samples)
 {
-    if (!impl->handle)
+    if (!_handle)
     {
         std::cerr << "ALSA not initialized\n";
         return;
@@ -80,10 +73,10 @@ void AlsaEngine::play(const std::vector<int16_t>& samples)
 
     while (frames > 0)
     {
-        int written = snd_pcm_writei(impl->handle, data, frames);
+        int written = snd_pcm_writei(_handle, data, frames);
 
         if (written < 0)
-            written = snd_pcm_recover(impl->handle, written, 0);
+            written = snd_pcm_recover(_handle, written, 0);
 
         if (written < 0)
         {
@@ -96,59 +89,6 @@ void AlsaEngine::play(const std::vector<int16_t>& samples)
     }
 }
 }
-// #include <alsa/asoundlib.h>
-// #include <cmath>
-// #include <vector>
-// #include <iostream>
-
-// namespace musical::audio
-// {
-//     const int sampleRate = 44100;
-//     const float frequency = 440.0f; // La
-//     const int duration = 2; // secondes
-
-// std::vector<int16_t> generate_sine_wave(float freq, int sampleRate, int duration)
-// {
-//     int totalSamples = sampleRate * duration;
-//     std::vector<int16_t> samples(totalSamples);
-
-//     for (int i = 0; i < totalSamples; ++i)
-//     {
-//         float t = (float)i / sampleRate;
-//         float s = sin(2.0f * M_PI * freq * t);
-//         samples[i] = (int16_t)(s * 30000); // conversion 16 bits
-//     }
-
-//     return samples;
-// }    
-// snd_pcm_t* alsa_init()
-// {
-//     snd_pcm_t* handle;
-
-//     snd_pcm_open(&handle, "pulse", SND_PCM_STREAM_PLAYBACK, 0);
-
-//     // if (snd_pcm_open(&handle, "plughw:CARD=PCH,DEV=0",
-//     //                  SND_PCM_STREAM_PLAYBACK, 0) < 0)
-//     // {
-//     //     std::cerr << "Erreur ouverture ALSA\n";
-//     //     return nullptr;
-//     // }
-
-//     if (snd_pcm_set_params(
-//             handle,
-//             SND_PCM_FORMAT_S16_LE,        // format standard
-//             SND_PCM_ACCESS_RW_INTERLEAVED,
-//             1,                           // mono
-//             sampleRate,
-//             1,
-//             500000                       // latency (µs)
-//         ) < 0)
-//     {
-//         std::cerr << "Erreur config ALSA\n";
-//         return nullptr;
-//     }
-//     return handle;
-// }
 // int alsa_test()
 // {
 //     std::cout << "Testing ALSA audio output...\n";

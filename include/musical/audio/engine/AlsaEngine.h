@@ -3,6 +3,9 @@
 #include <vector>
 #include <cstdint>
 
+
+#include <alsa/asoundlib.h>
+
 namespace musical::audio::engine
 {
 class AlsaEngine
@@ -15,7 +18,7 @@ public:
     void play(const std::vector<int16_t>& samples);
 
 private:
-    struct Impl;
-    Impl* impl; // pour cacher ALSA (pas dans le header)
+    snd_pcm_t* _handle = nullptr;
+
 };
 }

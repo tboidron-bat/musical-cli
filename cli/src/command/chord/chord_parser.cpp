@@ -10,7 +10,7 @@
 
 #include <regex>
 
-#define DEBUG
+//#define DEBUG
 
 namespace cli::command::chord
 {

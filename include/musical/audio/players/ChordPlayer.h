@@ -9,7 +9,7 @@ class ChordPlayer
 {
 public:
     // Joue un accord avec Karplus-Strong
-    void play(const core::chord::Chord& chord,
+    static void play(const core::chord::Chord& chord,
               double strum_delay_ms = 20.0,
               bool downstroke = true);
 };

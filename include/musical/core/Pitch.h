@@ -35,7 +35,7 @@ public:
     }
     constexpr int8_t octave() const
     {
-        return static_cast<int8_t>(_value / 12);
+        return static_cast<int8_t>(_value / 12 /* -1 ? */); 
     }
     // ========================
     // OPERATEURS

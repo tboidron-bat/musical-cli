@@ -1,8 +1,8 @@
 #include <command/chord/play_option.h>
 #include <command/chord/ChordCommand.h>
 
-#include <musical/audio/karplus_strong/chord_player.h>
-#include <musical/audio/alsa_test.h>
+
+#include <musical/audio/players/ChordPlayer.h>
 #include <musical/core/chord/Chord.h>
 #include <musical/core/chord/ChordFactory.h>
 
@@ -44,9 +44,6 @@ int play_option::execute() const
 
     std::cout << "Playing chord...\n";
 
-    musical::audio::alsa_test();
-    return EXIT_SUCCESS;        
-
     double strum_delay_ms = 0.0;
     bool downstroke = true;
 
@@ -68,7 +65,6 @@ int play_option::execute() const
 
     using musical::core::chord::Chord;
     using musical::core::chord::ChordType;
-    using musical::audio::karplus_strong::ChordPlayer;
 
     for(const auto& e : cmd.entries())
     {
@@ -89,7 +85,7 @@ int play_option::execute() const
             e._intervals_mask
         );
                 
-        ChordPlayer::play(
+        ::musical::audio::players::ChordPlayer::play(
             chord,
             strum_delay_ms,
             downstroke

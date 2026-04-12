@@ -5,13 +5,15 @@
 namespace musical::audio::synthesis
 {
 
-class KarpusStrong
+class KarplusStrong
 {
 public:
     static std::vector<float> 
         generate(const core::chord::Chord& chord,
             double strum_delay_ms,
             bool downstroke);
+
+    static std::vector<float> generate_single(double frequency);
 
 };
 

@@ -98,7 +98,8 @@ target_sources(musical-core
         # audio
         src/audio/synthesis/KarplusStrong.cpp
         src/audio/players/ChordPlayer.cpp
-        src/audio/engine/AlsaEngine.cpp        
+        src/audio/engine/AlsaEngine.cpp 
+        src/audio/synthesis/basicsignalsgenerator.cpp      
 )
 
 target_include_directories(musical-core

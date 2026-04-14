@@ -21,11 +21,35 @@ const movable_diagram_map& min_movable()
         {
             TRIAD_MIN,
             {
+                // | | | 1 | |  
+                // | | 2 | 3 |
+                // | | | | | |
+                // | 4 | | | |
+                D({ X, 3, 1, BASE, 1, X }, GuitarStandardTuning::A, D::CAGED::C),
+
                 // | 1 1 1 1 1
                 // | | | | 4 |
                 // | | 2 3 | |
                 // | | | | | |
-                D({ X, BASE, 2, 2, 1, BASE }, GuitarStandardTuning::A, D::CAGED::A)
+                D({ X, BASE, 2, 2, 1, BASE }, GuitarStandardTuning::A, D::CAGED::A),
+
+                // | | 1 | | |
+                // | 2 | | | |
+                // | | | | | |
+                // 3 | | 4 4 4
+                D({ 3, 1, BASE, 3, 3, 3 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
+
+                // 1 1 1 1 1 1
+                // | | | | | |
+                // | 3 4 | | |
+                // | | | | | |
+                D({ BASE, 2, 2, BASE, BASE, BASE }, GuitarStandardTuning::LOW_E, D::CAGED::E)
+
+                //TODO pos CAGED::D
+
+
+
+
             }
         },
 

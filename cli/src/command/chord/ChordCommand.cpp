@@ -2,11 +2,9 @@
 #include <Option.h>
 #include <stream_option.h>
 
-#include <command/chord/diagram_layout.h>
-
 #include <command/chord/version_option.h>
 #include <command/chord/help_option.h>
-#include <command/chord/diagram_option.h>
+#include <command/chord/diagram.h>
 #include <command/chord/random_option.h>
 #include <command/chord/dumpdb.h>
 #include <command/chord/play_option.h>
@@ -14,13 +12,6 @@
 #include <command/chord/tuning_option.h>
 
 #include <command/chord/chord_parser.h>
-
-#include <musical/io/core/chord/ChordIO.h>
-#include <musical/io/core/chord/out/naming.h>
-
-#include <musical/io/chord_db/unicode/DiagramRenderer.h>
-
-#include <sstream>
 
 //#define DEBUG
 
@@ -32,7 +23,7 @@ ChordCommand::ChordCommand()
     _options.emplace_back(std::make_unique<help_option>(*this));
     _options.emplace_back(std::make_unique<command::chord::dumpdb>(*this));
     _options.emplace_back(std::make_unique<random_option>(*this));
-    _options.emplace_back(std::make_unique<diagram_option>(*this));
+    _options.emplace_back(std::make_unique<command::chord::diagram>(*this));
     _options.emplace_back(std::make_unique<play_option>(*this));
     _options.emplace_back(std::make_unique<difficulty_option>(*this));
     _options.emplace_back(std::make_unique<tuning_option>(*this));
@@ -76,12 +67,11 @@ int ChordCommand::run(int argc, char** argv)
     }            
 
 
-    get_option<diagram_option>()->execute();
+    get_option<command::chord::diagram>()->execute();
 
-    render();
+    //cli::command::chord::render(_entries);
 
     get_option<play_option>()->execute();
-
 
     return EXIT_SUCCESS;
 }
@@ -104,82 +94,6 @@ std::string ChordCommand::input_string() const
 
     return cmd_line;
 }
-static std::string make_name(
-    musical::core::Tone tone,
-    uint64_t mask)
-{
-    std::ostringstream oss;
-
-    oss << tone;
-
-    musical::core::chord::ChordType type(mask);
-
-    return oss.str() + musical::io::chord::to_string(type);
-}
-void ChordCommand::render() const
-{
-    if(_entries.empty())
-    {
-        std::cerr << "No diagrams to display\n";
-        return;
-    }
-
-    std::vector<const diagram_entry_t*> open;
-    std::vector<const diagram_entry_t*> movable;
-
-    for(const auto& d : _entries)
-    {
-        if(d._root)
-            open.push_back(&d);
-        else
-            movable.push_back(&d);
-    }
-
-    // =========================
-    // OPEN
-    // =========================
-    if(!open.empty())
-    {
-        std::cout << "\n=== Open diagrams ===\n\n";
-
-        Layout layout(terminal::get_width());
-
-        for(const auto* d : open)
-        {
-            std::string name = make_name(*d->_root, d->_intervals_mask);
-
-            layout.add_block(
-                io::chord::db::unicode::DiagramRenderer::render(d->_diagram, name)
-            );
-        }
-
-        std::cout << layout.render() << "\n";
-    }
-
-    // =========================
-    // MOVABLE
-    // =========================
-    if(!movable.empty())
-    {
-        std::cout << "\n=== Movable diagrams ===\n\n";
-
-        Layout layout(terminal::get_width());
-
-        for(const auto* d : movable)
-        {
-            std::string name =
-                musical::io::chord::to_string(
-                    musical::core::chord::ChordType(d->_intervals_mask)
-                );
-
-            layout.add_block(
-                io::chord::db::unicode::DiagramRenderer::render(d->_diagram, name)
-            );
-        }
-
-        std::cout << layout.render();
-    }
-}
 void ChordCommand::print_name() const
 {
     std::cout << "Chord CLI — version 0.5.0";
@@ -200,53 +114,3 @@ void ChordCommand::print_help() const
         std::cout << *opt;
 }
 } // namespace cli::chord
-
-// std::string ChordCommand::chords_names_from_input() const
-// {
-//     std::string cmd_line;
-
-//     for(int i = 1; i < _args.size(); ++i)
-//     {
-//         cmd_line += _args[i];
-//         cmd_line += ' ';
-//     }
-
-//     if(!cmd_line.empty())
-//         cmd_line.pop_back();
-
-
-//     for(const auto& opt : _options)
-//     {
-//         if(opt->enabled())
-//         {            
-//             std::string long_name  = "--" + opt->name();
-//             auto pos = cmd_line.find(long_name);
-//             if(pos != std::string::npos)
-//                 cmd_line.erase(pos, long_name.length());            
-
-//             std::string short_name = "-"  + opt->short_name();                
-//             pos = cmd_line.find(short_name);
-//             if(pos != std::string::npos)
-//                 cmd_line.erase(pos, short_name.length());            
-
-
-//             for(std::size_t i = 0; i < opt->parameter_count(); ++i)
-//             { 
-//                 if(opt->parameter(i)._provided)
-//                 {
-//                     auto pos = cmd_line.find(opt->parameter(i)._value);                    
-//                     if(pos != std::string::npos)
-//                         cmd_line.erase(pos, opt->parameter(i)._value.length());            
-
-//                 }
-            
-//             }
-
-//         }
-//     }
-// #ifdef CHORD_COMMAND_DEBUG
-//     std::cout << "cleaned command line: <" << cmd_line << ">\n";    
-// #endif
-//     cmd_line = std::regex_replace(cmd_line, std::regex("\\s+"), " ");
-//     return cmd_line;
-// }

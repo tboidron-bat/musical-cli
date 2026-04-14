@@ -32,7 +32,7 @@ add_executable(chord
     src/command/chord/ChordCommand.cpp    
     src/command/chord/version_option.cpp    
     src/command/chord/help_option.cpp    
-    src/command/chord/diagram_option.cpp
+    src/command/chord/diagram.cpp
     src/command/chord/difficulty_option.cpp
     src/command/chord/dumpdb.cpp
     src/command/chord/play_option.cpp
@@ -40,6 +40,8 @@ add_executable(chord
     src/command/chord/tuning_option.cpp         
     
     src/command/chord/chord_parser.cpp            
+    src/command/chord/dumpdb_renderer.cpp
+    src/command/chord/diagram_renderer.cpp
 )
 
 target_link_libraries(chord

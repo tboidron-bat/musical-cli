@@ -19,6 +19,7 @@ public:
 
     struct diagram_entry_t
     {
+        //la commande dump_db ne va placer _root pour les diagrames movables?
         std::optional<musical::core::Tone>  _root;
         uint64_t _intervals_mask;
         ::chord::db::Diagram _diagram;
@@ -37,8 +38,6 @@ public:
     const std::vector<diagram_entry_t>& entries() const { return _entries; }
 public:
     std::string input_string() const;
-public:    
-    void render() const;
 public:    
     void print_name() const override; 
     void print_usage() const override;

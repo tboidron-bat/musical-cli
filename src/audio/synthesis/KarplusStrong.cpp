@@ -28,13 +28,6 @@ namespace
 
         return 440.0 * std::pow(2.0, (midi - 69) / 12.0);
     }
-    // double frequency_from_pitch(const musical::core::Pitch& p)
-    // {
-    //     int midi = p.value(); // ✔️ direct
-
-    //     return 440.0 * std::pow(2.0, (midi - 69) / 12.0);
-    // }
-
 
     // 🎸 une corde
     std::vector<float> generate_string(double frequency, int total_samples)

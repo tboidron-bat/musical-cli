@@ -118,10 +118,15 @@ void chord_parser::add_entries(cli::chord::ChordCommand& cmd)
         auto movable =
             ::chord::db::queries::movable::find_diagrams(mask);
 
-        for(const auto& d : movable)
+        for(auto& d : movable)
         {
+            d.place_root(static_cast<uint8_t>(chord.tone()));
+
+            if (d.base_case() == 0)
+                continue;
+
             cmd.entries().push_back({
-                std::nullopt,
+                chord.tone(),
                 mask,
                 d
             });
@@ -131,7 +136,7 @@ void chord_parser::add_entries(cli::chord::ChordCommand& cmd)
 }
 
 
-// void diagram_option::add_diagrams(
+// void diagram::add_diagrams(
 //     ChordCommand& cmd,
 //     const musical::core::chord::Chord& chord,
 //     DiagramSource source,

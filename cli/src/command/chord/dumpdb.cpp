@@ -5,6 +5,8 @@
 #include <musical/chord_db/open/queries.h>
 #include <musical/chord_db/movable/queries.h>
 
+#include <command/chord/dumpdb_renderer.h>
+
 namespace cli::command::chord
 {
 dumpdb::dumpdb(cli::Command&cmd)
@@ -55,7 +57,7 @@ int dumpdb::execute() const
 
     add_all_diagrams(cmd);
 
-    cmd.render();
+    cli::command::chord::render_dumpdb(cmd.entries());    
 
     return EXIT_SUCCESS;
 }

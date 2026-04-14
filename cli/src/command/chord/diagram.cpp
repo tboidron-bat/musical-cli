@@ -1,16 +1,17 @@
-#include <command/chord/diagram_option.h>
+#include <command/chord/diagram.h>
 #include <command/chord/ChordCommand.h>
 
-#include <algorithm>
+#include <command/chord/diagram_renderer.h>
 
+#include <algorithm>
 #include <optional>
 #include <string>
 #include <iostream>
 
-namespace cli::chord
+namespace cli::command::chord
 {
 
-diagram_option::diagram_option(cli::Command& cmd)
+diagram::diagram(cli::Command& cmd)
 :
 cli::command::Option(
     cmd,
@@ -38,12 +39,12 @@ cli::command::Option(
 // ============================================================
 // EXECUTE
 // ============================================================
-int diagram_option::execute() const 
+int diagram::execute() const 
 {
     if(!_enabled)
         return EXIT_FAILURE;
 
-    auto& cmd = static_cast<ChordCommand&>(_command_ref);        
+    auto& cmd = static_cast<cli::chord::ChordCommand&>(_command_ref);        
 
     auto& entries = cmd.entries();
 
@@ -82,6 +83,8 @@ int diagram_option::execute() const
             entries.end()
         );
     }
+
+    cli::command::chord::render_diagrams(entries);
 
     return EXIT_SUCCESS;
 }

@@ -60,13 +60,25 @@ target_sources(musical-core
         src/chord_db/open/sus4.cpp                 
             #movable
         src/chord_db/movable/database.cpp         
-        src/chord_db/movable/queries.cpp        
-        src/chord_db/movable/maj.cpp                 
+        src/chord_db/movable/queries.cpp    
+                #triads    
+        src/chord_db/movable/triads/maj.cpp                             
+        
         src/chord_db/movable/min.cpp                 
         src/chord_db/movable/dim.cpp                 
         src/chord_db/movable/aug.cpp                 
         src/chord_db/movable/sus2.cpp                 
-        src/chord_db/movable/sus4.cpp                 
+        src/chord_db/movable/sus4.cpp  
+                #seventh
+        src/chord_db/movable/sevenths/dominant7.cpp
+        src/chord_db/movable/sevenths/maj7.cpp 
+                #altered
+        src/chord_db/movable/altered/maj7_b5.cpp            
+
+
+                #extensions
+        src/chord_db/movable/extensions/add9.cpp             
+        src/chord_db/movable/extensions/maj9.cpp             
 
         # guitar chord diagram        
         src/io/chord_db/unicode/GridCore.cpp                 

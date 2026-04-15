@@ -43,9 +43,15 @@ const movable_diagram_map& min_movable()
                 // | | | | | |
                 // | 3 4 | | |
                 // | | | | | |
-                D({ BASE, 2, 2, BASE, BASE, BASE }, GuitarStandardTuning::LOW_E, D::CAGED::E)
+                D({ BASE, 2, 2, BASE, BASE, BASE }, GuitarStandardTuning::LOW_E, D::CAGED::E),
 
-                //TODO pos CAGED::D
+                // x x
+                // | | 1 | | |
+                // | | | | | 2
+                // | | | 3 | |
+                // | | | | 4 |
+                D({ X, X, BASE, 2, 3, 1 }, GuitarStandardTuning::D, D::CAGED::D)
+
 
 
 

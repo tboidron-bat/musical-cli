@@ -4,7 +4,6 @@
 
 #include <musical/chord_db/Diagram.h>
 
-
 namespace io::chord::db::unicode
 {
     

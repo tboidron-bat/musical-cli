@@ -5,6 +5,7 @@
 #include <cstdint>
 
 #include <musical/chord_db/Diagram.h>
+#include <musical/chord_db/triads.h>
 
 namespace chord::db
 {
@@ -21,8 +22,6 @@ namespace chord::db
     // Remarque :
     // - les voicings guitare omettent souvent la quinte
     // - accords souvent "rootless" pour jouabilité
-
-    using IntervalMask = uint64_t;
 
     // ------------------------------------------------------------
     // DATABASE ACCESS

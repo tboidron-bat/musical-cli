@@ -16,7 +16,7 @@ const movable_diagram_map& add9_movable()
     static const movable_diagram_map db =
     {
         // ========================================================
-        // ADD9 TRIAD (0, 4, 7, 14)
+        // ADD9 TRIAD ( 4, 7, 14)
         // ========================================================
         {
             (TRIAD_MAJ | (1ULL << 14)), 

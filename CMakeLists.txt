@@ -47,9 +47,9 @@ target_sources(musical-core
         src/ScoreElements/Measure.cpp
         src/ScoreElements/TimeSignature.cpp
 
-        # guitar chord database
+        #guitar chord database
         src/chord_db/Diagram.cpp        
-            #open
+        #gc_db#open
         src/chord_db/open/database.cpp 
         src/chord_db/open/queries.cpp
         src/chord_db/open/maj.cpp                 
@@ -58,27 +58,35 @@ target_sources(musical-core
         src/chord_db/open/aug.cpp                 
         src/chord_db/open/sus2.cpp                 
         src/chord_db/open/sus4.cpp                 
-            #movable
+        #gc_db#movable
         src/chord_db/movable/database.cpp         
         src/chord_db/movable/queries.cpp    
-                #triads    
+        #gc_db#movable#triads    
         src/chord_db/movable/triads/maj.cpp                             
-        
-        src/chord_db/movable/min.cpp                 
+        src/chord_db/movable/triads/min.cpp                 
+        src/chord_db/movable/triads/aug.cpp                         
+
         src/chord_db/movable/dim.cpp                 
-        src/chord_db/movable/aug.cpp                 
-        src/chord_db/movable/sus2.cpp                 
+
+        src/chord_db/movable/triads/sus2.cpp                 
         src/chord_db/movable/sus4.cpp  
-                #seventh
+        #gc_db#movable#seventh
         src/chord_db/movable/sevenths/dominant7.cpp
         src/chord_db/movable/sevenths/maj7.cpp 
-                #altered
+        src/chord_db/movable/sevenths/min7.cpp 
+        src/chord_db/movable/sevenths/dominant7_sus2.cpp        
+        src/chord_db/movable/sevenths/maj7_sus2.cpp                
+        #gc_db#movable#altered
         src/chord_db/movable/altered/maj7_b5.cpp            
+        src/chord_db/movable/altered/aug_maj7.cpp                    
+        src/chord_db/movable/altered/aug_7.cpp                            
 
 
-                #extensions
+        #gc_db#movable#extensions
         src/chord_db/movable/extensions/add9.cpp             
         src/chord_db/movable/extensions/maj9.cpp             
+        src/chord_db/movable/extensions/min7add11.cpp        
+        src/chord_db/movable/extensions/maj13_sus2.cpp                                  
 
         # guitar chord diagram        
         src/io/chord_db/unicode/GridCore.cpp                 

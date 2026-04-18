@@ -5,17 +5,21 @@
 #include <cstdint>
 
 #include <musical/chord_db/Diagram.h>
+#include <musical/chord_db/triads.h>
 
 namespace chord::db
 {
     // ------------------------------------------------------------
-    // TRIADES / SUSPENDED
+    // MINOR TRIAD FAMILY
     // ------------------------------------------------------------
-    constexpr uint64_t SUS2 = (1ULL << 2) | (1ULL << 7);
+    // Intervalles (root implicite) :
+    // 4  → minor third
+    // 7  → perfect fifth
 
-    using IntervalMask = uint64_t;
-
+    // ------------------------------------------------------------
+    // DATABASE ACCESS
+    // ------------------------------------------------------------
     const std::unordered_map<IntervalMask, std::vector<Diagram>>&
-    sus2_movable();
+    min_movable();
 
 } // namespace chord::db

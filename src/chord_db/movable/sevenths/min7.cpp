@@ -1,4 +1,4 @@
-#include <musical/chord_db/movable/min.h>
+#include <musical/chord_db/movable/sevenths/min7.h>
 
 namespace chord::db
 {
@@ -6,7 +6,7 @@ namespace chord::db
 using movable_diagram_map =
 std::unordered_map<IntervalMask, std::vector<Diagram>>;
 
-const movable_diagram_map& min_movable()
+const movable_diagram_map& min7_movable()
 {
     using D = Diagram;
 
@@ -15,52 +15,9 @@ const movable_diagram_map& min_movable()
 
     static const movable_diagram_map db =
     {
-        // ========================================================
-        // MINOR TRIAD
-        // ========================================================
-        {
-            TRIAD_MIN,
-            {
-                // | | | 1 | |  
-                // | | 2 | 3 |
-                // | | | | | |
-                // | 4 | | | |
-                D({ X, 3, 1, BASE, 1, X }, GuitarStandardTuning::A, D::CAGED::C),
-
-                // | 1 1 1 1 1
-                // | | | | 4 |
-                // | | 2 3 | |
-                // | | | | | |
-                D({ X, BASE, 2, 2, 1, BASE }, GuitarStandardTuning::A, D::CAGED::A),
-
-                // | | 1 | | |
-                // | 2 | | | |
-                // | | | | | |
-                // 3 | | 4 4 4
-                D({ 3, 1, BASE, 3, 3, 3 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
-
-                // 1 1 1 1 1 1
-                // | | | | | |
-                // | 3 4 | | |
-                // | | | | | |
-                D({ BASE, 2, 2, BASE, BASE, BASE }, GuitarStandardTuning::LOW_E, D::CAGED::E),
-
-                // x x
-                // | | 1 | | |
-                // | | | | | 2
-                // | | | 3 | |
-                // | | | | 4 |
-                D({ X, X, BASE, 2, 3, 1 }, GuitarStandardTuning::D, D::CAGED::D)
-
-
-
-
-
-            }
-        },
 
         // ========================================================
-        // 7
+        // min7
         // ========================================================
         {
             (TRIAD_MIN | (1ULL << 10)),
@@ -106,9 +63,8 @@ const movable_diagram_map& min_movable()
 
             }
         },
-
         // ========================================================
-        // 7 NO 5
+        // min7 NO 5
         // ========================================================
         {
             (TRIAD_MIN_NO5 | (1ULL << 10)),
@@ -121,22 +77,9 @@ const movable_diagram_map& min_movable()
                 D({ X, 2, BASE, 2, BASE, X }, GuitarStandardTuning::A, D::CAGED::C)
             }
         },
-        // ========================================================
-        // MINOR 7 ADD11
-        // ========================================================
-        {
-            (TRIAD_MIN | (1ULL << 10) | (1ULL << 14)),
-            {          
-                // 1 1 1 1 1 1 
-                // | | | | | |
-                // 2 | 3 4 | | 
-                // | | | | | |                        
-                D({ 2, BASE, 2, 2, BASE, BASE }, GuitarStandardTuning::LOW_E, D::CAGED::G)
-            }
-        }
+
     };
 
     return db;
 }
-
-} // namespace chord::db
+}

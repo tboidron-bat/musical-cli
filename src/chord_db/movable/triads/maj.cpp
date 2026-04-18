@@ -39,7 +39,7 @@ const movable_diagram_map& maj_movable()
                 // 3 | | | | 4
                 D({ 3, 2, BASE, BASE, BASE, 3 }, GuitarStandardTuning::LOW_E, D::CAGED::G),
 
-                // | | | | | |
+
                 // 1 1 1 1 1 1 
                 // | | | 2 | |
                 // | 4 3 | | |

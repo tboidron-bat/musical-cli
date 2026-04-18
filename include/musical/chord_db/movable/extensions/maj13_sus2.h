@@ -5,19 +5,15 @@
 #include <cstdint>
 
 #include <musical/chord_db/Diagram.h>
+#include <musical/chord_db/triads.h>
 
 namespace chord::db
 {
-
     // ------------------------------------------------------------
-    // TRIADES
+    // DATABASE ACCESS
     // ------------------------------------------------------------
-    constexpr uint64_t TRIAD_MIN = (1ULL << 3) | (1ULL << 7);
-    constexpr uint64_t TRIAD_MIN_NO5 = TRIAD_MIN & ~(1ULL << 7);
-
-    using IntervalMask = uint64_t;
 
     const std::unordered_map<IntervalMask, std::vector<Diagram>>&
-    min_movable();
+    maj13_sus2_movable();
 
 } // namespace chord::db

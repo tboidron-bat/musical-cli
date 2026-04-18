@@ -5,6 +5,7 @@
 #include <cstdint>
 
 #include <musical/chord_db/Diagram.h>
+#include <musical/chord_db/triads.h>
 
 namespace chord::db
 {
@@ -13,10 +14,6 @@ namespace chord::db
     // TRIADES AUGMENTÉES
     // ------------------------------------------------------------
     // 1 - 3 - #5  → (4, 8)
-    constexpr uint64_t TRIAD_AUG = (1ULL << 4) | (1ULL << 8);
-
-    using IntervalMask = uint64_t;
-
     const std::unordered_map<IntervalMask, std::vector<Diagram>>&
     aug_movable();
 

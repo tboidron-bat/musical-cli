@@ -28,13 +28,13 @@ constexpr IntervalMask MAJ7_B5 =
 constexpr IntervalMask MAJ7_SHARP11 =
     MAJ7 | (1ULL << 18);
 
-constexpr IntervalMask AUG_TRIAD =
+constexpr IntervalMask TRIAD_AUG =
     (1ULL << 4) | (1ULL << 8);
 
-constexpr IntervalMask MINOR_TRIAD =
+constexpr IntervalMask TRIAD_MIN =
     (1ULL << 3) | (1ULL << 7);
 
-constexpr IntervalMask MINOR_TRIAD_NO5 =    
+constexpr IntervalMask TRIAD_MIN_NO5 =    
     (1ULL << 3);
 
 constexpr IntervalMask DIM_TRIAD =
